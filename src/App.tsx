@@ -1,25 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import { Container } from '@material-ui/core';
+import Splash from '../src/components/site/Splash';
+import Navigation from '../src/components/site/Navigation';
+import Browse from '../src/components/display/Browse/Browse';
+import MyPractice from '../src/components/display/MyPractice/MyPractice';
+import Resources from '../src/components/display/Resources/Resources';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+  const sessionToken = null;
+
+  const viewConductor = () => {
+    return sessionToken !== undefined
+      ? <>
+        <Router>
+          <Navigation />
+          <h2>Test Text - App Component</h2>
+          <Switch>
+              <Route exact path="/browse"><Browse /></Route>
+              <Route exact path="/mypractice"><MyPractice /></Route>
+              <Route exact path="/resources"><Resources /></Route>
+          </Switch>
+        </Router>
+        </>
+      : <Splash />
+  }
+
+  return(
+      <Container maxWidth="sm">
+        <Splash />
+      </Container>
   );
 }
 
