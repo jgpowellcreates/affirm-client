@@ -5,6 +5,7 @@ export type UserContextProps = {
     id: string | null;
     roleId: number | null;
     setToken: CallableFunction;
+    clearToken: CallableFunction;
 }
 
 //This is the fallback value. 
@@ -12,7 +13,8 @@ const AuthContext = React.createContext<UserContextProps>({
     token: null,
     id: null,
     roleId: null,
-    setToken: (token: string | null) => {}
+    setToken: (token: string | null) => {},
+    clearToken: () => {}
 })
 
 export default AuthContext; //can't write "Export default" followed by "const"
@@ -21,6 +23,7 @@ export interface IAuthState {
     token: string | null;
     id: string | null;
     roleId: number | null;
+    isLoading: boolean;
 }
 
 export class AuthContextProvider extends React.Component<{},IAuthState> {
@@ -29,7 +32,8 @@ export class AuthContextProvider extends React.Component<{},IAuthState> {
         this.state = {
             token: localStorage.getItem("token"),
             id: null,
-            roleId: null
+            roleId: null,
+            isLoading: true,
         }
     }
 
@@ -37,47 +41,60 @@ export class AuthContextProvider extends React.Component<{},IAuthState> {
         this.setState({token: token})
     }
 
+    clearToken = () => {
+        localStorage.clear();
+        this.setState({token: null})
+    }
+
     componentDidMount() {
-        this.setState({token: localStorage.getItem("token")})
+        this.validateToken()
     }
 
     componentDidUpdate(prevProps: {}, prevState: IAuthState) {
         if (prevState.token !== this.state.token) {
-            if (this.state.token) {
-                localStorage.setItem("token", this.state.token);
+            this.validateToken()
+        }
+    }
 
-                fetch(`${process.env.REACT_APP_DATABASE_URL}auth/`, {
-                    headers: {Authorization: this.state.token}
-                })
-                .then((res) => {
-                    if (res.status !== 200) {
-                        this.setState({
-                            token: null,
-                            id: null,
-                            roleId: null
-                        });
+    validateToken = () => {
 
-                        localStorage.removeItem("token");
-                    }
-                    return res.json();
-                })
-                .then((data) => {
-                    console.log("Context fetch:", data)
-                    if (data.user) {
-                        this.setState({
-                            id: data.id,
-                            roleId: data.roleId
-                        })
-                    }
-                })
-            } else {
-                this.setState({
-                    id: null,
-                    roleId: null
-                })
+        if (this.state.token) {
+            localStorage.setItem("token", this.state.token);
 
-                localStorage.removeItem("token");
-            }
+            fetch(`${process.env.REACT_APP_DATABASE_URL}auth/`, {
+                headers: {Authorization: this.state.token}
+            })
+            .then((res) => {
+                if (res.status !== 200) {
+                    this.setState({
+                        token: null,
+                        id: null,
+                        roleId: null,
+                        isLoading: false
+                    });
+
+                    localStorage.removeItem("token");
+                }
+                return res.json();
+            })
+            .then((data) => {
+                console.log("Context fetch:", data)
+                if (data.id) {
+                    this.setState({
+                        id: data.id,
+                        roleId: data.roleId,
+                        isLoading: false
+                    })
+                }
+            })
+        } else {
+            this.setState({
+                id: null,
+                roleId: null,
+                isLoading: false,
+            })
+
+            localStorage.removeItem("token");
         }
     }
 
@@ -89,10 +106,11 @@ export class AuthContextProvider extends React.Component<{},IAuthState> {
                     token: this.state.token,
                     id: this.state.id,
                     roleId: this.state.roleId,
-                    setToken: this.setToken
+                    setToken: this.setToken,
+                    clearToken: this.clearToken
                 }}
             >
-            {this.props.children}
+            {!this.state.isLoading && this.props.children}
             </AuthContext.Provider>
         )
     }

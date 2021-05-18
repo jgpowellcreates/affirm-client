@@ -47,3 +47,5 @@ export interface IAffirmation {
     collectionId: number | null;
     userCollectionId: number | null;
 }
+
+export enum userRoles {user = 1, premium_user, team_member, admin};
