@@ -3,12 +3,12 @@ import { resourceLimits } from 'worker_threads';
 import AuthContext from '../../site/AuthContext';
 
 interface IAdminDashState {
-    categoryResults?: ICategories[] | undefined | null;
-    collectionResults?: ICollections[] | undefined | null;
-    affirmationResults?: IAffirmations[] | undefined | null;
+    categoryResults?: ICategories[] | null;
+    collectionResults?: ICollections[] | null;
+    affirmationResults?: IAffirmations[] | null;
     token: string | undefined | null;
     categoryFilter: number | null;
-    collectionFilter: number | null;
+    collectionFilter?: number[] | null;
 }
 
 interface ICategories {
@@ -88,6 +88,20 @@ class AdminDashboard extends Component <{},IAdminDashState> {
         
     }
 
+    cascadeFilter = (categoryId : number | null) => {
+        let cascadeArray:number[] | null = [];
+        if (this.state.collectionResults) {
+            cascadeArray = this.state.collectionResults.filter(coll => {
+                if (coll.categoryId == categoryId) return true
+                return false
+            }).map(coll => coll.id)
+            console.log(cascadeArray)
+        }
+        this.setState({categoryFilter: categoryId, 
+                      collectionFilter: (categoryId) ? cascadeArray : null})
+    }
+
+
     render() {
         return(
             <div>
@@ -98,10 +112,16 @@ class AdminDashboard extends Component <{},IAdminDashState> {
                     
                     <div>
                         <h3 className="text-center">Categories</h3>
+                            <div className="shadow border rounded-lg">
+                                <div className="flex items-center space-x-4 p-2"
+                                onClick={() =>  this.setState({categoryFilter: null, collectionFilter: null})}>
+                                    <h4>All Categories</h4>
+                                </div>
+                            </div>
                          {this.state.categoryResults && this.state.categoryResults.map((cat, index) => {
                              return <div key={index} className="shadow border rounded-lg">
                                      <div className="flex items-center space-x-4 p-2"
-                                     onClick={() =>  this.setState({categoryFilter: cat.id})}>
+                                     onClick={() => this.cascadeFilter(cat.id)}>
                                          <h4>{cat.name}</h4>
 
                                      </div>
@@ -111,11 +131,17 @@ class AdminDashboard extends Component <{},IAdminDashState> {
 
                     <div>
                         <h3 className="text-center">Collections</h3>
+                            <div className="shadow border rounded-lg">
+                                <div className="flex items-center space-x-4 p-2"
+                                onClick={() =>  this.cascadeFilter(this.state.categoryFilter)}>
+                                    <h4>All Collections</h4>
+                                </div>
+                            </div>
                          {this.state.collectionResults && this.state.categoryFilter
                             ? this.state.collectionResults.filter(coll => coll.categoryId === this.state.categoryFilter).map((coll, index) => {
                                 return <div key={index} className="shadow border rounded-lg">
                                         <div className="flex items-center space-x-4 p-2"
-                                            onClick={() =>  this.setState({collectionFilter: coll.id})}>
+                                            onClick={() =>  this.setState({collectionFilter: [coll.id]})}>
                                             <h4>{coll.title}</h4>
 
                                         </div>
@@ -124,7 +150,7 @@ class AdminDashboard extends Component <{},IAdminDashState> {
                             : this.state.collectionResults && this.state.collectionResults.map((coll, index) => {
                                 return <div key={index} className="shadow border rounded-lg">
                                         <div className="flex items-center space-x-4 p-2"
-                                            onClick={() =>  this.setState({collectionFilter: coll.id})}>
+                                            onClick={() =>  this.setState({collectionFilter: [coll.id]})}>
                                             <h4>{coll.title}</h4>
 
                                         </div>
@@ -135,7 +161,7 @@ class AdminDashboard extends Component <{},IAdminDashState> {
                     <div>
                     <h3 className="text-center">Affirmations</h3>
                          {this.state.affirmationResults && this.state.collectionFilter
-                            ? this.state.affirmationResults.filter(aff => aff.collectionId === this.state.collectionFilter).map((aff, index) => {
+                            ? this.state.affirmationResults.filter(aff => this.state.collectionFilter?.includes(aff.collectionId!)).map((aff, index) => {
                                 return <div key={index} className="shadow border rounded-lg">
                                         <div className="flex items-center space-x-4 p-2">
                                             <h4>{aff.statement}</h4>
