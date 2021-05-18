@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import Container from '@material-ui/core/Container';
 
 class Resources extends Component <{},{}> {
     constructor(props : any){
@@ -11,9 +10,9 @@ class Resources extends Component <{},{}> {
 
     render(){
         return(
-            <Container>
+            <div>
                 <h3>Resources</h3>
-            </Container>
+            </div>
         )
     }
 }

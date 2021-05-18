@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import AuthContext from './AuthContext';
-import {Container, FormControl, InputLabel, Input, Button} from '@material-ui/core/';
 
 interface IUserInfoState {
-    email?: string | null;
-    password?: string | null;
-    fName?: string | null;
-    lName?: string | null;
+    email?: string | number | readonly string[] | undefined;
+    password?: string | number | readonly string[] | undefined;
+    fName?: string | number | readonly string[] | undefined;
+    lName?: string | number | readonly string[] | undefined;
     isNewAccount: boolean;
 }
 
@@ -17,10 +16,10 @@ export default class Splash extends Component<{},IUserInfoState> {
     constructor(props: any) {
         super(props);
         this.state = {
-            email: null,
-            password: null,
-            fName: null,
-            lName: null,
+            email: '',
+            password: '',
+            fName: '',
+            lName: '',
             isNewAccount: false,
         }
     }
@@ -29,39 +28,42 @@ export default class Splash extends Component<{},IUserInfoState> {
         if(this.state.isNewAccount) {
             return(
                 <>
-                <FormControl>
-                    <InputLabel>First Name</InputLabel>
-                    <Input
-                        id="standard-required" 
-                        value={this.state.fName}
-                        onChange={this.handleChange('fName')}
-                        inputProps={{"aria-label":"First Name"}}/>
-                </FormControl>
-                <FormControl>
-                    <InputLabel>Last Name</InputLabel>
-                    <Input
-                        id="standard-required"
-                        value={this.state.lName}
-                        onChange={this.handleChange('lName')}
-                        inputProps={{"aria-label":"Last Name"}}/>
-                </FormControl>
                 <br />
-                <Button variant="contained" color="primary"
-                    onClick={() => this.sendUserSignIn()}>Register</Button>
-                <Button variant="contained"
+                <label htmlFor="fName">First Name</label>
+                <input
+                    required
+                    type="text"
+                    id="standard-required" 
+                    placeholder="First Name"
+                    value={this.state.fName}
+                    onChange={this.handleChange('fName')}
+                    />
+                <label htmlFor="lName">Last Name</label>
+                <input
+                    required
+                    type="text"
+                    id="standard-required"
+                    placeholder="Last Name"
+                    value={this.state.lName}
+                    onChange={this.handleChange('lName')}
+                    />
+                <br />
+                <button
+                    onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.sendUserSignIn(e)}>Register</button>
+                <button
                     onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.setState({isNewAccount: false})}
-                    >I Have an Account</Button>
+                    >I Have an Account</button>
                 </>
             )
         } else {
             return(
                 <>
                 <br />
-                <Button variant="contained" color="primary"
-                    onClick={() => this.sendUserSignIn()}>Log In</Button>
-                <Button variant="contained"
+                <button
+                    onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.sendUserSignIn(e)}>Log In</button>
+                <button
                     onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.setState({isNewAccount: true})}
-                    >I'm a New User</Button>
+                    >I'm a New User</button>
                 </>
             )
         }
@@ -71,7 +73,9 @@ export default class Splash extends Component<{},IUserInfoState> {
         this.setState({ ...this.state, [prop]: event.target.value });
       };
 
-    sendUserSignIn = () => {
+    sendUserSignIn = (e:React.MouseEvent<HTMLButtonElement>) => {
+        if (e) {e.preventDefault(); }
+        console.log("Compiling user info...")
         const url = this.state.isNewAccount ? "auth/register" : "auth/login";
         const bodyObj = this.state.isNewAccount ? {
             email: this.state.email,
@@ -83,6 +87,7 @@ export default class Splash extends Component<{},IUserInfoState> {
             password: this.state.password
         };
 
+        console.log("Start the fetch!")
         fetch(`${process.env.REACT_APP_DATABASE_URL}${url}`, {
             method: "POST",
             body: JSON.stringify(bodyObj),
@@ -97,30 +102,36 @@ export default class Splash extends Component<{},IUserInfoState> {
         })
     }
     
+    checkStates() {
+        console.log(this.state)
+    }
+
     render() {
         return(
-            <Container>
+            <div>
                 <form>
-                    <FormControl>
-                        <InputLabel>Email</InputLabel>
-                        <Input
-                            id="standard-required" 
-                            value={this.state.email}
-                            onChange={this.handleChange('email')}
-                            inputProps={{"aria-label":"Email"}}/>
-                    </FormControl>
-                    <FormControl>
-                        <InputLabel>Password</InputLabel>
-                        <Input
-                            id="standard-required-password-input" 
-                            type="password"
-                            value={this.state.password}
-                            onChange={this.handleChange('password')}
-                            inputProps={{"aria-label":"Password"}}  />
-                    </FormControl>
+                    <label htmlFor="email">Email</label>
+                    <input
+                        required
+                        type="text"
+                        id="standard-required" 
+                        placeholder="Email"
+                        value={this.state.email}
+                        onChange={this.handleChange('email')}
+                        />
+                    <label htmlFor="password">Password</label>
+                    <input
+                        required
+                        type="password"
+                        id="standard-required-password-input" 
+                        placeholder="Secure Password"
+                        value={this.state.password}
+                        onChange={this.handleChange('password')}
+                        /* inputProps={{"aria-label":"Password"}}  */ />
                     {this.toggleLogIn()}
                 </form>
-            </Container>
+                <button onClick={() => this.checkStates()}>Check States</button>
+            </div>
         )
     }
 }

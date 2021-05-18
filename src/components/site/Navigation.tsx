@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import AuthContext from './AuthContext';
 import {Link} from 'react-router-dom';
 import {userRoles} from '../../types/Models';
-import {CssBaseline, Container, Drawer, AppBar, Toolbar,
-    List, ListItem, ListItemIcon, ListItemText, Typography} from '@material-ui/core';
 
 export default class Navigation extends Component<{},{}> {
     static contextType = AuthContext;
@@ -18,50 +16,45 @@ export default class Navigation extends Component<{},{}> {
 
     render() {
         return(
-            <Container>
-                <CssBaseline>
-                    <AppBar position="fixed">
-                        <Toolbar>
-                            <Typography>
-                                Affirm Brand
-                            </Typography>
-                        </Toolbar>
-                    </AppBar>
-                    <Drawer variant="permanent">
-                        <Toolbar>
-                            <div>
-                                <List>
-                                    <ListItem>
-                                        <Link to='/browse'>
-                                            <ListItemText>Browse</ListItemText>
-                                        </Link>
-                                    </ListItem>
-                                   {this.context.roleId === userRoles.admin
-                                    ?
-                                    <ListItem>
-                                        <Link to="/admindash">Admin Dashboard</Link>
-                                    </ListItem>
-                                    :<></>
-                                    }
-                                    <ListItem>
-                                        <Link to="/mypractice">
-                                            <ListItemText>My Practice</ListItemText>
-                                        </Link>
-                                    </ListItem>
-                                    <ListItem>
-                                        <Link to="/resources">
-                                            <ListItemText>Resources</ListItemText>
-                                        </Link>
-                                    </ListItem>
-                                    <ListItem onClick={() => this.context.clearToken()}>
-                                        <ListItemText>Log Out</ListItemText>
-                                    </ListItem>
-                                </List>
-                            </div>
-                        </Toolbar>
-                    </Drawer>
-                </CssBaseline>
-            </Container>
+            <div className="container">
+                <div className='header' style={{background: "purple", position: 'absolute', width: "100%", height: '4em', top: '0', textAlign: 'center'}}>
+                    <h1>
+                        Affirm Brand
+                    </h1>
+                </div>
+                <div className="sidebar" style={{background: 'blue', position: 'absolute', width: '10em', height: '100vh', top:'0', padding: '5em 0 0 0'}}>
+                    <ul style={{listStyle:"none", margin: '0 10px',padding: "0"}}>
+                        <li>
+                            <Link to='/browse'>
+                                <h3>Browse</h3>
+                            </Link>
+                        </li>
+                        {this.context.roleId === userRoles.admin
+                        ?
+                        <li>
+                            <Link to="/admindash">Admin Dashboard</Link>
+                        </li>
+                        :<></>
+                        }
+                        <li>
+                            <Link to="/mypractice">
+                                <h3>My Practice</h3>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/resources">
+                                <h3>Resources</h3>
+                            </Link>
+                        </li>
+                        {/* THIS IS A BUTTON FOR DEV TESTING PURPOSES */}
+                        <li><button onClick={() => console.log("Id:", this.context.id, "RoleId:", this.context.roleId, 'Token:', this.context.token)}>Check States</button></li>
+
+                        <li onClick={() => this.context.clearToken()}>
+                            <h3>Log Out</h3>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         )
     }
 };
