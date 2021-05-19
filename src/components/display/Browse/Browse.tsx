@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import AffirmationList from '../Modals/AffirmationList';
 import {ICategories} from '../../../types/Models';
 
 interface IBrowse {
@@ -11,7 +12,7 @@ class Browse extends Component <{},IBrowse> {
         super(props);
         this.state = {
             categoryResults: null,
-            token: null
+            token: null,
         }
     }
 
@@ -34,6 +35,7 @@ class Browse extends Component <{},IBrowse> {
         return(
             <div>
                 <h3>Browse</h3>
+                <button onClick={() => console.log(this.state.categoryResults)}>See Results</button>
                 {this.state.categoryResults?.map((cat, index) => {
                     return(
                     <div id="eachCategoryHolder" key={index} className="m-1 p-1">
@@ -43,6 +45,10 @@ class Browse extends Component <{},IBrowse> {
                             return(
                             <div key={collIndex} className="shadow border rounded-lg flex-row bg-blue-200 m-1 p-1">
                                 <h3>{coll.title}</h3>
+                                <AffirmationList
+                                    title={coll.title}
+                                    description={coll.description}
+                                    affirmations={coll.affirmations} />
                             </div>
                             )
                         })}

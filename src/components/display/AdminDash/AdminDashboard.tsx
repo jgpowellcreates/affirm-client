@@ -1,13 +1,18 @@
 import React, {Component} from 'react';
 import AuthContext from '../../site/AuthContext';
 import {ICategories, ICollections, IAffirmations} from '../../../types/Models';
+import EditCategory from '../Modals/EditCategory';
+import DeleteCategory from '../Modals/DeleteCategory';
+import EditCollection from '../Modals/EditCollection';
+import DeleteCollection from '../Modals/DeleteCollection';
+import EditAffirmation from '../Modals/EditAffirmation';
+import DeleteAffirmation from '../Modals/DeleteAffirmation';
 import './AdminDashboard.css';
 
 interface IAdminDashState {
     categoryResults?: ICategories[] | null;
     collectionResults?: ICollections[] | null;
     affirmationResults?: IAffirmations[] | null;
-    token: string | undefined | null;
     categoryFilter: number | null;
     collectionFilter?: number[] | null;
 }
@@ -16,20 +21,19 @@ class AdminDashboard extends Component <{},IAdminDashState> {
     static contextType = AuthContext;
     context!: React.ContextType<typeof AuthContext>
 
-    constructor(props : any){
+    constructor(props:{}){
         super(props);
         this.state = {
             categoryResults: null,
             collectionResults: null,
             affirmationResults: null,
-            token: null,
             categoryFilter: null,
             collectionFilter: null
         }
     }
 
     componentDidMount() {
-        this.setState({token: this.context.token}, this.grabCategories)
+        this.grabCategories()
     }
 
     grabCategories = () => {
@@ -39,7 +43,7 @@ class AdminDashboard extends Component <{},IAdminDashState> {
         fetch(`${process.env.REACT_APP_DATABASE_URL}category/`, {
             headers: new Headers({
                 "Content-Type": "application/json",
-                Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg5NTMyMzcwLTNmODctNDBkZi1hYzMxLTNkNWEwMGJjMGU2YiIsImlhdCI6MTYyMTQzMzQwMywiZXhwIjoxNjIxNTE5ODAzfQ.PPGd39wBJND8AhuHG0F9JYFh2VSVs2FGGaTdv4Z697E"
+                "Authorization": `${this.context.token}`
             })
         })
         .then(data => data.json())
@@ -55,8 +59,7 @@ class AdminDashboard extends Component <{},IAdminDashState> {
                 collectionResults: collectionArray,
                 affirmationResults: affirmationArray
             })
-        })
-        
+        }) 
     }
 
     cascadeFilter = (categoryId : number | null) => {
@@ -78,7 +81,7 @@ class AdminDashboard extends Component <{},IAdminDashState> {
             <div>
                 <button onClick={() => console.log(this.state.categoryResults ,this.state.collectionResults, this.state.affirmationResults)}>CHECK ARRAYS</button>
                 <br /><button onClick={() => console.log(this.state.categoryFilter ,this.state.collectionFilter)}>CHECK FILTERS</button>
-                <br /><button onClick={() => console.log("CONTEXT:",this.context.token, "STATE:", this.state.token)}>CHECK TOKEN</button>
+                <br /><button onClick={() => console.log("CONTEXT:",this.context.token)}>CHECK TOKEN</button>
                 <h3>Admin Dashboard</h3>
                 <div className="grid grid-cols-3">
                     
@@ -95,8 +98,12 @@ class AdminDashboard extends Component <{},IAdminDashState> {
                                     <div className="hideParent flex items-center space-x-4 p-2"
                                      onClick={() => this.cascadeFilter(cat.id)}>
                                         <h4>{cat.name}</h4>
-                                        <button className="hideChild">Edit</button>
-                                        <button className="hideChild">Delete</button>
+                                        <div className="hideChild">
+                                            <EditCategory categoryId={cat.id} refreshDash={this.grabCategories}/>
+                                        </div>
+                                        <div className="hideChild">
+                                            <DeleteCategory />
+                                        </div>
                                     </div>
                                  </div>
                          })}
@@ -116,8 +123,17 @@ class AdminDashboard extends Component <{},IAdminDashState> {
                                         <div className="hideParent flex items-center space-x-4 p-2"
                                             onClick={() =>  this.setState({collectionFilter: [coll.id]})}>
                                             <h4>{coll.title}</h4>
-                                            <button className="hideChild">Edit</button>
-                                            <button className="hideChild">Delete</button>
+                                            <div className="hideChild">
+                                                <EditCollection
+                                                    categoryResults={this.state.categoryResults}
+                                                    thisCatId={coll.categoryId}
+                                                    collInfo={coll}
+                                                    refreshDash={this.grabCategories}
+                                                />
+                                            </div>
+                                            <div className="hideChild">
+                                                <DeleteCollection />
+                                            </div>
                                         </div>
                                     </div>
                             })
@@ -126,8 +142,17 @@ class AdminDashboard extends Component <{},IAdminDashState> {
                                         <div className="hideParent flex items-center space-x-4 p-2"
                                             onClick={() =>  this.setState({collectionFilter: [coll.id]})}>
                                             <h4>{coll.title}</h4>
-                                            <button className="hideChild">Edit</button>
-                                            <button className="hideChild">Delete</button>
+                                            <div className="hideChild">
+                                                <EditCollection 
+                                                    categoryResults={this.state.categoryResults}
+                                                    thisCatId={coll.categoryId}
+                                                    collInfo={coll}
+                                                    refreshDash={this.grabCategories}
+                                                />
+                                            </div>
+                                            <div className="hideChild">
+                                                <DeleteCollection />
+                                            </div>
                                         </div>
                                     </div>
                          })}
@@ -140,8 +165,17 @@ class AdminDashboard extends Component <{},IAdminDashState> {
                                 return <div key={index} className="shadow border rounded-lg">
                                         <div className="hideParent flex items-center space-x-4 p-2">
                                             <h4>{aff.statement}</h4>
-                                            <button className="hideChild">Edit</button>
-                                            <button className="hideChild">Delete</button>
+                                            <div className="hideChild">
+                                                <EditAffirmation
+                                                    collectionResults={this.state.collectionResults}
+                                                    thisCollId={aff.collectionId}
+                                                    affInfo={aff}
+                                                    refreshDash={this.grabCategories}
+                                                />
+                                            </div>
+                                            <div className="hideChild">
+                                                <DeleteAffirmation />
+                                            </div>
                                         </div>
                                     </div>
                             })
@@ -149,8 +183,17 @@ class AdminDashboard extends Component <{},IAdminDashState> {
                                 return <div key={index} className="shadow border rounded-lg">
                                         <div className="hideParent flex items-center space-x-4 p-2">
                                             <h4>{aff.statement}</h4>
-                                            <button className="hideChild">Edit</button>
-                                            <button className="hideChild">Delete</button>
+                                            <div className="hideChild">
+                                                <EditAffirmation
+                                                    collectionResults={this.state.collectionResults}
+                                                    thisCollId={aff.collectionId}
+                                                    affInfo={aff}
+                                                    refreshDash={this.grabCategories}
+                                                />
+                                            </div>
+                                            <div className="hideChild">
+                                                <DeleteAffirmation />
+                                            </div>
                                         </div>
                                     </div>
                          })}

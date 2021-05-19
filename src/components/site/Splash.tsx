@@ -33,7 +33,6 @@ export default class Splash extends Component<{},IUserInfoState> {
                 <input
                     required
                     type="text"
-                    id="standard-required" 
                     placeholder="First Name"
                     value={this.state.fName}
                     onChange={this.handleChange('fName')}
@@ -42,15 +41,16 @@ export default class Splash extends Component<{},IUserInfoState> {
                 <input
                     required
                     type="text"
-                    id="standard-required"
                     placeholder="Last Name"
                     value={this.state.lName}
                     onChange={this.handleChange('lName')}
                     />
                 <br />
                 <button
+                    type="button" 
                     onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.sendUserSignIn(e)}>Register</button>
                 <button
+                    type="button" 
                     onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.setState({isNewAccount: false})}
                     >I Have an Account</button>
                 </>
@@ -60,8 +60,10 @@ export default class Splash extends Component<{},IUserInfoState> {
                 <>
                 <br />
                 <button
+                    type="button" 
                     onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.sendUserSignIn(e)}>Log In</button>
                 <button
+                    type="button" 
                     onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.setState({isNewAccount: true})}
                     >I'm a New User</button>
                 </>
@@ -114,7 +116,6 @@ export default class Splash extends Component<{},IUserInfoState> {
                     <input
                         required
                         type="text"
-                        id="standard-required" 
                         placeholder="Email"
                         value={this.state.email}
                         onChange={this.handleChange('email')}
@@ -123,12 +124,11 @@ export default class Splash extends Component<{},IUserInfoState> {
                     <input
                         required
                         type="password"
-                        id="standard-required-password-input" 
                         placeholder="Secure Password"
                         value={this.state.password}
                         onChange={this.handleChange('password')}
-                        /* inputProps={{"aria-label":"Password"}}  */ />
-                    {this.toggleLogIn()}
+                        />
+                    {this.toggleLogIn()} 
                 </form>
                 <button onClick={() => this.checkStates()}>Check States</button>
             </div>

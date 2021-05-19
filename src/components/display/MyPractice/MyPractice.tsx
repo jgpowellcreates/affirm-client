@@ -4,7 +4,6 @@ import {IAffirmations} from '../../../types/Models';
 interface IMyPractice {
     userCollectionResults?: IUserCollections[] | null;
     affirmationResults?: IAffirmations[] | null;
-    token: string | null;
     collectionFilter: number | null;
     intervalArray: IAffirmations[] | null;
 }
@@ -26,14 +25,13 @@ class MyPractice extends Component <{},IMyPractice> {
         this.state = {
             userCollectionResults: null,
             affirmationResults: null,
-            token: null,
             collectionFilter: null,
             intervalArray: null,
         }
     }
 
     componentDidMount() {
-        this.setState({token: this.context.token}, this.grabUserCollections)
+        this.grabUserCollections()
     }
 
     grabUserCollections = () => {
@@ -42,7 +40,7 @@ class MyPractice extends Component <{},IMyPractice> {
         fetch(`${process.env.REACT_APP_DATABASE_URL}mycollections/`, {
             headers: new Headers({
                 "Content-Type": "application/json",
-                "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRkYjNmNjUzLTVjNmMtNGUwNC1hMjVhLTQzODY0NzE4ZmU2NiIsImlhdCI6MTYyMTM3OTg5NCwiZXhwIjoxNjIxNDY2Mjk0fQ.pDukP4tqTytzxt3CJzyqy9VHmzXsWKyyIg9C76X25uY"
+                "Authorization": `${this.context.token}`
             })
         })
         .then(data => data.json())
