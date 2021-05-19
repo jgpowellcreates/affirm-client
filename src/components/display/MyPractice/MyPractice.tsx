@@ -45,14 +45,17 @@ class MyPractice extends Component <{},IMyPractice> {
         })
         .then(data => data.json())
         .then(data => {
-            console.log(data.userCollection)
-            data.userCollection.map((coll:IUserCollections, index:number) => {
-                affirmationArray.push(...coll.affirmations)
-            })
-            this.setState({
-                userCollectionResults: data.userCollection,
-                affirmationResults: affirmationArray
-            })
+            if (data.userCollection) {
+                data.userCollection.map((coll:IUserCollections, index:number) => {
+                    affirmationArray.push(...coll.affirmations)
+                })
+                this.setState({
+                    userCollectionResults: data.userCollection,
+                    affirmationResults: affirmationArray
+                })
+            } else {
+                console.log("Nothing to return");
+            }
         })
     }
 

@@ -28,7 +28,7 @@ export interface IAffirmations {
     ownerRole: number;
     statement: string;
     updatedAt: string;
-    userCollectionId?: number | null;
+    userCollectionId?: number[] | null;
 }
 
 export enum userRoles {user = 1, premium_user, team_member, admin};

@@ -1,17 +1,19 @@
 import React, {Fragment} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import AuthContext from '../../site/AuthContext';
-import {} from '../../../types/Models';
+import {ICategories} from '../../../types/Models';
 
 interface IDeleteCatState {
     modalIsOpen: boolean;
 }
 
 interface IDeleteCatProps {
-
+    categoryId: number;
+    categoryInfo: ICategories;
+    refreshDash: CallableFunction;
 }
 
-export default class NEWMODAL extends React.Component <IDeleteCatProps, IDeleteCatState>{
+export default class DeleteCategory extends React.Component <IDeleteCatProps, IDeleteCatState>{
     static contextType = AuthContext;
     context!: React.ContextType<typeof AuthContext>
     
@@ -28,6 +30,20 @@ export default class NEWMODAL extends React.Component <IDeleteCatProps, IDeleteC
 
     openModal() {
         this.setState({modalIsOpen: true})
+    }
+
+    deleteCategory = (e:React.MouseEvent<HTMLButtonElement>) => {
+        if (e) {e.preventDefault(); }
+
+        fetch(`${process.env.REACT_APP_DATABASE_URL}category/delete-${this.props.categoryId}`, {
+            method: "DELETE",
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Authorization": `${this.context.token}`
+            })
+        })
+        .then(data => data.json())
+        .then(() => {this.closeModal(); this.props.refreshDash()})
     }
 
     render() {
@@ -83,15 +99,21 @@ export default class NEWMODAL extends React.Component <IDeleteCatProps, IDeleteC
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                     >
-                    MODAL TITLE
+                    Are you sure?
                     </Dialog.Title>
                     <div className="mt-2">
                     
-                        {/* 
-                        
-                        THIS IS THE BODY OF THE MODAL
-                        
-                        */}
+                        {/* THIS IS THE BODY OF THE MODAL */}
+                        {this.props.categoryInfo.collections.length > 0
+                            ? <>
+                                <p>Deleting <b>'{this.props.categoryInfo.name}'</b> will also delete:</p>
+                                <p>{this.props.categoryInfo.collections.length} Collections and their associated affirmations.</p>
+                              </>
+                            : <>
+                                <p>Deleting {this.props.categoryInfo.name} will not effect your collections/affirmations.</p>
+                            </>
+                            
+                        }
 
                     </div>
 
@@ -101,7 +123,14 @@ export default class NEWMODAL extends React.Component <IDeleteCatProps, IDeleteC
                         className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                         onClick={() => this.closeModal()}
                     >
-                        ACTION BUTTON
+                        Cancel
+                    </button>
+                    <button
+                        type="button"
+                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.deleteCategory(e)}
+                    >
+                        Yes, Delete
                     </button>
                     </div>
                 </div>

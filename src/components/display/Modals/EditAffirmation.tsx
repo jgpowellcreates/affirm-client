@@ -16,7 +16,7 @@ interface IEditAffProps {
     refreshDash: CallableFunction;
 }
 
-export default class NEWMODAL extends React.Component <IEditAffProps, IEditAffState>{
+export default class EditAffirmation extends React.Component <IEditAffProps, IEditAffState>{
     static contextType = AuthContext;
     context!: React.ContextType<typeof AuthContext>
     

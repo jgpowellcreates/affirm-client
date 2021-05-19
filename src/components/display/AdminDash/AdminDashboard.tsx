@@ -102,7 +102,11 @@ class AdminDashboard extends Component <{},IAdminDashState> {
                                             <EditCategory categoryId={cat.id} refreshDash={this.grabCategories}/>
                                         </div>
                                         <div className="hideChild">
-                                            <DeleteCategory />
+                                            <DeleteCategory
+                                                categoryId={cat.id}
+                                                categoryInfo={cat}
+                                                refreshDash={this.grabCategories}
+                                            />
                                         </div>
                                     </div>
                                  </div>
@@ -132,7 +136,11 @@ class AdminDashboard extends Component <{},IAdminDashState> {
                                                 />
                                             </div>
                                             <div className="hideChild">
-                                                <DeleteCollection />
+                                                <DeleteCollection
+                                                    collectionId={coll.id}
+                                                    collectionInfo={coll}
+                                                    refreshDash={this.grabCategories}    
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -151,7 +159,11 @@ class AdminDashboard extends Component <{},IAdminDashState> {
                                                 />
                                             </div>
                                             <div className="hideChild">
-                                                <DeleteCollection />
+                                                <DeleteCollection
+                                                    collectionId={coll.id}
+                                                    collectionInfo={coll}
+                                                    refreshDash={this.grabCategories}    
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -174,7 +186,11 @@ class AdminDashboard extends Component <{},IAdminDashState> {
                                                 />
                                             </div>
                                             <div className="hideChild">
-                                                <DeleteAffirmation />
+                                                <DeleteAffirmation
+                                                    affirmationId={aff.id}
+                                                    affirmationInfo={aff}
+                                                    refreshDash={this.grabCategories}
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -192,7 +208,11 @@ class AdminDashboard extends Component <{},IAdminDashState> {
                                                 />
                                             </div>
                                             <div className="hideChild">
-                                                <DeleteAffirmation />
+                                                <DeleteAffirmation
+                                                    affirmationId={aff.id}
+                                                    affirmationInfo={aff}
+                                                    refreshDash={this.grabCategories}
+                                                />
                                             </div>
                                         </div>
                                     </div>

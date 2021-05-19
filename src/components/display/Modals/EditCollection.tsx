@@ -18,7 +18,7 @@ interface IEditCollProps {
     refreshDash: CallableFunction;
 }
 
-export default class NEWMODAL extends React.Component <IEditCollProps, IEditCollState>{
+export default class EditCategory extends React.Component <IEditCollProps, IEditCollState>{
     static contextType = AuthContext;
     context!: React.ContextType<typeof AuthContext>
     

@@ -1,20 +1,22 @@
 import React, {Fragment} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import AuthContext from '../../site/AuthContext';
-import {} from '../../../types/Models';
+import {IAffirmations} from '../../../types/Models';
 
 interface IDeleteAffState {
     modalIsOpen: boolean;
 }
 
 interface IDeleteAffProps {
-
+    affirmationId: number;
+    affirmationInfo: IAffirmations;
+    refreshDash: CallableFunction;
 }
 
-export default class NEWMODAL extends React.Component <IDeleteAffProps, IDeleteAffState>{
+export default class DeleteAffirmation extends React.Component <IDeleteAffProps, IDeleteAffState>{
     static contextType = AuthContext;
     context!: React.ContextType<typeof AuthContext>
-    
+
     constructor(props:IDeleteAffProps) {
         super(props)
         this.state ={
@@ -28,6 +30,20 @@ export default class NEWMODAL extends React.Component <IDeleteAffProps, IDeleteA
 
     openModal() {
         this.setState({modalIsOpen: true})
+    }
+
+    deleteAffirmation = (e:React.MouseEvent<HTMLButtonElement>) => {
+        if (e) {e.preventDefault(); }
+
+        fetch(`${process.env.REACT_APP_DATABASE_URL}affs/delete-${this.props.affirmationId}`, {
+            method: "DELETE",
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Authorization": `${this.context.token}`
+            })
+        })
+        .then(data => data.json())
+        .then(() => {this.closeModal(); this.props.refreshDash()})
     }
 
     render() {
@@ -83,15 +99,20 @@ export default class NEWMODAL extends React.Component <IDeleteAffProps, IDeleteA
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                     >
-                    MODAL TITLE
+                    Are you sure?
                     </Dialog.Title>
                     <div className="mt-2">
                     
-                        {/* 
-                        
-                        THIS IS THE BODY OF THE MODAL
-                        
-                        */}
+                        {/* THIS IS THE BODY OF THE MODAL */}
+                        {this.props.affirmationInfo.userCollectionId
+                            ? <>
+                                <p>{this.props.affirmationInfo.userCollectionId.length} users have this affirmation saved.</p>
+                              </>
+                            : <>
+                                <p>This action will not effect any users.</p>
+                            </>
+                            
+                        }
 
                     </div>
 
@@ -101,7 +122,14 @@ export default class NEWMODAL extends React.Component <IDeleteAffProps, IDeleteA
                         className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                         onClick={() => this.closeModal()}
                     >
-                        ACTION BUTTON
+                        Cancel
+                    </button>
+                    <button
+                        type="button"
+                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.deleteAffirmation(e)}
+                    >
+                        Yes, Delete
                     </button>
                     </div>
                 </div>
