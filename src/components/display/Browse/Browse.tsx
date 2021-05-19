@@ -36,12 +36,12 @@ class Browse extends Component <{},IBrowse> {
                 <h3>Browse</h3>
                 {this.state.categoryResults?.map((cat, index) => {
                     return(
-                    <div key={index}>
-                        <h3>{cat.name}</h3>
-                        <div className="flex">
+                    <div id="eachCategoryHolder" key={index} className="m-1 p-1">
+                        <h2>{cat.name}</h2>
+                        <div id="holdsCollectionArray" className="flex bg-green-200 m-1 p-1">
                         {cat.collections.map((coll, collIndex) => {
                             return(
-                            <div key={collIndex} className="shadow border rounded-lg flex-row">
+                            <div key={collIndex} className="shadow border rounded-lg flex-row bg-blue-200 m-1 p-1">
                                 <h3>{coll.title}</h3>
                             </div>
                             )
