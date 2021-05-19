@@ -17,12 +17,12 @@ export default class Navigation extends Component<{},{}> {
     render() {
         return(
             <div className="container">
-                <div className='header' style={{background: "purple", position: 'absolute', width: "100%", height: '4em', top: '0', textAlign: 'center'}}>
+                <div className='header' style={{background: "purple", position: 'fixed', width: "100%", height: '4em', top: '0', textAlign: 'center'}}>
                     <h1>
                         Affirm Brand
                     </h1>
                 </div>
-                <div className="sidebar" style={{background: 'blue', position: 'absolute', width: '10em', height: '100vh', top:'0', padding: '5em 0 0 0'}}>
+                <div className="sidebar" style={{background: 'blue', position: 'fixed', width: '10em', height: '100vh', top:'0', padding: '5em 0 0 0'}}>
                     <ul style={{listStyle:"none", margin: '0 10px',padding: "0"}}>
                         <li>
                             <Link to='/browse'>
