@@ -17,7 +17,7 @@ export default class Navigation extends Component<{},{}> {
     render() {
         return(
             <div className="container">
-                <div className='header' style={{background: "purple", position: 'fixed', width: "100%", height: '4em', top: '0', textAlign: 'center'}}>
+                <div className='header' style={{background: "purple", position: 'fixed', width: "100%", height: '4em', padding: '0', top: '0', textAlign: 'center'}}>
                     <h1>
                         Affirm Brand
                     </h1>

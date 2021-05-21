@@ -21,6 +21,17 @@ export interface ICollections {
     updatedAt: string;
 }
 
+export interface IUserCollections {
+    affirmations: IAffirmations[];
+    createdAt: string;
+    description: string;
+    id: number;
+    ownerRole: number;
+    title: string;
+    updatedAt: string;
+    userId: string;
+}
+
 export interface IAffirmations {
     collectionId?: number | null;
     createdAt: string;

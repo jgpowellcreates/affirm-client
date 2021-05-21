@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
 import AuthContext from '../../site/AuthContext';
 import {ICategories, ICollections, IAffirmations} from '../../../types/Models';
+import AddCategory from '../Modals/AddCategory';
 import EditCategory from '../Modals/EditCategory';
 import DeleteCategory from '../Modals/DeleteCategory';
+import AddCollection from '../Modals/AddCollection';
 import EditCollection from '../Modals/EditCollection';
 import DeleteCollection from '../Modals/DeleteCollection';
+import AddAffirmation from '../Modals/AddAffirmation';
 import EditAffirmation from '../Modals/EditAffirmation';
 import DeleteAffirmation from '../Modals/DeleteAffirmation';
 import './AdminDashboard.css';
@@ -17,7 +20,7 @@ interface IAdminDashState {
     collectionFilter?: number[] | null;
 }
 
-class AdminDashboard extends Component <{},IAdminDashState> {
+class AdminDashboard extends Component <{}, IAdminDashState> {
     static contextType = AuthContext;
     context!: React.ContextType<typeof AuthContext>
 
@@ -86,8 +89,14 @@ class AdminDashboard extends Component <{},IAdminDashState> {
                 <div className="grid grid-cols-3">
                     
                     <div>
-                        <h3 className="text-center">Categories</h3>
+                        <div id="categoryHeader" className="flex justify-center">
+                            <h3 className="text-center">Categories</h3>
+                            <div>
+                                <AddCategory refreshDash={this.grabCategories}/>
+                            </div>
+                        </div>
                             <div className="shadow border rounded-lg">
+                                {/*  */}
                                 <div className="flex items-center space-x-4 p-2"
                                 onClick={() =>  this.setState({categoryFilter: null, collectionFilter: null})}>
                                     <h4>All Categories</h4>
@@ -114,7 +123,15 @@ class AdminDashboard extends Component <{},IAdminDashState> {
                     </div>
 
                     <div>
-                        <h3 className="text-center">Collections</h3>
+                    <div id="categoryHeader" className="flex justify-center">
+                            <h3 className="text-center">Collections</h3>
+                            <div>
+                                <AddCollection
+                                    categoryResults={this.state.categoryResults}
+                                    refreshDash={this.grabCategories}
+                                />
+                            </div>
+                        </div>
                             <div className="shadow border rounded-lg">
                                 <div className="flex items-center space-x-4 p-2"
                                 onClick={() =>  this.cascadeFilter(this.state.categoryFilter)}>
@@ -171,7 +188,15 @@ class AdminDashboard extends Component <{},IAdminDashState> {
                     </div>
 
                     <div>
-                    <h3 className="text-center">Affirmations</h3>
+                        <div id="categoryHeader" className="flex justify-center">
+                            <h3 className="text-center">Affirmation</h3>
+                            <div>
+                                <AddAffirmation
+                                    collectionResults={this.state.collectionResults}
+                                    refreshDash={this.grabCategories}
+                                />
+                            </div>
+                        </div>
                          {this.state.affirmationResults && this.state.collectionFilter
                             ? this.state.affirmationResults.filter(aff => this.state.collectionFilter?.includes(aff.collectionId!)).map((aff, index) => {
                                 return <div key={index} className="shadow border rounded-lg">

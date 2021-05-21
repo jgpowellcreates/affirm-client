@@ -37,6 +37,7 @@ class Browse extends Component <{},IBrowse> {
                 <h3>Browse</h3>
                 <button onClick={() => console.log(this.state.categoryResults)}>See Results</button>
                 {this.state.categoryResults?.map((cat, index) => {
+                    if (cat.collections.length > 0) {
                     return(
                     <div id="eachCategoryHolder" key={index} className="m-1 p-1">
                         <h2>{cat.name}</h2>
@@ -55,6 +56,7 @@ class Browse extends Component <{},IBrowse> {
                         </div>
                     </div>
                     )
+                    }
                 })}
             </div>
         )

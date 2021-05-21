@@ -13,7 +13,7 @@ interface IDeleteAffProps {
     refreshDash: CallableFunction;
 }
 
-export default class DeleteAffirmation extends React.Component <IDeleteAffProps, IDeleteAffState>{
+export default class DeleteUserAffirmation extends React.Component <IDeleteAffProps, IDeleteAffState>{
     static contextType = AuthContext;
     context!: React.ContextType<typeof AuthContext>
 

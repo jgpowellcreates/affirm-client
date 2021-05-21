@@ -18,8 +18,7 @@ function App() {
         <>
           <Router>
             <Navigation />
-            <h2>I NEED A WAY TO CREATE SPACE FROM THE HEADER</h2>
-            <div className="flex-initial" style={{margin: "3em 0 0 10em"}}>
+            <div className="flex-initial" style={{margin: "4em 0 0 10em"}}>
             <Switch>
                 <Route exact path="/browse"><Browse /></Route>
                 <Route exact path="/mypractice"><MyPractice /></Route>

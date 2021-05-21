@@ -1,31 +1,26 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, Component} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import AuthContext from '../../site/AuthContext';
-import {IAffirmations, ICollections} from '../../../types/Models';
+import {} from '../../../types/Models';
 
-interface IEditAffState {
+interface IAddCatState {
     modalIsOpen: boolean;
-    statement: string;
-    collectionId?: number | null;
+    categoryName: string;
 }
 
-interface IEditAffProps {
-    collectionResults?: ICollections[] | null;
-    thisCollId?: number | null;
-    affInfo: IAffirmations;
-    refreshDash: CallableFunction;
+interface IAddCatProps {
+    refreshDash: CallableFunction
 }
 
-export default class EditAffirmation extends React.Component <IEditAffProps, IEditAffState>{
+class AddCategory extends Component <IAddCatProps, IAddCatState>{
     static contextType = AuthContext;
     context!: React.ContextType<typeof AuthContext>
     
-    constructor(props:IEditAffProps) {
+    constructor(props:IAddCatProps) {
         super(props)
         this.state ={
             modalIsOpen: false,
-            statement: '',
-            collectionId: this.props.thisCollId,
+            categoryName: '',
         }
     }
 
@@ -37,28 +32,28 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
         this.setState({modalIsOpen: true})
     }
 
-    handleChange = (prop: keyof IEditAffState) => (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    handleChange = (prop: keyof IAddCatState) => (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ ...this.state, [prop]: event.target.value });
-    };
+      };
 
-    updateAffirmation = (e:React.MouseEvent<HTMLButtonElement>) => {
+    createCategory = (e:React.MouseEvent<HTMLButtonElement>) => {
         if (e) {e.preventDefault(); }
-        const bodyObj = {
-            statement: this.state.statement,
-            collectionId: this.state.collectionId,
-            userCollectionId: this.props.affInfo.userCollectionId
-        }
+        const bodyObj = {name: this.state.categoryName}
 
-        fetch(`${process.env.REACT_APP_DATABASE_URL}affs/edit-${this.props.affInfo.id}`, {
-            method: "PUT",
+        fetch(`${process.env.REACT_APP_DATABASE_URL}category/new`, {
+            method: "POST",
             body: JSON.stringify(bodyObj),
             headers: new Headers({
                 "Content-Type": "application/json",
                 "Authorization": `${this.context.token}`
             })
         })
-        .then(data => {data.json(); console.log(data)})
-        .then(() => {this.closeModal(); this.props.refreshDash()})
+        .then(data => {data.json(); console.log(data, bodyObj, `${process.env.REACT_APP_DATABASE_URL}category/new`)})
+        .then(() => {
+            this.closeModal(); this.props.refreshDash();
+            console.log("Made it to the end somehow");
+        })
+        .catch((err) => console.log(err, "I actually messed up"))
     }
 
     render() {
@@ -70,7 +65,7 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
                 onClick={() => this.openModal()}
                 className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                 >
-                Edit
+                +
                 </button>
             </div>
 
@@ -114,7 +109,7 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                     >
-                    Edit Affirmation:
+                    Create a New Category
                     </Dialog.Title>
                     <br />
                     <hr />
@@ -122,37 +117,22 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
                     
                         {/* THIS IS THE BODY OF THE MODAL */}
                         <div>
-                            <label htmlFor="statement" className="block">
+                            <label htmlFor="name" className="block">
                                 <span className="text-gray-700">Name:</span>
 
                                 <input
                                     required
                                     type="text"
                                     className="mt-1 block w-full rounded-md bg-gray-100 p-2 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
-                                    placeholder={this.props.affInfo.statement}
-                                    value={this.state.statement}
-                                    onChange={this.handleChange('statement')}
+                                    placeholder="New Category Name"
+                                    value={this.state.categoryName}
+                                    onChange={this.handleChange('categoryName')}
                                 />
                             </label>
-                        
-
-                            <label htmlFor="collectionId" className="block">
-                                <span className="text-gray-700">Collection:</span>
-
-                                <select
-                                    required
-                                    className="mt-1 block w-full rounded-md bg-gray-100 p-2 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
-                                    //={this.state.categoryId}
-                                    defaultValue={this.props.thisCollId!}
-                                    onChange={this.handleChange('collectionId')}
-                                >
-                                    {this.props.collectionResults?.map((coll) => {
-                                        return <option key={coll.id} value={coll.id}>{coll.title}</option>
-                                    })}  
-                                </select>
-                            </label>
                         </div>
+
                     </div>
+
                     <div className="mt-4">
                     <button
                         type="button"
@@ -164,8 +144,8 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
                     <button
                         type="button"
                         className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.updateAffirmation(e)}>
-                        Commit Changes
+                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.createCategory(e)}>
+                        Create Category
                     </button>
                     </div>
                 </div>
@@ -177,3 +157,5 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
         )
     }
 }
+
+export default AddCategory;

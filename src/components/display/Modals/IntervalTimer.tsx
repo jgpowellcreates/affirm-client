@@ -1,49 +1,120 @@
 import React, {Fragment} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
-import {} from '../../../types/Models';
+import {IAffirmations} from '../../../types/Models';
 
-interface IState {
+//This interval display component
+
+
+interface ITimerState {
     modalIsOpen: boolean;
+    errorEmptyArray: boolean;
 }
 
-interface IProps {
-
+interface ITimerProps {
+    setIntervalFilter: CallableFunction;
+    intervalArray: IAffirmations[];
 }
 
-export default class NEWMODAL extends React.Component <IProps, IState>{
-    constructor(props:IProps) {
+export default class IntervalTimer extends React.Component <ITimerProps, ITimerState>{
+    constructor(props:ITimerProps) {
         super(props)
         this.state ={
             modalIsOpen: false,
+            errorEmptyArray: false,
         }
     }
 
-    closeModal() {
+    closeModal = () => {
         this.setState({modalIsOpen:false})
     }
 
     openModal() {
-        this.setState({modalIsOpen: true})
+        this.props.setIntervalFilter()
+        if (this.props.intervalArray.length > 0) {
+            this.setState({modalIsOpen: true, errorEmptyArray: false})
+        } else {
+            this.setState({errorEmptyArray: true})
+        }
+    }
+
+    modalContents = () => {
+        if (this.props.intervalArray) {
+            {this.props.intervalArray.map((aff, index) => {
+                return <p>{aff.statement}</p>
+            })}
+        } else {
+            return <></>
+        }
     }
 
     render() {
         return(
         <>
             <div>
-                <button
-                type="button"
-                onClick={() => this.openModal()}
-                className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-                >
-                View Collection
-                </button>
-            </div>
+                <div className="shadow border rounded-lg">
+                    <div onClick={() => this.openModal()}>  {/* added the setIntervalFilter to the openModal function because this logic couldn't handle a progression of functions */}
 
-            <Transition appear show={this.state.modalIsOpen} as={Fragment}>
+                        <h4>Add a play button over this image that changes on hover</h4>
+                        <h4>Interval slider should live below image</h4>
+                    <img src="https://greentreeyogadotcom.files.wordpress.com/2014/08/peaceful-water-1480533.jpg" alt="pretty leaves" />
+                    </div>
+                </div>
+                
+                {this.state.modalIsOpen
+                ?<TimerDisplay
+                    modalIsOpen={this.state.modalIsOpen}
+                    closeModal={this.closeModal}
+                    intervalArray={this.props.intervalArray}
+                />
+                :<></>
+                }
+                {!this.state.errorEmptyArray
+                    ?<></>
+                    :<>
+                        <p>You cannot start your practice without affirmations selected!</p>
+                        <p>Use the collections on the left to choose the statements you'd like to use</p>
+                     </>
+                }
+
+            </div>
+        </>
+        )
+    }
+}
+
+
+
+interface IDisplayState {
+
+}
+
+interface IDisplayProps {
+    modalIsOpen: boolean;
+    closeModal: CallableFunction;
+    intervalArray: IAffirmations [];
+}
+
+class TimerDisplay extends React.Component <IDisplayProps, IDisplayState>{
+    constructor(props:IDisplayProps) {
+        super(props);
+        this.state = {
+
+        }
+    }
+
+    /* componentDidMount() {
+        console.log("Timer Display mounted")
+        console.log(this.props.intervalArray)
+    } */
+
+    render() {
+        return(
+            <>
+                <Transition appear show={this.props.modalIsOpen} as={Fragment}>
             <Dialog
             as="div"
             className="fixed inset-0 z-10 overflow-y-auto"
-            onClose={() => this.closeModal()}
+            onClose={() => /* this.props.closeModal() */ console.log("not in my house!")}
             >
             <div className="min-h-screen px-4 text-center">
                 <Transition.Child
@@ -74,7 +145,7 @@ export default class NEWMODAL extends React.Component <IProps, IState>{
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
                 >
-                <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                <div className="inline-block w-full p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl" style={{height:"90vh", marginTop: "4em"}}>
                     <Dialog.Title
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
@@ -82,14 +153,10 @@ export default class NEWMODAL extends React.Component <IProps, IState>{
                     MODAL TITLE
                     </Dialog.Title>
                     <div className="mt-2">
-                    
-                    STYLE THIS SECTION TO TAKE UP MOST OF THE PAGE.
-                    ELIMINATE THE ABILITY TO 'ON CLOSE. Force this to be closed w/ an X
-                        {/* 
-                        
-                        THIS IS THE BODY OF THE MODAL
-                        
-                        */}
+                
+                        {/* THIS IS THE BODY OF THE MODAL */}
+
+                        <DisplayedStatements intervalArray={this.props.intervalArray}/>
 
                     </div>
 
@@ -97,9 +164,9 @@ export default class NEWMODAL extends React.Component <IProps, IState>{
                     <button
                         type="button"
                         className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                        onClick={() => this.closeModal()}
+                        onClick={() => this.props.closeModal()}
                     >
-                        REMOVE THE INTERVAL TIMER IN FAVOR OF LIFE CYCLE METHODS
+                       X (replace w/ logo)
                     </button>
                     </div>
                 </div>
@@ -107,7 +174,57 @@ export default class NEWMODAL extends React.Component <IProps, IState>{
             </div>
             </Dialog>
         </Transition>
-        </>
+            </>
+        )
+    }
+}
+
+
+interface IStatementState {
+    testArray: string[];
+    arrayNum: number;
+}
+
+interface IStatementProps {
+    intervalArray: IAffirmations[];
+}
+
+class DisplayedStatements extends React.Component <IStatementProps,IStatementState> {
+    constructor(props:IStatementProps){
+        super(props);
+        this.state = {
+            testArray: [],
+            arrayNum: 0,
+        }
+    }
+
+    fillerArray : string[] = [];
+
+    componentDidMount() {
+        this.fillerArray.push("Make sure you're comfortable before we begin","Ready?", "Let's get started")
+        for (let i = 0; i < this.props.intervalArray.length; i++) {
+            this.fillerArray.push(this.props.intervalArray[i].statement)
+        }
+        this.fillerArray.push("Great job today!","Remember that this, like any exercise, takes consistent practice.","But the results are so worth the effort.","We hope to see you back tomorrow!")
+        this.setState({testArray: this.fillerArray})
+    }
+    
+    increment() {
+        this.setState({arrayNum: this.state.arrayNum + 1});
+    }
+
+    decrement() {
+        this.setState({arrayNum: this.state.arrayNum - 1});
+    }
+
+
+    render() {
+        return(
+            <>
+                <button onClick={() => this.increment()}>Next</button><button onClick={() => this.decrement()}>Previous</button>
+                <p>{this.state.testArray[this.state.arrayNum]}</p>
+                <p>{this.state.arrayNum}</p>
+            </>
         )
     }
 }

@@ -1,31 +1,41 @@
 import React, {Fragment} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import AuthContext from '../../site/AuthContext';
-import {IAffirmations, ICollections} from '../../../types/Models';
+import {ICollections, IUserCollections } from '../../../types/Models';
 
-interface IEditAffState {
+interface IAddAffState {
     modalIsOpen: boolean;
     statement: string;
-    collectionId?: number | null;
+    collectionId: number | null;
+    userCollectionId: number | null;
+    isUserMade: boolean | null;
 }
 
-interface IEditAffProps {
-    collectionResults?: ICollections[] | null;
-    thisCollId?: number | null;
-    affInfo: IAffirmations;
+interface IAddAffProps {
+    collectionResults?: ICollections[] | IUserCollections[] | null;
     refreshDash: CallableFunction;
 }
 
-export default class EditAffirmation extends React.Component <IEditAffProps, IEditAffState>{
+export default class AddAffirmation extends React.Component <IAddAffProps, IAddAffState>{
     static contextType = AuthContext;
     context!: React.ContextType<typeof AuthContext>
     
-    constructor(props:IEditAffProps) {
+    constructor(props:IAddAffProps) {
         super(props)
         this.state ={
             modalIsOpen: false,
             statement: '',
-            collectionId: this.props.thisCollId,
+            collectionId: null,
+            userCollectionId: null,
+            isUserMade: null,
+        }
+    }
+
+    componentDidMount() {
+        if (window.location.href.indexOf("admindash") > -1) {
+            this.setState({isUserMade: false})
+        } else if (window.location.href.indexOf("mypractice") > -1) {
+            this.setState({isUserMade: true})
         }
     }
 
@@ -37,20 +47,20 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
         this.setState({modalIsOpen: true})
     }
 
-    handleChange = (prop: keyof IEditAffState) => (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    handleChange = (prop: keyof IAddAffState) => (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         this.setState({ ...this.state, [prop]: event.target.value });
     };
 
-    updateAffirmation = (e:React.MouseEvent<HTMLButtonElement>) => {
+    createAffirmation = (e:React.MouseEvent<HTMLButtonElement>) => {
         if (e) {e.preventDefault(); }
         const bodyObj = {
             statement: this.state.statement,
             collectionId: this.state.collectionId,
-            userCollectionId: this.props.affInfo.userCollectionId
+            userCollectionId: this.state.userCollectionId,
         }
 
-        fetch(`${process.env.REACT_APP_DATABASE_URL}affs/edit-${this.props.affInfo.id}`, {
-            method: "PUT",
+        fetch(`${process.env.REACT_APP_DATABASE_URL}affs/new`, {
+            method: "POST",
             body: JSON.stringify(bodyObj),
             headers: new Headers({
                 "Content-Type": "application/json",
@@ -70,7 +80,7 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
                 onClick={() => this.openModal()}
                 className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                 >
-                Edit
+                +
                 </button>
             </div>
 
@@ -114,10 +124,8 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                     >
-                    Edit Affirmation:
+                    Create a New Affirmation
                     </Dialog.Title>
-                    <br />
-                    <hr />
                     <div className="mt-2">
                     
                         {/* THIS IS THE BODY OF THE MODAL */}
@@ -129,30 +137,50 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
                                     required
                                     type="text"
                                     className="mt-1 block w-full rounded-md bg-gray-100 p-2 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
-                                    placeholder={this.props.affInfo.statement}
+                                    placeholder="New Affirmation Statement"
                                     value={this.state.statement}
                                     onChange={this.handleChange('statement')}
                                 />
                             </label>
-                        
 
-                            <label htmlFor="collectionId" className="block">
-                                <span className="text-gray-700">Collection:</span>
+                            {!this.state.isUserMade         //if isUserMade is false, sets Collection Info to check/set collections. Not userCollections
+                            ?   <label htmlFor="collectionId" className="block">
+                                    <span className="text-gray-700">Collection:</span>
 
-                                <select
-                                    required
-                                    className="mt-1 block w-full rounded-md bg-gray-100 p-2 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
-                                    //={this.state.categoryId}
-                                    defaultValue={this.props.thisCollId!}
-                                    onChange={this.handleChange('collectionId')}
-                                >
-                                    {this.props.collectionResults?.map((coll) => {
-                                        return <option key={coll.id} value={coll.id}>{coll.title}</option>
-                                    })}  
-                                </select>
-                            </label>
+                                    <select
+                                        required
+                                        className="mt-1 block w-full rounded-md bg-gray-100 p-2 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+                                        onChange={this.handleChange('collectionId')}
+                                    >
+                                        <option value="" disabled selected>Pick a Collection</option>
+                                        {this.props.collectionResults?.map((coll : ICollections | IUserCollections) => {
+                                            return <option key={coll.id} value={coll.id}>{coll.title}</option>
+                                        })}  
+                                    </select>
+                                </label>
+                                
+                            :   <label htmlFor="userCollectionId" className="block">  {/* but if isUserMade is truthy, it will check and set userCollections */}
+                                    <span className="text-gray-700">Collection:</span>
+
+                                    <select
+                                        required
+                                        className="mt-1 block w-full rounded-md bg-gray-100 p-2 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+                                        onChange={this.handleChange('userCollectionId')}
+                                    >
+                            
+                                        <option value="" disabled selected>Pick a Collection</option>
+                                        {this.props.collectionResults?.map((coll: ICollections | IUserCollections) => {
+                                            return <option key={coll.id} value={coll.id}>{coll.title}</option>
+                                        })}  
+                                    </select>
+                                </label>
+                            }
+                            
+
                         </div>
+
                     </div>
+
                     <div className="mt-4">
                     <button
                         type="button"
@@ -164,8 +192,9 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
                     <button
                         type="button"
                         className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.updateAffirmation(e)}>
-                        Commit Changes
+                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.createAffirmation(e)}
+                    >
+                        Create Affirmation
                     </button>
                     </div>
                 </div>
