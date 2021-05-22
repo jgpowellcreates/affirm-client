@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
+import AuthContext from '../../site/AuthContext';
 import {IAffirmations, ICollections} from '../../../types/Models';
 
 interface IAffList {
@@ -10,6 +11,7 @@ interface IAffBrowseProps {
     title: string | null;
     description: string | null;
     affirmations: IAffirmations[] | null;
+    update: CallableFunction;
 }
 
 export default class AffirmationList extends React.Component <IAffBrowseProps, IAffList>{
@@ -85,16 +87,7 @@ export default class AffirmationList extends React.Component <IAffBrowseProps, I
                     </Dialog.Title>
                     <div className="mt-2">
                         <p>{this.props.description}</p>
-                        {this.props.affirmations?.map((aff, index) => {
-                            return(
-                                <div key={index} className="shadow border rounded-lg">
-                                    <div className="flex items-center space-x-4 p-2">
-                                        <h4>{aff.statement}</h4>
-                                        <button className="">Add</button>
-                                    </div>
-                                </div>
-                            )
-                        })}
+                        <FavoriteAffs affirmations={this.props.affirmations} update={this.props.update}/>
 
                     </div>
 
@@ -113,6 +106,116 @@ export default class AffirmationList extends React.Component <IAffBrowseProps, I
             </Dialog>
         </Transition>
         </>
+        )
+    }
+}
+
+
+
+interface IFavoriteAffState {
+
+}
+
+interface IFavoriteAffProps {
+    affirmations: IAffirmations[] | null;
+    update: CallableFunction;
+}
+
+class FavoriteAffs extends React.Component <IFavoriteAffProps, IFavoriteAffState> {
+    static contextType = AuthContext;
+    context!: React.ContextType<typeof AuthContext>
+
+    constructor(props: IFavoriteAffProps) {
+        super(props);
+        this.state = {
+
+        }
+    }
+
+    componentDidUpdate(prevProps: IFavoriteAffProps, prevState:IFavoriteAffState) {
+        if (prevProps.affirmations !== this.props.affirmations) {
+            this.context.update();
+        }
+    }
+
+    addToMyPractice(e:React.MouseEvent<HTMLButtonElement>, aff:IAffirmations) {
+        if (e) {e.preventDefault(); }
+
+        console.log("Adding practice fired")
+        //This looks at all of the User's Collections and grabs the oldest one (likely the one auto-generated for them).
+        let allCollections : number[]= [];
+        this.context.allUserColls.map((userColl) => allCollections.push(userColl.id));
+        let earliestCollection = Math.min.apply(null, allCollections)
+        //Eventually, I'd like to add a dropdown menu for them to choose what Collection they'll add to.
+
+        const bodyObj = {
+            statement: aff.statement,
+            collectionId: null,
+            userCollectionId: earliestCollection
+        }
+
+        fetch(`${process.env.REACT_APP_DATABASE_URL}affs/new`, {
+            method: "POST",
+            body: JSON.stringify(bodyObj),
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Authorization": `${this.context.token}`
+            })
+        })
+        .then(data => {data.json(); console.log(data)})
+        .then(() => this.props.update())
+    }
+
+    removePractice(e:React.MouseEvent<HTMLButtonElement>, aff:IAffirmations) {
+        if (e) {e.preventDefault(); }
+        let deletedId = this.context.allAffs.find(x => x.statement == aff.statement)?.id
+
+        fetch(`${process.env.REACT_APP_DATABASE_URL}affs/delete-${deletedId}`, {
+            method: "DELETE",
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Authorization": `${this.context.token}`
+            })
+        })
+        .then(data => {data.json(); console.log(data)})
+        .then(() => this.props.update())
+    }
+
+    render() {
+        return(
+            <>
+                {this.props.affirmations?.map((aff, index) => {
+                    return(
+                        <div key={index} className="shadow border rounded-lg">
+                            <div className="flex items-center space-x-4 p-2">
+                                <h4>{aff.statement}</h4>
+                                {this.context.allAffs.map((owned) => owned.statement).includes(aff.statement)
+                                    ? 
+                                    <>
+                                        <p>N</p>
+                                        <button
+                                        className=""
+                                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.removePractice(e,aff)}
+                                        >
+                                            Remove
+                                        </button>
+                                    </>
+                                    :
+                                    <>
+                                        <p>Y</p>
+                                        <button
+                                        className=""
+                                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.addToMyPractice(e,aff)}
+                                        >
+                                            Save
+                                        </button>
+                                    </>
+                                }
+                            </div>
+                        </div>
+                    )
+                })}
+            </>
         )
     }
 }

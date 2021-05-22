@@ -28,7 +28,7 @@ class Browse extends Component <{},IBrowse> {
             })
         })
         .then(data => data.json())
-        .then(data => {this.setState({categoryResults: data})})
+        .then(data => {this.setState({categoryResults: data}); console.log("Grab Categories is getting called, holmes.")})
     }
 
     render(){
@@ -42,6 +42,7 @@ class Browse extends Component <{},IBrowse> {
                     <div id="eachCategoryHolder" key={index} className="m-1 p-1">
                         <h2>{cat.name}</h2>
                         <div id="holdsCollectionArray" className="flex bg-green-200 m-1 p-1">
+                        
                         {cat.collections.map((coll, collIndex) => {
                             return(
                             <div key={collIndex} className="shadow border rounded-lg flex-row bg-blue-200 m-1 p-1">
@@ -49,10 +50,14 @@ class Browse extends Component <{},IBrowse> {
                                 <AffirmationList
                                     title={coll.title}
                                     description={coll.description}
-                                    affirmations={coll.affirmations} />
+                                    affirmations={coll.affirmations}
+                                    update={this.grabCategories}
+                                    />
                             </div>
                             )
                         })}
+
+                        
                         </div>
                     </div>
                     )

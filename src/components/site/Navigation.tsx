@@ -25,7 +25,7 @@ export default class Navigation extends Component<{},{}> {
                 <div className="sidebar" style={{background: 'blue', position: 'fixed', width: '10em', height: '100vh', top:'0', padding: '5em 0 0 0'}}>
                     <ul style={{listStyle:"none", margin: '0 10px',padding: "0"}}>
                         <li>
-                            <Link to='/browse'>
+                            <Link to='/browse' onClick={() => this.context.update()}>
                                 <h3>Browse</h3>
                             </Link>
                         </li>
@@ -37,7 +37,7 @@ export default class Navigation extends Component<{},{}> {
                         :<></>
                         }
                         <li>
-                            <Link to="/mypractice">
+                            <Link to="/mypractice" onClick={() => this.context.update()} >
                                 <h3>My Practice</h3>
                             </Link>
                         </li>
@@ -48,6 +48,7 @@ export default class Navigation extends Component<{},{}> {
                         </li>
                         {/* THIS IS A BUTTON FOR DEV TESTING PURPOSES */}
                         <li><button onClick={() => console.log("Id:", this.context.id, "RoleId:", this.context.roleId, 'Token:', this.context.token)}>Check States</button></li>
+                        <li><button onClick={() => console.log("Them Affs:", this.context.allAffs, "Them Colls:", this.context.allUserColls)}>Check what they have</button></li>
 
                         <li onClick={() => this.context.clearToken()}>
                             <h3>Log Out</h3>

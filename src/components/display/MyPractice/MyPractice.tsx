@@ -4,8 +4,9 @@ import AddUserCollection from '../Modals/AddUserCollection';
 import EditUserCollection from '../Modals/EditUserCollection';
 import DeleteUserCollection from '../Modals/DeleteUserCollection';
 import AddAffirmation from '../Modals/AddAffirmation';
+import EditUserAffirmation from '../Modals/EditUserAffirmation';
 import DeleteUserAffirmation from '../Modals/DeleteUserAffirmation';
-import IntervalTimer from '../Modals/IntervalTimer';
+import IntervalTimer from './IntervalTimer';
 import {IAffirmations, IUserCollections} from '../../../types/Models';
 
 interface IMyPractice {
@@ -102,9 +103,9 @@ class MyPractice extends Component <{},IMyPractice> {
     render(){
         return(
             <div>
-                <h3>My Practice - AM I RUNNING</h3>
-                <button onClick={() => console.log(this.state.intervalArray)}>CHECK INTERVAL ARRAYS</button>
-                <br /><button onClick={() => console.log(this.state.collectionFilter)}>CHECK FILTERS</button>
+                <h3>My Practice</h3>
+                {/* <button onClick={() => console.log(this.state.intervalArray)}>CHECK INTERVAL ARRAYS</button> */}
+                {/* <br /><button onClick={() => console.log(this.state.collectionFilter)}>CHECK FILTERS</button> */}
 
                 <div className="grid grid-cols-3">
                     <div id="COL 1">
@@ -151,7 +152,14 @@ class MyPractice extends Component <{},IMyPractice> {
                                 return <div key={index} className="shadow border rounded-lg">
                                         <div className="hideParent flex items-center space-x-4 p-2">
                                             <h4>{aff.statement}</h4>
-                                            {/* <button className="hideChild">Edit</button> */}
+                                            <div className="hideChild">
+                                                <EditUserAffirmation
+                                                    collectionResults={this.state.userCollectionResults}
+                                                    //thisCollId={0}   //It sees the [] of userCollections. How can I grab just the collId? 
+                                                    affInfo={aff}
+                                                    refreshDash={this.grabUserCollections}
+                                                />
+                                            </div>
                                             <div className="hideChild">
                                                 <DeleteUserAffirmation
                                                     affirmationId={aff.id}
@@ -166,7 +174,14 @@ class MyPractice extends Component <{},IMyPractice> {
                                 return <div key={index} className="shadow border rounded-lg">
                                         <div className="hideParent flex items-center space-x-4 p-2">
                                             <h4>{aff.statement}</h4>
-                                            {/* <button className="hideChild">Edit</button> */}
+                                            <div className="hideChild">
+                                                <EditUserAffirmation
+                                                    collectionResults={this.state.userCollectionResults}
+                                                    //thisCollId={0}
+                                                    affInfo={aff}
+                                                    refreshDash={this.grabUserCollections}
+                                                />
+                                            </div>
                                             <div className="hideChild">
                                                 <DeleteUserAffirmation
                                                     affirmationId={aff.id}

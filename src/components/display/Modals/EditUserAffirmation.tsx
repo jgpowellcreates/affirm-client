@@ -1,16 +1,16 @@
 import React, {Fragment} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import AuthContext from '../../site/AuthContext';
-import {IAffirmations, ICollections} from '../../../types/Models';
+import {IAffirmations, IUserCollections} from '../../../types/Models';
 
 interface IEditAffState {
     modalIsOpen: boolean;
     statement: string;
-    collectionId?: number | null;
+    userCollectionId?: number | null;
 }
 
 interface IEditAffProps {
-    collectionResults?: ICollections[] | null;
+    collectionResults?: IUserCollections[] | null;
     thisCollId?: number | null;
     affInfo: IAffirmations;
     refreshDash: CallableFunction;
@@ -25,7 +25,7 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
         this.state ={
             modalIsOpen: false,
             statement: '',
-            collectionId: this.props.thisCollId,
+            userCollectionId: this.props.thisCollId,
         }
     }
 
@@ -45,10 +45,12 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
         if (e) {e.preventDefault(); }
         const bodyObj = {
             statement: this.state.statement,
-            collectionId: this.state.collectionId,
+            userCollectionId: this.state.userCollectionId
         }
-
+        console.log(this.props.affInfo.id)
         console.log("Body Obj:", bodyObj)
+
+
         fetch(`${process.env.REACT_APP_DATABASE_URL}affs/edit-${this.props.affInfo.id}`, {
             method: "PUT",
             body: JSON.stringify(bodyObj),
@@ -136,14 +138,15 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
                             </label>
                         
 
-                            <label htmlFor="collectionId" className="block">
+                            <label htmlFor="userCollectionId" className="block">
                                 <span className="text-gray-700">Collection:</span>
 
                                 <select
                                     required
                                     className="mt-1 block w-full rounded-md bg-gray-100 p-2 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+                                    //={this.state.categoryId}
                                     defaultValue={this.props.thisCollId!}
-                                    onChange={this.handleChange('collectionId')}
+                                    onChange={this.handleChange('userCollectionId')}
                                 >
                                     {this.props.collectionResults?.map((coll) => {
                                         return <option key={coll.id} value={coll.id}>{coll.title}</option>
@@ -165,6 +168,12 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
                         className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                         onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.updateAffirmation(e)}>
                         Commit Changes
+                    </button>
+                    <button
+                        type="button"
+                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                        onClick={() => console.log(this.state)}>
+                        Check States
                     </button>
                     </div>
                 </div>
