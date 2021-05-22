@@ -156,7 +156,7 @@ class TimerDisplay extends React.Component <IDisplayProps, IDisplayState>{
                 
                         {/* THIS IS THE BODY OF THE MODAL */}
 
-                        <DisplayedStatements intervalArray={this.props.intervalArray}/>
+                        <DisplayedStatements intervalArray={this.props.intervalArray} userSetInterval={3000} closeModal={this.props.closeModal}/>
 
                     </div>
 
@@ -166,7 +166,7 @@ class TimerDisplay extends React.Component <IDisplayProps, IDisplayState>{
                         className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                         onClick={() => this.props.closeModal()}
                     >
-                       X (replace w/ logo)
+                       X (icon)
                     </button>
                     </div>
                 </div>
@@ -183,10 +183,13 @@ class TimerDisplay extends React.Component <IDisplayProps, IDisplayState>{
 interface IStatementState {
     testArray: string[];
     arrayNum: number;
+    defaultInterval: number;
 }
 
 interface IStatementProps {
     intervalArray: IAffirmations[];
+    userSetInterval: number;
+    closeModal: CallableFunction;
 }
 
 class DisplayedStatements extends React.Component <IStatementProps,IStatementState> {
@@ -195,6 +198,7 @@ class DisplayedStatements extends React.Component <IStatementProps,IStatementSta
         this.state = {
             testArray: [],
             arrayNum: 0,
+            defaultInterval: 7000,
         }
     }
 
@@ -206,24 +210,55 @@ class DisplayedStatements extends React.Component <IStatementProps,IStatementSta
             this.fillerArray.push(this.props.intervalArray[i].statement)
         }
         this.fillerArray.push("Great job today!","Remember that this, like any exercise, takes consistent practice.","But the results are so worth the effort.","We hope to see you back tomorrow!")
-        this.setState({testArray: this.fillerArray})
-    }
-    
-    increment() {
-        this.setState({arrayNum: this.state.arrayNum + 1});
+
+        if(this.state.defaultInterval === this.props.userSetInterval) {
+            this.setState({testArray: this.fillerArray, defaultInterval: this.props.userSetInterval}, () => this.runTimer())
+        } else {
+            this.setState({testArray: this.fillerArray}, () => this.runTimer())
+        }
     }
 
-    decrement() {
-        this.setState({arrayNum: this.state.arrayNum - 1});
+    interval: any;
+    timeVar = 2000;
+
+    runTimer = () => {
+        this.interval = setInterval(() => this.incrementArray(), this.timeVar)
+    }
+
+    componentDidUpdate() {
+        if (this.state.arrayNum < 3) {
+            console.log("Looping my intro text")
+        } else if (/* this.state.arrayNum >= 3 &&  */this.state.arrayNum < (this.state.testArray.length -4)) {
+            console.log("statement text")
+            clearInterval(this.interval)
+            this.timeVar = this.state.defaultInterval;
+            this.runTimer();
+        } else if (this.state.arrayNum < this.state.testArray.length) {
+            console.log("outro text")
+            clearInterval(this.interval)
+            this.timeVar = 2000;
+            this.runTimer();
+        } else {
+            console.log("Run timer is being reset right now w/ an interval of", this.timeVar)
+            clearInterval(this.interval)
+            this.props.closeModal();
+        }
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
+
+    incrementArray = () => {
+        this.setState({arrayNum: this.state.arrayNum + 1})
+        console.log("Increment Array is running. ArrayNum is currently at:", this.state.arrayNum, "and Time Variable is at:", this.timeVar)
     }
 
 
     render() {
         return(
             <>
-                <button onClick={() => this.increment()}>Next</button><button onClick={() => this.decrement()}>Previous</button>
                 <p>{this.state.testArray[this.state.arrayNum]}</p>
-                <p>{this.state.arrayNum}</p>
             </>
         )
     }
