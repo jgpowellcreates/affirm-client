@@ -9,6 +9,7 @@ interface IEditCollState {
     description: string;
     isPublic: boolean;
     categoryId: number;
+    titleError: boolean;
 }
 
 interface IEditCollProps {
@@ -30,9 +31,9 @@ export default class EditCollection extends React.Component <IEditCollProps, IEd
             description: '',
             isPublic: true,
             categoryId: this.props.thisCatId,
+            titleError: false,
         }
     }
-
 
     closeModal() {
         this.setState({modalIsOpen:false})
@@ -46,8 +47,12 @@ export default class EditCollection extends React.Component <IEditCollProps, IEd
         this.setState({ ...this.state, [prop]: event.target.value });
     };
 
-    updateCollection = (e:React.MouseEvent<HTMLButtonElement>) => {
+    validateForm(e:React.MouseEvent<HTMLButtonElement>) {
         if (e) {e.preventDefault(); }
+        this.state.title.match(/[A-Za-z0-9]{3,140}/) ? this.updateCollection() : this.setState({titleError: true});
+    }
+
+    updateCollection = () => {
         const bodyObj = {
             title: this.state.title,
             description: this.state.description,
@@ -140,6 +145,7 @@ export default class EditCollection extends React.Component <IEditCollProps, IEd
                                     onChange={this.handleChange('title')}
                                 />
                             </label>
+                            {this.state.titleError ? <p>Need to provide a valid collection title.</p> : <></>}
 
 <                           label htmlFor="title" className="block">
                                 <span className="text-gray-700">Description:</span>
@@ -185,7 +191,7 @@ export default class EditCollection extends React.Component <IEditCollProps, IEd
                     <button
                         type="button"
                         className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.updateCollection(e)}>
+                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.validateForm(e)}>
                         Commit Changes
                     </button>
                     </div>

@@ -9,6 +9,8 @@ interface IAddAffState {
     collectionId: number | null;
     userCollectionId: number | null;
     isUserMade: boolean | null;
+    statementError: boolean;
+    collectionError: boolean;
 }
 
 interface IAddAffProps {
@@ -28,6 +30,8 @@ export default class AddAffirmation extends React.Component <IAddAffProps, IAddA
             collectionId: null,
             userCollectionId: null,
             isUserMade: null,
+            statementError: false,
+            collectionError: false,
         }
     }
 
@@ -51,8 +55,38 @@ export default class AddAffirmation extends React.Component <IAddAffProps, IAddA
         this.setState({ ...this.state, [prop]: event.target.value });
     };
 
-    createAffirmation = (e:React.MouseEvent<HTMLButtonElement>) => {
+    validateForm(e:React.MouseEvent<HTMLButtonElement>) {
         if (e) {e.preventDefault(); }
+
+        console.log("Start of validation.", this.state)
+
+        let statementError: boolean;
+        let collectionError: boolean;
+        let userCollectionError: boolean;
+
+        this.state.statement.match(/[A-Za-z0-9]{3,140}/) ? statementError = false : statementError = true;
+        this.state.collectionId !== null ? collectionError = false : collectionError = true;
+        this.state.userCollectionId !== null ? userCollectionError = false : userCollectionError = true;
+
+        if (this.state.isUserMade) {
+            console.log("Start of if", this.state)
+            if (!statementError && !userCollectionError) {
+                this.createAffirmation();
+            } else {
+                this.setState({statementError: statementError, collectionError:userCollectionError})
+                console.log("End of userMade", this.state)
+            }
+        } else {
+            if (!statementError && !collectionError) {
+                this.createAffirmation();
+            } else {
+                this.setState({statementError: statementError, collectionError: collectionError})
+                console.log("End of siteMade", this.state)
+            }
+        }
+    }
+
+    createAffirmation = () => {
         const bodyObj = {
             statement: this.state.statement,
             collectionId: this.state.collectionId,
@@ -142,6 +176,8 @@ export default class AddAffirmation extends React.Component <IAddAffProps, IAddA
                                     onChange={this.handleChange('statement')}
                                 />
                             </label>
+                            {this.state.statementError ? <p>Need to submit a valid affirmation.</p> : <></>}
+
 
                             {!this.state.isUserMade         //if isUserMade is false, sets Collection Info to check/set collections. Not userCollections
                             ?   <label htmlFor="collectionId" className="block">
@@ -175,6 +211,8 @@ export default class AddAffirmation extends React.Component <IAddAffProps, IAddA
                                     </select>
                                 </label>
                             }
+                            {this.state.collectionError ? <p>Affirmation must be added to a collection.</p> : <></>}
+
                             
 
                         </div>
@@ -192,10 +230,16 @@ export default class AddAffirmation extends React.Component <IAddAffProps, IAddA
                     <button
                         type="button"
                         className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.createAffirmation(e)}
+                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.validateForm(e)}
                     >
                         Create Affirmation
                     </button>
+                    <button
+                        type="button"
+                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                        onClick={() => console.log("site:",this.state.collectionId, "user:", this.state.userCollectionId)}
+                    >
+Check States                    </button>
                     </div>
                 </div>
                 </Transition.Child>

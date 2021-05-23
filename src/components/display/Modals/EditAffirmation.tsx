@@ -7,6 +7,7 @@ interface IEditAffState {
     modalIsOpen: boolean;
     statement: string;
     collectionId?: number | null;
+    statementError: boolean;
 }
 
 interface IEditAffProps {
@@ -26,6 +27,7 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
             modalIsOpen: false,
             statement: '',
             collectionId: this.props.thisCollId,
+            statementError: false,
         }
     }
 
@@ -41,8 +43,12 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
         this.setState({ ...this.state, [prop]: event.target.value });
     };
 
-    updateAffirmation = (e:React.MouseEvent<HTMLButtonElement>) => {
+    validateForm(e:React.MouseEvent<HTMLButtonElement>) {
         if (e) {e.preventDefault(); }
+        this.state.statement.match(/[A-Za-z0-9]{3,140}/) ? this.updateAffirmation() : this.setState({statementError: true});
+    }
+
+    updateAffirmation = () => {
         const bodyObj = {
             statement: this.state.statement,
             collectionId: this.state.collectionId,
@@ -134,7 +140,8 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
                                     onChange={this.handleChange('statement')}
                                 />
                             </label>
-                        
+                            {this.state.statementError ? <p>Need to submit a valid affirmation.</p> : <></>}
+
 
                             <label htmlFor="collectionId" className="block">
                                 <span className="text-gray-700">Collection:</span>
@@ -163,7 +170,7 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
                     <button
                         type="button"
                         className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.updateAffirmation(e)}>
+                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.validateForm(e)}>
                         Commit Changes
                     </button>
                     </div>

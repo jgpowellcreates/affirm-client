@@ -9,7 +9,6 @@ import Resources from './components/display/Resources/Resources';
 import AuthContext from './components/site/AuthContext';
 import {userRoles} from './types/Models'
 
-
 function App() {
   const userInfo = useContext(AuthContext);
 

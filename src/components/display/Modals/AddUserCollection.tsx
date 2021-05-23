@@ -7,6 +7,7 @@ interface IAddUseCollState {
     modalIsOpen: boolean;
     title: string;
     description: string;
+    titleError: boolean;
 }
 
 interface IAddUseCollProps {
@@ -23,6 +24,7 @@ export default class AddCollection extends React.Component <IAddUseCollProps, IA
             modalIsOpen: false,
             title: '',
             description: '',
+            titleError: false,
         }
     }
 
@@ -38,8 +40,12 @@ export default class AddCollection extends React.Component <IAddUseCollProps, IA
         this.setState({ ...this.state, [prop]: event.target.value });
     };
 
-    createUserCollection = (e:React.MouseEvent<HTMLButtonElement>) => {
+    validateForm(e:React.MouseEvent<HTMLButtonElement>) {
         if (e) {e.preventDefault(); }
+        this.state.title.match(/[A-Za-z0-9]{1,24}/) ? this.createUserCollection() : this.setState({titleError: true}) 
+    }
+
+    createUserCollection = () => {
         const bodyObj = {
             title: this.state.title,
             description: this.state.description,
@@ -131,6 +137,7 @@ export default class AddCollection extends React.Component <IAddUseCollProps, IA
                                     onChange={this.handleChange('title')}
                                 />
                             </label>
+                            {this.state.titleError ? <p>'Title' field cannot be empty.</p> : <></>}
 
 <                           label htmlFor="title" className="block">
                                 <span className="text-gray-700">Description:</span>
@@ -160,7 +167,7 @@ export default class AddCollection extends React.Component <IAddUseCollProps, IA
                     <button
                         type="button"
                         className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.createUserCollection(e)}
+                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.validateForm(e)}
                     >
                         Create Collection
                     </button>

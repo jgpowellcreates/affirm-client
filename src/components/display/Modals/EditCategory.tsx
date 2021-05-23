@@ -6,6 +6,7 @@ import {} from '../../../types/Models';
 interface IEditCatState {
     modalIsOpen: boolean;
     categoryName: string;
+    categoryError: boolean;
 }
 
 interface IEditCatProps {
@@ -22,6 +23,7 @@ export default class EditCateogry extends React.Component <IEditCatProps, IEditC
         this.state ={
             modalIsOpen: false,
             categoryName: '',
+            categoryError: false,
         }
     }
 
@@ -37,8 +39,14 @@ export default class EditCateogry extends React.Component <IEditCatProps, IEditC
         this.setState({ ...this.state, [prop]: event.target.value });
       };
 
-    updateCategory = (e:React.MouseEvent<HTMLButtonElement>) => {
+    validateForm(e:React.MouseEvent<HTMLButtonElement>) {
         if (e) {e.preventDefault(); }
+
+        this.state.categoryName.match(/[A-Za-z0-9]{1,24}/) ? this.updateCategory() : this.setState({categoryError: true})
+
+    }
+
+    updateCategory = () => {
         const bodyObj = {name: this.state.categoryName}
 
         fetch(`${process.env.REACT_APP_DATABASE_URL}category/edit-${this.props.categoryId}`, {
@@ -125,6 +133,8 @@ export default class EditCateogry extends React.Component <IEditCatProps, IEditC
                                     onChange={this.handleChange('categoryName')}
                                 />
                             </label>
+                            {this.state.categoryError ? <p>'Name' field cannot be empty.</p> : <></>}
+
                         </div>
 
                     </div>
@@ -140,7 +150,7 @@ export default class EditCateogry extends React.Component <IEditCatProps, IEditC
                     <button
                         type="button"
                         className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.updateCategory(e)}>
+                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.validateForm(e)}>
                         Commit Changes
                     </button>
                     </div>

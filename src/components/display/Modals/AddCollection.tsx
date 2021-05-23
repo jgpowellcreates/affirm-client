@@ -9,6 +9,8 @@ interface IAddCollState {
     description: string;
     isPublic: boolean;
     categoryId: number | null;
+    titleError: boolean;
+    categoryError: boolean;
 }
 
 interface IAddCollProps {
@@ -28,6 +30,8 @@ export default class AddCollection extends React.Component <IAddCollProps, IAddC
             description: '',
             isPublic: true,
             categoryId: null,
+            titleError: false,
+            categoryError: false,
         }
     }
 
@@ -43,8 +47,23 @@ export default class AddCollection extends React.Component <IAddCollProps, IAddC
         this.setState({ ...this.state, [prop]: event.target.value });
     };
 
-    createCollection = (e:React.MouseEvent<HTMLButtonElement>) => {
+    validateForm(e:React.MouseEvent<HTMLButtonElement>) {
         if (e) {e.preventDefault(); }
+
+        let titleError: boolean;
+        let categoryError: boolean;
+
+        this.state.title.match(/[A-Za-z0-9]{3,140}/) ? titleError = false : titleError = true;
+        this.state.categoryId !== null ? categoryError = false : categoryError = true;
+
+        if (!titleError && !categoryError) {
+            this.createCollection();
+        } else {
+            this.setState({titleError: titleError, categoryError: categoryError})
+        }
+    }
+
+    createCollection = () => {
         const bodyObj = {
             title: this.state.title,
             description: this.state.description,
@@ -139,6 +158,7 @@ export default class AddCollection extends React.Component <IAddCollProps, IAddC
                                     onChange={this.handleChange('title')}
                                 />
                             </label>
+                            {this.state.titleError ? <p>Need to provide a valid collection title.</p> : <></>}
 
 <                           label htmlFor="title" className="block">
                                 <span className="text-gray-700">Description:</span>
@@ -167,6 +187,7 @@ export default class AddCollection extends React.Component <IAddCollProps, IAddC
                                     })}  
                                 </select>
                             </label>
+                            {this.state.categoryError ? <p>Collection must belong to a category.</p> : <></>}
 
                         </div>
 
@@ -183,7 +204,7 @@ export default class AddCollection extends React.Component <IAddCollProps, IAddC
                     <button
                         type="button"
                         className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.createCollection(e)}
+                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.validateForm(e)}
                     >
                         Create Collection
                     </button>

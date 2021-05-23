@@ -7,6 +7,7 @@ interface IEditCollState {
     modalIsOpen: boolean;
     title: string;
     description: string;
+    titleError: boolean;
 }
 
 interface IEditCollProps {
@@ -24,6 +25,7 @@ export default class EditUserCollection extends React.Component <IEditCollProps,
             modalIsOpen: false,
             title: '',
             description:'',
+            titleError: false,
         }
     }
 
@@ -39,8 +41,12 @@ export default class EditUserCollection extends React.Component <IEditCollProps,
         this.setState({ ...this.state, [prop]: event.target.value });
     };
 
-    updateUserCollection = (e:React.MouseEvent<HTMLButtonElement>) => {
+    validateForm(e:React.MouseEvent<HTMLButtonElement>) {
         if (e) {e.preventDefault(); }
+        this.state.title.match(/[A-Za-z0-9]{1,24}/) ? this.updateUserCollection() : this.setState({titleError: true}) 
+    }
+
+    updateUserCollection = () => {
         const bodyObj = {
             title: this.state.title,
             description: this.state.description,
@@ -130,6 +136,7 @@ export default class EditUserCollection extends React.Component <IEditCollProps,
                                     onChange={this.handleChange('title')}
                                 />
                             </label>
+                            {this.state.titleError ? <p>'Title' field cannot be empty.</p> : <></>}
 
 <                           label htmlFor="title" className="block">
                                 <span className="text-gray-700">Description:</span>
@@ -159,7 +166,7 @@ export default class EditUserCollection extends React.Component <IEditCollProps,
                     <button
                         type="button"
                         className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.updateUserCollection(e)}>
+                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.validateForm(e)}>
                         Commit Changes
                     </button>
                     </div>
