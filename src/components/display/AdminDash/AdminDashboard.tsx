@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
+import {RouteComponentProps} from 'react-router-dom';
 import AuthContext from '../../site/AuthContext';
-import {ICategories, ICollections, IAffirmations} from '../../../types/Models';
+import {ICategories, ICollections, IAffirmations, userRoles} from '../../../types/Models';
 import AddCategory from '../Modals/AddCategory';
 import EditCategory from '../Modals/EditCategory';
 import DeleteCategory from '../Modals/DeleteCategory';
@@ -20,11 +21,13 @@ interface IAdminDashState {
     collectionFilter?: number[] | null;
 }
 
-class AdminDashboard extends Component <{}, IAdminDashState> {
+interface IAdminDashProps extends RouteComponentProps {}
+
+class AdminDashboard extends Component <IAdminDashProps, IAdminDashState> {
     static contextType = AuthContext;
     context!: React.ContextType<typeof AuthContext>
 
-    constructor(props:{}){
+    constructor(props: IAdminDashProps){
         super(props);
         this.state = {
             categoryResults: null,
@@ -36,6 +39,9 @@ class AdminDashboard extends Component <{}, IAdminDashState> {
     }
 
     componentDidMount() {
+        if (this.context.roleId! < userRoles.admin) {
+            this.props.history.push('/browse');
+        }
         this.grabCategories()
     }
 

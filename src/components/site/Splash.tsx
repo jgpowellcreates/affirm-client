@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import AuthContext from './AuthContext';
+import {RouteComponentProps} from 'react-router-dom';
 
 interface IUserInfoState {
     email?: string | number | readonly string[] | undefined;
@@ -9,11 +10,15 @@ interface IUserInfoState {
     isNewAccount: boolean;
 }
 
-export default class Splash extends Component<{},IUserInfoState> {
+interface ILoginProps extends RouteComponentProps {
+
+}
+
+export default class Splash extends Component<ILoginProps,IUserInfoState> {
     static contextType = AuthContext;
     context!: React.ContextType<typeof AuthContext>
 
-    constructor(props: any) {
+    constructor(props: ILoginProps) {
         super(props);
         this.state = {
             email: '',
@@ -22,6 +27,11 @@ export default class Splash extends Component<{},IUserInfoState> {
             lName: '',
             isNewAccount: false,
         }
+    }
+
+    componentDidMount() {
+        console.log("History:",this.props.history)
+        this.props.history.push("/");
     }
 
     toggleLogIn = () => {
@@ -99,8 +109,9 @@ export default class Splash extends Component<{},IUserInfoState> {
         })
         .then(data => data.json())
         .then(data => {
+            if (data.token) this.props.history.push("/browse");
             console.log(data.token);
-            this.context.setToken(data.token)
+            this.context.setToken(data.token);
         })
     }
     
