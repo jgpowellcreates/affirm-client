@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import AuthContext from '../../site/AuthContext';
 import {IAffirmations} from '../../../types/Models';
-import {FaTrashAlt} from 'react-icons/fa/index'
+import {FaTrashAlt} from 'react-icons/fa'
 
 interface IDeleteAffState {
     modalIsOpen: boolean;

@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import AuthContext from './AuthContext';
 import {Link} from 'react-router-dom';
 import {IAffirmations, userRoles} from '../../types/Models';
-import {FaThList,FaUserCog, FaCommentDots, FaHandsHelping, FaDoorClosed, FaDoorOpen} from 'react-icons/fa/index';
-import {logoInverse} from '../../assets/index';
+import {FaThList,FaUserCog, FaCommentDots, FaHandsHelping, FaDoorClosed, FaDoorOpen} from 'react-icons/fa';
+import {logo} from '../../assets/index';
 
 export default class Navigation extends Component<{},{}> {
     static contextType = AuthContext;
@@ -27,9 +27,9 @@ export default class Navigation extends Component<{},{}> {
                 </div> */}
                 <div id="leftNav" className="fixed top-0 h-screen w-40  my-auto bg-cyan-500">
                     <div className="h-1/5 flex py-auto align-middle">
-                        <img src={logoInverse}
+                        <img src={logo}
                             alt="Well Said Logo"
-                            className="w-full relative m-auto"
+                            className="w-full p-4 relative m-auto"
                         />
                     </div>
                     <hr className="text-white w-4/5 m-auto"/>

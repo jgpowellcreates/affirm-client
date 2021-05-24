@@ -3,7 +3,7 @@ import TimerDisplay from './TimerDisplay';
 import {IAffirmations} from '../../../types/Models';
 import styled from 'styled-components';
 import mountain from '../../../assets/mountain-gradient.jpg';
-import {FaPlay, FaPlayCircle} from 'react-icons/fa/index'
+import {FaPlay, FaPlayCircle} from 'react-icons/fa'
 
 //This interval display component
 const MtnBg = styled.div`

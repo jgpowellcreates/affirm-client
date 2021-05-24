@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import AuthContext from '../../site/AuthContext';
 import { IUserCollections } from '../../../types/Models';
-import {FaPlus} from 'react-icons/fa/index'
+import {FaPlus} from 'react-icons/fa'
 
 interface IAddUseCollState {
     modalIsOpen: boolean;

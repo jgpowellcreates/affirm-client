@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import AuthContext from '../../site/AuthContext';
 import {ICollections} from '../../../types/Models';
-import {FaTrashAlt} from 'react-icons/fa/index'
+import {FaTrashAlt} from 'react-icons/fa'
 
 interface IDeleteCollState {
     modalIsOpen: boolean;

@@ -84,6 +84,7 @@ class AdminDashboard extends Component <IAdminDashProps, IAdminDashState> {
                       collectionFilter: (categoryId) ? cascadeArray : null})
     }
 
+    //from-cyan-500 via-cyan-500 to-amber-500
 
     render() {
         return(

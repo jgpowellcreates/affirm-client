@@ -15,6 +15,14 @@ module.exports = {
       white: colors.white,
       alert: colors.red[600],
       overlay: colors.trueGray,
+      custom: {
+        "pink":"#E3958A",
+        "lightblue": "#8AAFDB",
+        "darkblue": "#487bb6",
+        "yellow-orange": "#FEDC23",
+        "yellowred": "FAA918",
+        "dark-orange": "#F47D1F",
+      }
     },
     fontFamily: {
       sans: ['Montserrat','Roboto']
@@ -30,7 +38,6 @@ module.exports = {
     extend: {
       backgroundImage: theme => ({
         "practice-start": "url('./assets/mountain-gradient.jpg')",
-        "practice-bg": "url('./assets/practice-gradient.jpg')"
       })
     },
   },

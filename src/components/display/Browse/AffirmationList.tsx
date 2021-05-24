@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import AuthContext from '../../site/AuthContext';
 import {IAffirmations, ICollections} from '../../../types/Models';
-import {FaBookmark, FaRegBookmark} from 'react-icons/fa/index';
+import {FaBookmark, FaRegBookmark} from 'react-icons/fa';
 
 interface IAffList {
     modalIsOpen: boolean;

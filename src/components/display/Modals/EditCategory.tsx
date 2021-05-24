@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import AuthContext from '../../site/AuthContext';
 import {} from '../../../types/Models';
-import {FaPencilAlt} from 'react-icons/fa/index';
+import {FaPencilAlt} from 'react-icons/fa';
 
 interface IEditCatState {
     modalIsOpen: boolean;

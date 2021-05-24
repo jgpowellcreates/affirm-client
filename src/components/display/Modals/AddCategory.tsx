@@ -2,7 +2,7 @@ import React, {Fragment, Component} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import AuthContext from '../../site/AuthContext';
 import {} from '../../../types/Models';
-import {FaPlus} from 'react-icons/fa/index'
+import {FaPlus} from 'react-icons/fa'
 
 interface IAddCatState {
     modalIsOpen: boolean;
