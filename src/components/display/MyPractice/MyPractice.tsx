@@ -130,8 +130,9 @@ class MyPractice extends Component <{},IMyPractice> {
                                     />
                                 </div>
                             </div>
-                            <div className="col-span-3">
-                                <div className="flex content-end text-center w-min pl-4 mx-3">
+                            <div className="col-span-3 flex justify-center pr-6">
+                                <div className="flex content-end text-center min-w-max pl-4 mx-3">
+                                    <h4 className="bg-cyan-500 px-5 pt-1 rounded-t-lg text-lg text-white font-bold">Start My Practice</h4>
                                 </div>
                             </div>
                         </div>
@@ -226,12 +227,13 @@ class MyPractice extends Component <{},IMyPractice> {
 
 
                         {/* COLUMN 3 = Interval Player */}
-                            <div id="Interval Player" className="col-span-3 px-3">
-                            <h3 className="text-center">Start My Practice!</h3>
+                            <div id="Interval Player" className="col-span-3 px-3 pr-6 h-full">
+                                <div id="contentWrapper" className="px-2 py-2 rounded-3xl bg-cyan-500">
                                 <IntervalTimer
                                     setIntervalFilter={this.setIntervalFilter}
                                     intervalArray={this.state.intervalArray!}
                                 />
+                                </div>
                             </div>
                         </div>
                         {/* END OF COLUMNS */}

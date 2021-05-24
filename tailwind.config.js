@@ -26,7 +26,12 @@ module.exports = {
       '4': '20em',
     }
     ,
-    extend: {},
+    extend: {
+      backgroundImage: theme => ({
+        "practice-start": "url('./assets/mountain-gradient.jpg')",
+        "practice-bg": "url('./assets/practice-gradient.jpg')"
+      })
+    },
   },
   variants: {
     extend: {},

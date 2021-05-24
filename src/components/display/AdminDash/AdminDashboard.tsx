@@ -144,13 +144,13 @@ class AdminDashboard extends Component <IAdminDashProps, IAdminDashState> {
                                         </div>
                                     </div>
                                     {this.state.categoryResults && this.state.categoryResults.map((cat, index) => {
-                                        return <div key={index} className="bg-cyan-50 rounded-lg my-2 hover:bg-white focus:border-amber-800 focus:border-2">
+                                        return <div key={index} className="bg-cyan-50 rounded-lg my-2 hover:bg-white">
                                             <div className="hideParent flex justify-between items-center space-x-4 p-2"
                                                 onClick={() => this.cascadeFilter(cat.id)}>
                                                 <h4 className="text-cyan-900 font-semibold">{cat.name}</h4>
                                                 <div id="buttonOptions" className="flex flex-row justify-end">
                                                     <div className="hideChild">
-                                                        <EditCategory categoryId={cat.id} refreshDash={this.grabCategories}/>
+                                                        <EditCategory categoryId={cat.id} categoryName={cat.name} refreshDash={this.grabCategories}/>
                                                     </div>
                                                     <div className="hideChild">
                                                         <DeleteCategory
@@ -161,7 +161,7 @@ class AdminDashboard extends Component <IAdminDashProps, IAdminDashState> {
                                                     </div>
                                                 </div>
                                             </div>
-                                            </div>
+                                        </div>
                                     })}
                                 </div>
                             </div>

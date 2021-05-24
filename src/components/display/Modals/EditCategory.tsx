@@ -12,6 +12,7 @@ interface IEditCatState {
 
 interface IEditCatProps {
     categoryId: number;
+    categoryName: string;
     refreshDash: CallableFunction;
 }
 
@@ -23,7 +24,7 @@ export default class EditCateogry extends React.Component <IEditCatProps, IEditC
         super(props)
         this.state ={
             modalIsOpen: false,
-            categoryName: '',
+            categoryName: this.props.categoryName,
             categoryError: false,
         }
     }

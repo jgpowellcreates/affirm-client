@@ -1,8 +1,23 @@
 import React from 'react';
 import TimerDisplay from './TimerDisplay';
 import {IAffirmations} from '../../../types/Models';
+import styled from 'styled-components';
+import mountain from '../../../assets/mountain-gradient.jpg';
+import {FaPlay, FaPlayCircle} from 'react-icons/fa/index'
 
 //This interval display component
+const MtnBg = styled.div`
+    background-image: url("./mountain-gradient.jpg");
+    background-position: center;
+    background-size: cover;
+    border-radius: 3em;
+
+    &:hover {
+        
+    }
+`
+
+
 
 
 interface ITimerState {
@@ -49,16 +64,15 @@ export default class IntervalTimer extends React.Component <ITimerProps, ITimerS
 
     render() {
         return(
-        <>
+        <>  
             <div>
-                <div className="shadow border rounded-lg">
-                    <div onClick={() => this.openModal()}>  {/* added the setIntervalFilter to the openModal function because this logic couldn't handle a progression of functions */}
-
-                        <h4>Add a play button over this image that changes on hover</h4>
-                        <h4>Interval slider should live below image</h4>
-                    <img src="https://greentreeyogadotcom.files.wordpress.com/2014/08/peaceful-water-1480533.jpg" alt="pretty leaves" />
+                <MtnBg className="relative group cursor-pointer" onClick={() => this.openModal()}>
+                    <div className="absolute mx-auto left-0 right-0 top-1/3 pt-6 float-left max-w-min">  {/* added the setIntervalFilter to the openModal function because this logic couldn't handle a progression of functions */}
+                        <FaPlayCircle className="text-white opacity-50 text-7xl group-hover:opacity-80"/>
+                    {/* <img src="https://greentreeyogadotcom.files.wordpress.com/2014/08/peaceful-water-1480533.jpg" alt="pretty leaves" /> */}
                     </div>
-                </div>
+                    <img src={mountain} style={{visibility:"hidden"}} className="hover:opacity-20"/>
+                </MtnBg>
                 
                 {this.state.modalIsOpen
                 ?<TimerDisplay
