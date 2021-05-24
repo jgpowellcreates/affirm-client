@@ -2,6 +2,7 @@ import React, {Fragment} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import DisplayedStatements from './DisplayedStatements';
 import {IAffirmations} from '../../../types/Models';
+import {logoInverse} from '../../../assets/index'
 
 interface IDisplayState {
 
@@ -64,29 +65,41 @@ export default class TimerDisplay extends React.Component <IDisplayProps, IDispl
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
                 >
-                <div className="inline-block w-full p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl" style={{height:"90vh", marginTop: "4em"}}>
+                <div className="inline-block static overflow-y-scroll w-full p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-gradient-to-b from-cyan-500 via-cyan-200 via-amber-100 to-amber-500 shadow-xl rounded-2xl" style={{height:"90vh", marginTop: "4em"}}>
                     <Dialog.Title
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                     >
-                    MODAL TITLE
+                        {/* MODAL TITLE.... DOESN'T NEED A TITLE */}
                     </Dialog.Title>
-                    <div className="mt-2">
-                
-                        {/* THIS IS THE BODY OF THE MODAL */}
+                    <div id="modalContentHolder" className="flex flex-col h-full justify-center content-center text-center">
+                        <div id="topInfo" className="flex flex-row justify-between">
+                            <div>
+                                {/* I initially had an IMG here, but it didn't go well w/ the existing nav logo and it stretched the X */}
+                            </div>
+                            <div className="flex py-auto w-28 align-middle">
+                                <img src={logoInverse}
+                                    alt="Well Said Logo"
+                                    className="w-full relative m-auto"
+                                />
+                            </div>
+                            <div>
+                                <button
+                                    type="button"
+                                    className="inline-flex w-min h-min px-4 py-2 text-sm font-medium text-cyan-900 bg-cyan-100 border border-transparent rounded-md hover:bg-cyan-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                                    onClick={() => this.props.closeModal()}
+                                >
+                                X
+                                </button>
+                            </div>
+                        </div>
+                        <div className="flex justify-center content-center h-full mt-16 text-center
+                                        transition duration-500 ease-in-out">
+                    
+                            {/* THIS IS THE BODY OF THE MODAL */}
+                            <DisplayedStatements intervalArray={this.props.intervalArray} userSetInterval={3000} closeModal={this.props.closeModal}/>
 
-                        <DisplayedStatements intervalArray={this.props.intervalArray} userSetInterval={3000} closeModal={this.props.closeModal}/>
-
-                    </div>
-
-                    <div className="mt-4">
-                    <button
-                        type="button"
-                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                        onClick={() => this.props.closeModal()}
-                    >
-                       X (icon)
-                    </button>
+                        </div>
                     </div>
                 </div>
                 </Transition.Child>

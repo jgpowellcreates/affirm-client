@@ -79,8 +79,12 @@ export default class DisplayedStatements extends React.Component <IStatementProp
     render() {
         return(
             <>
-                <p>{this.state.testArray[this.state.arrayNum]}</p>
-            </>
+                <div className="bg-gradient-to-b from-overlay-50 to-transparent w-2/3 h-60 rounded-3xl">
+                    <p className="text-cyan-900 text-7xl font-extrabold py-20">
+                        {this.state.testArray[this.state.arrayNum]}
+                    </p>
+                </div>
+        </>
         )
     }
 }

@@ -14,6 +14,7 @@ module.exports = {
       black: colors.black,
       white: colors.white,
       alert: colors.red[600],
+      overlay: colors.trueGray,
     },
     fontFamily: {
       sans: ['Montserrat','Roboto']
