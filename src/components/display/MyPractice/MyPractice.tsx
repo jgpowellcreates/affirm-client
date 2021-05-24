@@ -103,8 +103,8 @@ class MyPractice extends Component <{},IMyPractice> {
     render(){
         return(
             <div id="activePracticeWindow" className="w-full h-screen">
-                <div id="backgroundColor" className=" h-screen bg-gradient-to-r from-cyan-500 via-cyan-500 to-violet-500">
-                    <div className="h-20 bg-gradient-to-r from-cyan-500 via-cyan-500 to-violet-500">
+                <div id="backgroundColor" className=" h-screen bg-gradient-to-r from-cyan-500 via-cyan-500 to-amber-500">
+                    <div className="h-20 bg-gradient-to-r from-cyan-500 via-cyan-500 to-amber-500">
                         <h3 className="text-center pt-6 text-cyan-50 text-3xl font-bold">My Practice</h3>
                     </div>
 

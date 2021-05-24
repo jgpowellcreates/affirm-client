@@ -75,7 +75,7 @@ export default class DeleteCollection extends React.Component <IDeleteUserCollPr
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
                 >
-                <Dialog.Overlay className="fixed inset-0" />
+                <Dialog.Overlay className="fixed inset-0 bg-white bg-opacity-60" />
                 </Transition.Child>
 
                 {/* This element is to trick the browser into centering the modal contents. */}
@@ -107,7 +107,7 @@ export default class DeleteCollection extends React.Component <IDeleteUserCollPr
                         {this.props.collInfo.affirmations.length > 0
                             ? <>
                                 <p>Deleting <b>'{this.props.collInfo.title}'</b> will also delete:</p>
-                                <p>{this.props.collInfo.affirmations.length} Affirmations.</p>
+                                <p className="text-alert">{this.props.collInfo.affirmations.length} Affirmations.</p>
                               </>
                             : <>
                                 <p>Deleting <b>'{this.props.collInfo.title}'</b> will not effect any of your affirmations.</p>
@@ -117,17 +117,17 @@ export default class DeleteCollection extends React.Component <IDeleteUserCollPr
 
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-4 flex flex-row justify-end">
                     <button
                         type="button"
-                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                        className="inline-flex ml-3 px-4 py-2 text-sm font-medium text-amber-900 bg-amber-100 border border-transparent rounded-md hover:bg-amber-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                         onClick={() => this.closeModal()}
                     >
                         Cancel
                     </button>
                     <button
                         type="button"
-                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                        className="inline-flex ml-3 px-4 py-2 text-sm font-medium bg-alert bg-opacity-40 border border-transparent rounded-md hover:bg-opacity-70 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                         onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.deleteUserCollection(e)}
                     >
                         Yes, Delete!

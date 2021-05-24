@@ -71,7 +71,8 @@ export default class EditCollection extends React.Component <IEditCollProps, IEd
             })
         })
         .then(data => data.json())
-        .then(() => {this.closeModal(); this.props.refreshDash()})
+        .then(() => {this.setState({modalIsOpen: false,
+            title: '',description: '',categoryId: this.props.thisCatId,titleError: false},this.props.refreshDash())})
     }
 
     render() {
@@ -81,7 +82,7 @@ export default class EditCollection extends React.Component <IEditCollProps, IEd
                 <button
                 type="button"
                 onClick={() => this.openModal()}
-                className="px-3 py-2 text-sm font-medium text-violet-500 rounded-lg bg-opacity-20 hover:bg-violet-500 hover:bg-opacity-80 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                className="px-3 py-2 text-sm font-medium text-amber-500 rounded-lg bg-opacity-20 hover:bg-amber-500 hover:bg-opacity-80 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                 >
                 <FaPencilAlt />
                 </button>
@@ -103,7 +104,7 @@ export default class EditCollection extends React.Component <IEditCollProps, IEd
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
                 >
-                <Dialog.Overlay className="fixed inset-0" />
+                <Dialog.Overlay className="fixed inset-0 bg-white bg-opacity-60" />
                 </Transition.Child>
 
                 {/* This element is to trick the browser into centering the modal contents. */}
@@ -140,13 +141,13 @@ export default class EditCollection extends React.Component <IEditCollProps, IEd
                                 <input
                                     required
                                     type="text"
-                                    className="mt-1 block w-full rounded-md bg-gray-100 p-2 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+                                    className="mt-1 block w-full rounded-md bg-black bg-opacity-10 p-2 border-transparent focus:border-cyan-900 focus:bg-white focus:ring-0"
                                     placeholder={this.props.collInfo.title}
                                     value={this.state.title}
                                     onChange={this.handleChange('title')}
                                 />
                             </label>
-                            {this.state.titleError ? <p>Need to provide a valid collection title.</p> : <></>}
+                            {this.state.titleError ? <p className="text-alert text-sm">Need to provide a valid collection title.</p> : <></>}
 
 <                           label htmlFor="title" className="block">
                                 <span className="text-gray-700">Description:</span>
@@ -154,7 +155,7 @@ export default class EditCollection extends React.Component <IEditCollProps, IEd
                                 <input
                                     required
                                     type="text"
-                                    className="mt-1 block w-full rounded-md bg-gray-100 p-2 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+                                    className="mt-1 block w-full rounded-md bg-black bg-opacity-10 p-2 border-transparent focus:border-cyan-900 focus:bg-white focus:ring-0"
                                     placeholder={this.props.collInfo.description!}
                                     value={this.state.description}
                                     onChange={this.handleChange('description')}
@@ -166,7 +167,7 @@ export default class EditCollection extends React.Component <IEditCollProps, IEd
 
                                 <select
                                     required
-                                    className="mt-1 block w-full rounded-md bg-gray-100 p-2 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+                                    className="mt-1 block w-full rounded-md bg-black bg-opacity-10 p-2 border-transparent focus:border-cyan-900 focus:bg-white focus:ring-0"
                                     //={this.state.categoryId}
                                     defaultValue={this.props.thisCatId}
                                     onChange={this.handleChange('categoryId')}
@@ -181,17 +182,17 @@ export default class EditCollection extends React.Component <IEditCollProps, IEd
 
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-4 flex flex-row justify-end">
                     <button
                         type="button"
-                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                        className="inline-flex justify-center ml-3 px-4 py-2 text-sm font-medium text-amber-900 bg-amber-100 border border-transparent rounded-md hover:bg-amber-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-500"
                         onClick={() => this.closeModal()}
                     >
                         Cancel
                     </button>
                     <button
                         type="button"
-                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                        className="inline-flex justify-center ml-3 px-4 py-2 text-sm font-medium text-cyan-900 bg-cyan-100 border border-transparent rounded-md hover:bg-cyan-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500"
                         onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.validateForm(e)}>
                         Commit Changes
                     </button>

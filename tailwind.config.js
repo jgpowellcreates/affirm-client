@@ -10,6 +10,7 @@ module.exports = {
       cyan: colors.cyan,
       green: colors.green,
       violet: colors.violet,
+      amber: colors.amber,
       black: colors.black,
       white: colors.white,
       alert: colors.red[600],

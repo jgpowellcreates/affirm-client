@@ -42,71 +42,7 @@ export default class Splash extends Component<ILoginProps,IUserInfoState> {
     componentDidMount() {
         console.log("History:",this.props.history)
         this.props.history.push("/");
-    }
-
-    toggleLogIn = () => {
-        this.setState({isNewAccount: !this.state.isNewAccount})
-        console.log("Toggle has toggled.")
-        //If your submission was not valid, if you toggle the fields will reset.
-        if(!this.state.formIsValid) {
-            console.log("I should have checked for form validity. Form is valid?", this.state.formIsValid)
-            this.setState({formIsValid: true, emailError: false, passwordError: false, fNameError: false, lNameError: false,
-                           email: '', password:'', fName:'', lName:'' })
-        }
-    }
-
-    changeView = () => {
-        //Changes available form fields
-        if(this.state.isNewAccount) {
-            return(
-                <>
-                <br />
-                <label htmlFor="fName">First Name</label>
-                <input
-                    required
-                    type="text"
-                    placeholder="First Name"
-                    value={this.state.fName}
-                    onChange={this.handleChange('fName')}
-                    />
-                {this.state.fNameError ? <p>First Name field cannot be empty.</p> : <></>}
-
-                <label htmlFor="lName">Last Name</label>
-                <input
-                    required
-                    type="text"
-                    placeholder="Last Name"
-                    value={this.state.lName}
-                    onChange={this.handleChange('lName')}
-                    />
-                {this.state.lNameError ? <p>Last Name field cannot be empty.</p> : <></>}
-                <br />
-                <button
-                    type="button" 
-                    onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.validateForm(e)}>Register</button>
-                <button
-                    type="button" 
-                    onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.toggleLogIn()}
-                    >I Have an Account</button>
-                </>
-            )
-        } else {
-            return(
-                <>
-                <br />
-                <button
-                    type="button" 
-                    onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.validateForm(e)}>Log In</button>
-                <button
-                    type="button" 
-                    onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.toggleLogIn()}
-                    >I'm a New User</button>
-                </>
-            )
-        }
-    }
-
-    
+    } 
 
     handleChange = (prop: keyof IUserInfoState) => (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ ...this.state, [prop]: event.target.value });
@@ -204,43 +140,131 @@ export default class Splash extends Component<ILoginProps,IUserInfoState> {
         console.log(this.state)
     }
 
+    toggleLogIn = () => {
+        this.setState({isNewAccount: !this.state.isNewAccount})
+        console.log("Toggle has toggled.")
+        //If your submission was not valid, if you toggle the fields will reset.
+        if(!this.state.formIsValid) {
+            console.log("I should have checked for form validity. Form is valid?", this.state.formIsValid)
+            this.setState({formIsValid: true, emailError: false, passwordError: false, fNameError: false, lNameError: false,
+                           email: '', password:'', fName:'', lName:'' })
+        }
+    }
+
+
+    // ========================================RENDERED ITEMS HERE==============================================
+    changeView = () => {
+        //Changes available form fields
+        if(this.state.isNewAccount) {
+            return(
+                <>
+                <div id="bottomRow" className="flex flex-row bg-amber-300">
+                    <div id="firstNameField" className="flex flex-col">
+                        <label htmlFor="fName">First Name</label>
+                        <input
+                            required
+                            type="text"
+                            placeholder="First Name"
+                            className="mx-3"
+                            value={this.state.fName}
+                            onChange={this.handleChange('fName')}
+                            />
+                        {this.state.fNameError ? <p className="text-alert text-sm">First Name field cannot be empty.</p> : <></>}
+                    </div>
+
+                    <div id="lastNameField" className="flex flex-col">
+                        <label htmlFor="lName">Last Name</label>
+                        <input
+                            required
+                            type="text"
+                            placeholder="Last Name"
+                            className="mx-3"
+                            value={this.state.lName}
+                            onChange={this.handleChange('lName')}
+                            />
+                        {this.state.lNameError ? <p className="text-alert text-sm">Last Name field cannot be empty.</p> : <></>}
+                    </div>
+                </div>
+
+                <div id="buttonHolder" className="flex flex-row justify-around">
+                    <button
+                        type="button" 
+                        className="inline-flex px-4 py-2 text-sm font-medium text-cyan-900 bg-cyan-100 border border-transparent rounded-md hover:bg-cyan-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500"
+                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.validateForm(e)}>Register</button>
+                    <button
+                        type="button" 
+                        className="inline-flex px-4 py-2 text-sm font-medium text-cyan-900 bg-cyan-100 border border-transparent rounded-md hover:bg-cyan-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500"
+                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.toggleLogIn()}
+                        >I Have an Account</button>
+                </div>
+                </>
+            )
+        } else {
+            return(
+                <>
+                <div id="buttonHolder" className="flex flex-row justify-around">
+                    <button
+                        type="button"
+                        className="inline-flex px-4 py-2 text-sm font-medium text-cyan-900 bg-cyan-100 border border-transparent rounded-md hover:bg-cyan-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500"
+                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.validateForm(e)}>Log In</button>
+                    <button
+                        type="button" 
+                        className="inline-flex px-4 py-2 text-sm font-medium text-cyan-900 bg-cyan-100 border border-transparent rounded-md hover:bg-cyan-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500"
+                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.toggleLogIn()}
+                        >I'm a New User</button>
+                </div>
+                </>
+            )
+        }
+    }
+
+    //=====================================STARTING VIEW===========================================
     render() {
         return(
             <div>
-                <form>
-                    <label htmlFor="email">Email</label>
-                    <input
-                        required
-                        type="text"
-                        placeholder="Email"
-                        value={this.state.email}
-                        onChange={this.handleChange('email')}
-                        />
-                    {this.state.emailError      //You could write this better. Currently, a message will show independently for each email/password
-                        ? this.state.isNewAccount
-                            ?<p>Email field must contain a valid email.</p>
-                            :<p>Incorrect email</p>
-                        : <></>}
+                <div id="form" className="bg-amber-400 flex flex-col justify-center max-w-min py-5 px-6">
 
-                    <label htmlFor="password">Password</label>
-                    <input
-                        required
-                        type="password"
-                        placeholder="Secure Password"
-                        value={this.state.password}
-                        onChange={this.handleChange('password')}
-                        />
-                    {this.state.passwordError   //You could write this better. Currently, a message will show independently for each email/password
-                        ? this.state.isNewAccount
-                            ?<p>Password must be 8 characters long and include<br />at least 1 number and 1 uppercase, lowercase and special character.</p>
-                            :<p>Incorrect password</p>
-                        : <></>}
+                    {/* This div puts the 2 rows of fields & buttons in a column */}
+                    <div id="topRow" className="flex flex-row bg-amber-300">
+                        <div id="emailField" className="flex flex-col">
+                            <label htmlFor="email">Email</label>
+                                <input
+                                required
+                                type="text"
+                                placeholder="Email"
+                                className="mx-3"
+                                value={this.state.email}
+                                onChange={this.handleChange('email')}
+                                />
+                        </div>
+                            {this.state.emailError      //You could write this better. Currently, a message will show independently for each email/password
+                                ? this.state.isNewAccount
+                                    ?<p className="text-alert text-sm">Email field must contain a valid email.</p>
+                                    :<p className="text-alert text-sm">Not a valid email</p>
+                                : <></>}
 
+                        <div id="passwordField" className="flex flex-col">
+                            <label htmlFor="password">Password</label>
+                                <input
+                                required
+                                type="password"
+                                placeholder="Secure Password"
+                                className="mx-3"
+                                value={this.state.password}
+                                onChange={this.handleChange('password')}
+                                />
+                        </div>
+                            {this.state.passwordError   //You could write this better. Currently, a message will show independently for each email/password
+                                ? this.state.isNewAccount
+                                    ?<p className="text-alert text-sm">Password must be 8 characters long and include<br />at least 1 number and 1 uppercase, lowercase and special character.</p>
+                                    :<p className="text-alert text-sm">Not a valid password</p>
+                                : <></>}
+                    </div>
+
+                    {this.state.formIsValid ? <></> : <p className="text-alert text-sm">Please correct the form fields before submitting.</p>}
                     {this.changeView()} 
 
-                    {this.state.formIsValid ? <></> : <p>Please correct the form fields before submitting.</p>}
-                </form>
-                <button onClick={() => this.checkStates()}>Check States</button>
+                </div>
             </div>
         )
     }

@@ -88,8 +88,8 @@ class AdminDashboard extends Component <IAdminDashProps, IAdminDashState> {
     render() {
         return(
             <div id="activeDashWindow" className="w-full h-screen">
-                <div id="backgroundColor" className=" h-screen bg-gradient-to-r from-cyan-500 via-cyan-500 to-violet-500">
-                    <div className="h-20 bg-gradient-to-r from-cyan-500 via-cyan-500 to-violet-500">
+                <div id="backgroundColor" className=" h-screen bg-gradient-to-r from-cyan-500 via-cyan-500 to-amber-500">
+                    <div className="h-20 bg-gradient-to-r from-cyan-500 via-cyan-500 to-amber-500">
                         <h3 className="text-center pt-6 text-white text-3xl font-bold">Admin Dashboard</h3>
                     </div>
                     
@@ -131,7 +131,7 @@ class AdminDashboard extends Component <IAdminDashProps, IAdminDashState> {
                         
 
                         {/* COLUMN DETAILS */}
-                        <div className="grid grid-cols-12">
+                        <div className="grid grid-cols-12 h-full">
                             
                             {/* COLUMN 1 */}
                             <div className="col-span-3 h-full px-3 overflow-y-auto">
@@ -144,7 +144,7 @@ class AdminDashboard extends Component <IAdminDashProps, IAdminDashState> {
                                         </div>
                                     </div>
                                     {this.state.categoryResults && this.state.categoryResults.map((cat, index) => {
-                                        return <div key={index} className="bg-cyan-50 rounded-lg my-2 hover:bg-white focus:border-violet-800 focus:border-2">
+                                        return <div key={index} className="bg-cyan-50 rounded-lg my-2 hover:bg-white focus:border-amber-800 focus:border-2">
                                             <div className="hideParent flex justify-between items-center space-x-4 p-2"
                                                 onClick={() => this.cascadeFilter(cat.id)}>
                                                 <h4 className="text-cyan-900 font-semibold">{cat.name}</h4>

@@ -58,8 +58,7 @@ class AddCategory extends Component <IAddCatProps, IAddCatState>{
         })
         .then(data => {data.json(); console.log(data, bodyObj, `${process.env.REACT_APP_DATABASE_URL}category/new`)})
         .then(() => {
-            this.closeModal(); this.props.refreshDash();
-            console.log("Made it to the end somehow");
+            this.setState({modalIsOpen:false, categoryName:'', categoryError: false}, this.props.refreshDash())
         })
         .catch((err) => console.log(err, "I actually messed up"))
     }
@@ -93,7 +92,7 @@ class AddCategory extends Component <IAddCatProps, IAddCatState>{
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
                 >
-                <Dialog.Overlay className="fixed inset-0" />
+                <Dialog.Overlay className="fixed inset-0 bg-white bg-opacity-60" />
                 </Transition.Child>
 
                 {/* This element is to trick the browser into centering the modal contents. */}
@@ -131,29 +130,29 @@ class AddCategory extends Component <IAddCatProps, IAddCatState>{
                                 <input
                                     required
                                     type="text"
-                                    className="mt-1 block w-full rounded-md bg-gray-100 p-2 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+                                    className="mt-1 block w-full rounded-md bg-black bg-opacity-10 p-2 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
                                     placeholder="New Category Name"
                                     value={this.state.categoryName}
                                     onChange={this.handleChange('categoryName')}
                                 />
                             </label>
-                            {this.state.categoryError ? <p>'Name' field cannot be empty.</p> : <></>}
+                            {this.state.categoryError ? <p className="text-alert text-sm">'Name' field cannot be empty.</p> : <></>}
 
                         </div>
 
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-4 flex flex-row justify-end">
                     <button
                         type="button"
-                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                        className="inline-flex justify-center ml-3 px-4 py-2 text-sm font-medium text-amber-900 bg-amber-100 border border-transparent rounded-md hover:bg-amber-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-500"
                         onClick={() => this.closeModal()}
                     >
                         Cancel
                     </button>
                     <button
                         type="button"
-                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                        className="inline-flex justify-center ml-3 px-4 py-2 text-sm font-medium text-cyan-900 bg-cyan-100 border border-transparent rounded-md hover:bg-cyan-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500"
                         onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.validateForm(e)}>
                         Create Category
                     </button>
