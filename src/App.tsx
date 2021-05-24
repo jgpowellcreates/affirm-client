@@ -19,7 +19,7 @@ function App() {
           ?
           <>
               <Navigation />
-              <div className="flex-initial" style={{margin: "4em 0 0 10em"}}>
+              <div className="flex-initial" style={{margin: "0 0 0 10em"}}>
               <Switch>
                   <Route exact path="/browse" component={Browse} />
                   <Route exact path="/mypractice" component={MyPractice} />

@@ -2,6 +2,7 @@ import React, {Fragment} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import AuthContext from '../../site/AuthContext';
 import {IAffirmations, ICollections} from '../../../types/Models';
+import {FaBookmark, FaRegBookmark} from 'react-icons/fa/index';
 
 interface IAffList {
     modalIsOpen: boolean;
@@ -33,11 +34,11 @@ export default class AffirmationList extends React.Component <IAffBrowseProps, I
     render() {
         return(
         <>
-            <div>
+            <div className="relative bottom-0">
                 <button
                 type="button"
                 onClick={() => this.openModal()}
-                className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                className="px-4 py-2 text-sm font-medium text-white bg-cyan-800 rounded-md bg-opacity-50 hover:bg-opacity-70 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                 >
                 View Collection
                 </button>
@@ -59,7 +60,7 @@ export default class AffirmationList extends React.Component <IAffBrowseProps, I
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
                 >
-                <Dialog.Overlay className="fixed inset-0" />
+                <Dialog.Overlay className="fixed inset-0 bg-white bg-opacity-60" />
                 </Transition.Child>
 
                 {/* This element is to trick the browser into centering the modal contents. */}
@@ -81,23 +82,26 @@ export default class AffirmationList extends React.Component <IAffBrowseProps, I
                 <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
                     <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-lg leading-6 text-cyan-900 font-semibold"
                     >
                     {this.props.title}
                     </Dialog.Title>
                     <div className="mt-2">
-                        <p>{this.props.description}</p>
-                        <FavoriteAffs affirmations={this.props.affirmations} update={this.props.update}/>
+                        <p className="text-md text-cyan-900 font-medium">{this.props.description}</p>
+                        {this.props.affirmations && this.props.affirmations.length > 0
+                            ? <FavoriteAffs affirmations={this.props.affirmations} update={this.props.update}/>
+                            : <p>Oops! This is an empty collection!</p>
+                         }
 
                     </div>
 
                     <div className="mt-4">
-                    <button
+                    <button                         //I'm interested in adding this functionality at a later time, but not for MVP.
                         type="button"
                         className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                         onClick={() => this.closeModal()}
                     >
-                        Add This Collection to My Collections
+                        Back to Collections
                     </button>
                     </div>
                 </div>
@@ -186,31 +190,33 @@ class FavoriteAffs extends React.Component <IFavoriteAffProps, IFavoriteAffState
             <>
                 {this.props.affirmations?.map((aff, index) => {
                     return(
-                        <div key={index} className="shadow border rounded-lg">
-                            <div className="flex items-center space-x-4 p-2">
-                                <h4>{aff.statement}</h4>
-                                {this.context.allAffs.map((owned) => owned.statement).includes(aff.statement)
-                                    ? 
-                                    <>
-                                        <p>N</p>
-                                        <button
-                                        className=""
-                                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.removePractice(e,aff)}
-                                        >
-                                            Remove
-                                        </button>
-                                    </>
-                                    :
-                                    <>
-                                        <p>Y</p>
-                                        <button
-                                        className=""
-                                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.addToMyPractice(e,aff)}
-                                        >
-                                            Save
-                                        </button>
-                                    </>
-                                }
+                        <div key={index} className="rounded-lg shadow-md my-2 bg-cyan-50 border-cyan-800 border-opacity-50 border-2">
+                            <div className="flex justify-between items-center space-x-4 py-2 px-4 m-2">
+                                <h4 className="text-cyan-900 font-semibold">{aff.statement}</h4>
+                                <div id="buttonOption" className="flex justify-end">
+                                    {this.context.allAffs.map((owned) => owned.statement).includes(aff.statement)
+                                        ? 
+                                        <>
+                                            <button
+                                            className="flex flex-row px-1 text-cyan-800"
+                                            onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.removePractice(e,aff)}
+                                            >
+                                                <p className="pr-2">Remove</p>
+                                                <FaBookmark className="self-center"/>
+                                            </button>
+                                        </>
+                                        :
+                                        <>
+                                            <button
+                                            className="flex flex-row px-1 text-cyan-800"
+                                            onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.addToMyPractice(e,aff)}
+                                            >
+                                                <p className="pr-2">Add</p>
+                                                <FaRegBookmark className="self-center" />
+                                            </button>
+                                        </>
+                                    }
+                                </div>
                             </div>
                         </div>
                     )

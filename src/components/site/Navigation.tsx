@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import AuthContext from './AuthContext';
 import {Link} from 'react-router-dom';
-import {userRoles} from '../../types/Models';
+import {IAffirmations, userRoles} from '../../types/Models';
+import {FaThList,FaUserCog, FaCommentDots, FaHandsHelping, FaDoorClosed, FaDoorOpen} from 'react-icons/fa/index';
+import {logoInverse} from '../../assets/index';
 
 export default class Navigation extends Component<{},{}> {
     static contextType = AuthContext;
@@ -17,42 +19,61 @@ export default class Navigation extends Component<{},{}> {
     render() {
         return(
             <div className="container">
-                <div className='header' style={{background: "purple", position: 'fixed', width: "100%", height: '4em', padding: '0', top: '0', textAlign: 'center'}}>
-                    <h1>
-                        Affirm Brand
-                    </h1>
-                </div>
-                <div className="sidebar" style={{background: 'blue', position: 'fixed', width: '10em', height: '100vh', top:'0', padding: '5em 0 0 0'}}>
-                    <ul style={{listStyle:"none", margin: '0 10px',padding: "0"}}>
-                        <li>
-                            <Link to='/browse' onClick={() => this.context.update()}>
-                                <h3>Browse</h3>
-                            </Link>
-                        </li>
+                {/* <div className="fixed top-0 w-full h-16 p-0 z-0 bg-gradient-to-r from-cyan-500 via-cyan-500 to-cyan-300 text-center">
+                    <img src={logoInverse}
+                     alt="Well Said Logo"
+                     className="h-full relative mx-auto my-2"
+                     />
+                </div> */}
+                <div id="leftNav" className="fixed top-0 h-screen w-40  my-auto bg-cyan-500">
+                    <div className="h-1/5 flex py-auto align-middle">
+                        <img src={logoInverse}
+                            alt="Well Said Logo"
+                            className="w-full relative m-auto"
+                        />
+                    </div>
+                    <hr className="text-white w-4/5 m-auto"/>
+                    <ul className="mx-3 h-4/5">
+                        <Link to='/browse' onClick={() => this.context.update()}>
+                            <div className="relative rounded-full h-20 pt-4 text-white text-center mx-auto my-8 hover:text-cyan-100 hover:shadow-md hover:cursor-pointer">
+                                    <FaThList className="m-auto"/>
+                                    <h3 className="font-semibold pt-2">Browse</h3>
+                            </div>
+                        </Link>
                         {this.context.roleId === userRoles.admin
                         ?
-                        <li>
-                            <Link to="/admindash">Admin Dashboard</Link>
-                        </li>
+                        <Link to="/admindash">
+                            <div className="relative rounded-full h-20 pt-4 text-white text-center mx-auto my-8 hover:text-cyan-100 hover:shadow-md hover:cursor-pointer">
+                                <FaUserCog className="m-auto" />
+                                <h3 className="font-semibold pt-2">Dashboard</h3>
+                            </div>
+                        </Link>
                         :<></>
                         }
-                        <li>
-                            <Link to="/mypractice" onClick={() => this.context.update()} >
-                                <h3>My Practice</h3>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/resources">
-                                <h3>Resources</h3>
-                            </Link>
-                        </li>
-                        {/* THIS IS A BUTTON FOR DEV TESTING PURPOSES */}
-                        <li><button onClick={() => console.log("Id:", this.context.id, "RoleId:", this.context.roleId, 'Token:', this.context.token)}>Check States</button></li>
-                        <li><button onClick={() => console.log("Them Affs:", this.context.allAffs, "Them Colls:", this.context.allUserColls)}>Check what they have</button></li>
+                        <Link to="/mypractice" onClick={() => this.context.update()} >
+                            <div className="relative rounded-full h-20 pt-4 text-white text-center mx-auto my-8 hover:text-cyan-100 hover:shadow-md hover:cursor-pointer">
+                                <FaCommentDots className="m-auto" />
+                                <h3 className="font-semibold pt-2">My Practice</h3>
+                            </div>
+                        </Link>
+                        <Link to="/resources">
+                            <div className="relative rounded-full h-20 pt-4 text-white text-center mx-auto my-8 hover:text-cyan-100 hover:shadow-md hover:cursor-pointer">
+                                <FaHandsHelping className="m-auto" />
+                                <h3 className="font-semibold pt-2">Resources</h3>
+                            </div>
+                        </Link>
 
-                        <li onClick={() => this.context.clearToken()}>
-                            <h3>Log Out</h3>
-                        </li>
+                        {/* THIS IS A BUTTON FOR DEV TESTING PURPOSES */}
+                        {/* <li><button onClick={() => console.log(this.context)}>Check Context</button></li> */}
+
+                        <Link to="/">
+                            <div
+                                className="relative rounded-full h-20 pt-4 text-white text-center mx-auto my-8 hover:text-cyan-100 hover:shadow-md hover:cursor-pointer"
+                                onClick={() => this.context.clearToken()}>
+                                <FaDoorOpen className="m-auto" /> {/* door-close .....door-open on hover? */}
+                                <h3 className="font-semibold pt-2">Log Out</h3>
+                            </div>
+                        </Link>
                     </ul>
                 </div>
             </div>

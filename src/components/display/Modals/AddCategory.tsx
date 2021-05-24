@@ -2,6 +2,7 @@ import React, {Fragment, Component} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import AuthContext from '../../site/AuthContext';
 import {} from '../../../types/Models';
+import {FaPlus} from 'react-icons/fa/index'
 
 interface IAddCatState {
     modalIsOpen: boolean;
@@ -70,9 +71,9 @@ class AddCategory extends Component <IAddCatProps, IAddCatState>{
                 <button
                 type="button"
                 onClick={() => this.openModal()}
-                className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                className="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-full bg-opacity-50 hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                 >
-                +
+                <FaPlus />
                 </button>
             </div>
 

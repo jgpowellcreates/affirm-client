@@ -2,6 +2,7 @@ import React, {Fragment} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import AuthContext from '../../site/AuthContext';
 import {ICollections, IUserCollections } from '../../../types/Models';
+import {FaPlus} from 'react-icons/fa/index'
 
 interface IAddAffState {
     modalIsOpen: boolean;
@@ -112,9 +113,9 @@ export default class AddAffirmation extends React.Component <IAddAffProps, IAddA
                 <button
                 type="button"
                 onClick={() => this.openModal()}
-                className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                className="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-full bg-opacity-50 hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                 >
-                +
+                <FaPlus />
                 </button>
             </div>
 
@@ -220,26 +221,20 @@ export default class AddAffirmation extends React.Component <IAddAffProps, IAddA
                     </div>
 
                     <div className="mt-4">
-                    <button
-                        type="button"
-                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                        onClick={() => this.closeModal()}
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        type="button"
-                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.validateForm(e)}
-                    >
-                        Create Affirmation
-                    </button>
-                    <button
-                        type="button"
-                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                        onClick={() => console.log("site:",this.state.collectionId, "user:", this.state.userCollectionId)}
-                    >
-Check States                    </button>
+                        <button
+                            type="button"
+                            className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                            onClick={() => this.closeModal()}
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="button"
+                            className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                            onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.validateForm(e)}
+                        >
+                            Create Affirmation
+                        </button>
                     </div>
                 </div>
                 </Transition.Child>

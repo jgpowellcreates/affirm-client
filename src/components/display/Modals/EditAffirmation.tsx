@@ -2,6 +2,7 @@ import React, {Fragment} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import AuthContext from '../../site/AuthContext';
 import {IAffirmations, ICollections} from '../../../types/Models';
+import {FaPencilAlt} from 'react-icons/fa/index';
 
 interface IEditAffState {
     modalIsOpen: boolean;
@@ -74,9 +75,9 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
                 <button
                 type="button"
                 onClick={() => this.openModal()}
-                className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                className="px-3 py-2 text-sm font-medium text-violet-500 rounded-lg bg-opacity-20 hover:bg-violet-500 hover:bg-opacity-80 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                 >
-                Edit
+                <FaPencilAlt />
                 </button>
             </div>
 

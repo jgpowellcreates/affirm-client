@@ -2,6 +2,7 @@ import React, {Fragment} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import AuthContext from '../../site/AuthContext';
 import {ICategories} from '../../../types/Models';
+import {FaTrashAlt} from 'react-icons/fa/index'
 
 interface IDeleteCatState {
     modalIsOpen: boolean;
@@ -53,9 +54,9 @@ export default class DeleteCategory extends React.Component <IDeleteCatProps, ID
                 <button
                 type="button"
                 onClick={() => this.openModal()}
-                className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                className="px-3 py-2 text-sm font-medium text-alert rounded-lg hover:bg-alert hover:bg-opacity-80 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                 >
-                Delete
+                <FaTrashAlt />
                 </button>
             </div>
 

@@ -102,106 +102,141 @@ class MyPractice extends Component <{},IMyPractice> {
 
     render(){
         return(
-            <div>
-                <h3>My Practice</h3>
-                {/* <button onClick={() => console.log(this.state.intervalArray)}>CHECK INTERVAL ARRAYS</button> */}
-                {/* <br /><button onClick={() => console.log(this.state.collectionFilter)}>CHECK FILTERS</button> */}
-
-                <div className="grid grid-cols-3">
-                    <div id="COL 1">
-                        <div id="categoryHeader" className="flex justify-center">
-                            <h3 className="text-center">My Collections</h3>
-                            <div>
-                                <AddUserCollection refreshDash={this.grabUserCollections}/>
-                            </div>
-                        </div>
-                            <div className="shadow border rounded-lg">
-                                <div className="flex items-center space-x-4 p-2"
-                                onClick={() =>  this.setState({collectionFilter: null})}>
-                                    <h4>All Collections</h4>
-                                </div>
-                            </div>
-                         {this.state.userCollectionResults && this.state.userCollectionResults.map((coll, index) => {
-                             return <div key={index} className="shadow border rounded-lg">
-                                    <div className="hideParent flex items-center space-x-4 p-2"
-                                     onClick={() => this.setState({collectionFilter: coll.id})}>
-                                        <h4>{coll.title}</h4>
-                                        <div className="hideChild">
-                                            <EditUserCollection collInfo={coll} refreshDash={this.grabUserCollections}/>
-                                        </div>
-                                        <div className="hideChild">
-                                            <DeleteUserCollection collInfo={coll} refreshDash={this.grabUserCollections}/>
-                                        </div>
-                                    </div>
-                                 </div>
-                         })}
+            <div id="activePracticeWindow" className="w-full h-screen">
+                <div id="backgroundColor" className=" h-screen bg-gradient-to-r from-cyan-500 via-cyan-500 to-violet-500">
+                    <div className="h-20 bg-gradient-to-r from-cyan-500 via-cyan-500 to-violet-500">
+                        <h3 className="text-center pt-6 text-cyan-50 text-3xl font-bold">My Practice</h3>
                     </div>
 
-                    <div>
-                        <div className="flex justify-center">
-                        <h3 className="text-center">Affirmations</h3>
-                            <div>
-                                <AddAffirmation 
-                                    collectionResults={this.state.userCollectionResults}
-                                    refreshDash={this.grabUserCollections}
+                    <div id="navCurve" className="h-full bg-white rounded-tl-3xl pl-3 pt-3">
+                        
+                        <div className="grid grid-cols-12">
+                            <div className="col-span-4 flex flex-row justify-center content-end">
+                                <div className="flex content-end text-center min-w-max pl-4 mx-3">
+                                    <h4 className="bg-cyan-500 px-5 pt-1 rounded-t-lg text-lg text-white font-bold">My Collections</h4>
+                                </div>
+                                <div>
+                                    <AddUserCollection refreshDash={this.grabUserCollections}/>
+                                </div>
+                            </div>
+                            <div className="col-span-5 flex flex-row justify-center content-end">
+                                <div className="flex content-end text-center min-w-max pl-4 mx-3">
+                                    <h4 className="bg-cyan-500 px-5 pt-1 rounded-t-lg text-lg text-white font-bold">My Affirmations</h4>
+                                </div>
+                                <div>
+                                    <AddAffirmation 
+                                        collectionResults={this.state.userCollectionResults}
+                                        refreshDash={this.grabUserCollections}
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-span-3">
+                                <div className="flex content-end text-center w-min pl-4 mx-3">
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* COLUMN DETAILS */}
+                        <div className="grid grid-cols-12">
+                            
+                        {/* COLUMN 1 = Collections */}
+                            <div id="COL 1" className="col-span-4 px-3">
+                                {/* HEADER REPLACES THIS SPACE */}
+                                <div id="contentWrapper" className="px-2 py-1 rounded-lg bg-cyan-500">
+                                    <div className="bg-cyan-50 rounded-lg hover:bg-white">
+                                        <div className="p-2 my-1"
+                                        onClick={() =>  this.setState({collectionFilter: null})}>
+                                            <h4 className="text-cyan-900 font-semibold">All Collections</h4>
+                                        </div>
+                                    </div>
+                                    {this.state.userCollectionResults && this.state.userCollectionResults.map((coll, index) => {
+                                        return <div key={index} className="bg-cyan-50 rounded-lg my-2 hover:bg-white">
+                                                <div className="hideParent flex justify-between items-center space-x-4 p-2"
+                                                onClick={() => this.setState({collectionFilter: coll.id})}>
+                                                    <h4 className="text-cyan-900 font-semibold">{coll.title}</h4>
+                                                    <div id="buttonOptions" className="flex flex-row justify-end">
+                                                        <div className="hideChild">
+                                                            <EditUserCollection collInfo={coll} refreshDash={this.grabUserCollections}/>
+                                                        </div>
+                                                        <div className="hideChild">
+                                                            <DeleteUserCollection collInfo={coll} refreshDash={this.grabUserCollections}/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    })}
+                                </div>
+                            </div>
+
+                        {/* COLUMN 2 = Affirmations */}
+                            <div className="col-span-5 px-3">
+                                {/* HEADER REPLACES THIS SPACE */}
+                                <div id="contentWrapper" className="px-2 py-1 rounded-lg bg-cyan-500">
+                                    {this.state.affirmationResults && this.state.collectionFilter
+                                        ? this.state.affirmationResults.filter(aff => aff.userCollectionId === this.state.collectionFilter).map((aff, index) => {
+                                            return <div key={index} className="bg-cyan-50 rounded-lg my-2 hover:bg-white">
+                                                    <div className="hideParent flex justify-between items-center space-x-4 p-2">
+                                                        <h4 className="text-cyan-900 font-semibold">{aff.statement}</h4>
+                                                        <div id="buttonOptions" className="flex flex-row justify-end">
+                                                            <div className="hideChild">
+                                                                <EditUserAffirmation
+                                                                    collectionResults={this.state.userCollectionResults}
+                                                                    //thisCollId={0}   //It sees the [] of userCollections. How can I grab just the collId? 
+                                                                    affInfo={aff}
+                                                                    refreshDash={this.grabUserCollections}
+                                                                />
+                                                            </div>
+                                                            <div className="hideChild">
+                                                                <DeleteUserAffirmation
+                                                                    affirmationId={aff.id}
+                                                                    affirmationInfo={aff}
+                                                                    refreshDash={this.grabUserCollections}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        })
+                                        : this.state.affirmationResults && this.state.affirmationResults.map((aff, index) => {
+                                            return <div key={index} className="bg-cyan-50 rounded-lg my-2 hover:bg-white">
+                                                    <div className="hideParent flex justify-between items-center space-x-4 p-2">
+                                                        <h4 className="text-cyan-900 font-semibold">{aff.statement}</h4>
+                                                        <div id="buttonOptions" className="flex flex-row justify-end">
+                                                            <div className="hideChild">
+                                                                <EditUserAffirmation
+                                                                    collectionResults={this.state.userCollectionResults}
+                                                                    //thisCollId={0}
+                                                                    affInfo={aff}
+                                                                    refreshDash={this.grabUserCollections}
+                                                                />
+                                                            </div>
+                                                            <div className="hideChild">
+                                                                <DeleteUserAffirmation
+                                                                    affirmationId={aff.id}
+                                                                    affirmationInfo={aff}
+                                                                    refreshDash={this.grabUserCollections}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                    })}
+                                </div>
+                            </div>
+
+
+                        {/* COLUMN 3 = Interval Player */}
+                            <div id="Interval Player" className="col-span-3 px-3">
+                            <h3 className="text-center">Start My Practice!</h3>
+                                <IntervalTimer
+                                    setIntervalFilter={this.setIntervalFilter}
+                                    intervalArray={this.state.intervalArray!}
                                 />
                             </div>
                         </div>
-                         {this.state.affirmationResults && this.state.collectionFilter
-                            ? this.state.affirmationResults.filter(aff => aff.userCollectionId === this.state.collectionFilter).map((aff, index) => {
-                                return <div key={index} className="shadow border rounded-lg">
-                                        <div className="hideParent flex items-center space-x-4 p-2">
-                                            <h4>{aff.statement}</h4>
-                                            <div className="hideChild">
-                                                <EditUserAffirmation
-                                                    collectionResults={this.state.userCollectionResults}
-                                                    //thisCollId={0}   //It sees the [] of userCollections. How can I grab just the collId? 
-                                                    affInfo={aff}
-                                                    refreshDash={this.grabUserCollections}
-                                                />
-                                            </div>
-                                            <div className="hideChild">
-                                                <DeleteUserAffirmation
-                                                    affirmationId={aff.id}
-                                                    affirmationInfo={aff}
-                                                    refreshDash={this.grabUserCollections}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                            })
-                            : this.state.affirmationResults && this.state.affirmationResults.map((aff, index) => {
-                                return <div key={index} className="shadow border rounded-lg">
-                                        <div className="hideParent flex items-center space-x-4 p-2">
-                                            <h4>{aff.statement}</h4>
-                                            <div className="hideChild">
-                                                <EditUserAffirmation
-                                                    collectionResults={this.state.userCollectionResults}
-                                                    //thisCollId={0}
-                                                    affInfo={aff}
-                                                    refreshDash={this.grabUserCollections}
-                                                />
-                                            </div>
-                                            <div className="hideChild">
-                                                <DeleteUserAffirmation
-                                                    affirmationId={aff.id}
-                                                    affirmationInfo={aff}
-                                                    refreshDash={this.grabUserCollections}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                         })}
+                        {/* END OF COLUMNS */}
                     </div>
-
-                    <div id="Interval Player">
-                    <h3 className="text-center">Start My Practice!</h3>
-                         <IntervalTimer
-                            setIntervalFilter={this.setIntervalFilter}
-                            intervalArray={this.state.intervalArray!}
-                         />
-                    </div>
-                </div>
+                </div> 
             </div>
         )
     }
