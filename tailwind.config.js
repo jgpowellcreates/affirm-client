@@ -20,8 +20,9 @@ module.exports = {
         "lightblue": "#8AAFDB",
         "darkblue": "#487bb6",
         "yellow-orange": "#FEDC23",
-        "yellowred": "FAA918",
+        "orange": "#FAA918",
         "dark-orange": "#F47D1F",
+        "deeppurple": "#251323",
       }
     },
     fontFamily: {
@@ -38,6 +39,7 @@ module.exports = {
     extend: {
       backgroundImage: theme => ({
         "practice-start": "url('./assets/mountain-gradient.jpg')",
+        "sunrise-bg": "url('./assets/sunrise-bg.jpeg')"
       })
     },
   },

@@ -59,7 +59,7 @@ export default class EditCateogry extends React.Component <IEditCatProps, IEditC
                 "Authorization": `${this.context.token}`
             })
         })
-        .then(data => {data.json(); console.log(data, bodyObj, `${process.env.REACT_APP_DATABASE_URL}category/edit-${this.props.categoryId}`)})
+        .then(data => data.json())
         .then(() => {this.setState({modalIsOpen: false,categoryName: '',categoryError: false},this.props.refreshDash())})
     }
 

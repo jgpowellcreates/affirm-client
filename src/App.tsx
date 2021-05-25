@@ -1,6 +1,6 @@
 import React, {Component, useContext} from 'react';
 import {BrowserRouter as Router, Switch, Route, RouteComponentProps} from 'react-router-dom';
-import Splash from './components/site/Splash';
+import LogInPage from './components/site/LogInPage';
 import Navigation from './components/site/Navigation';
 import Browse from './components/display/Browse/Browse';
 import MyPractice from './components/display/MyPractice/MyPractice';
@@ -30,32 +30,10 @@ function App() {
             </>
           : 
 
-          <Route path="/" component={Splash} />}
+          <Route path="/" component={LogInPage} />}
         </Router>
       </div>
   );
 }
 
 export default App;
-
-/* interface AuthRouteProps {
-  path: string;
-  component: React.ComponentType;
-  exact?: boolean;
-  history: any;
-}
-
-class AuthRoute extends React.Component<AuthRouteProps, {}> {
-  static contextType = AuthContext;
-  constructor(props: AuthRouteProps) {
-    super(props);
-  }
-
-  render() {
-    if (this.context.roleId < userRoles.admin) {
-      this.props.history.push('/')
-    }
-
-    return <Route path={this.props.path} component={this.props.component} />
-  }
-} */

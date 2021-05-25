@@ -56,7 +56,7 @@ class AddCategory extends Component <IAddCatProps, IAddCatState>{
                 "Authorization": `${this.context.token}`
             })
         })
-        .then(data => {data.json(); console.log(data, bodyObj, `${process.env.REACT_APP_DATABASE_URL}category/new`)})
+        .then(data => {data.json()})
         .then(() => {
             this.setState({modalIsOpen:false, categoryName:'', categoryError: false}, this.props.refreshDash())
         })
