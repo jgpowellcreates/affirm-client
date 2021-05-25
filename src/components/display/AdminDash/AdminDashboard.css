@@ -1,0 +1,7 @@
+.hideParent .hideChild {
+    visibility: hidden;
+}
+
+.hideParent:hover .hideChild {
+    visibility: visible;
+}
