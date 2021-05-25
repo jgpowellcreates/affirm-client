@@ -19,7 +19,7 @@ interface ILoginProps extends RouteComponentProps {
 
 }
 
-class Splash extends Component<ILoginProps,IUserInfoState> {
+class SignInFields extends Component<ILoginProps,IUserInfoState> {
     static contextType = AuthContext;
     context!: React.ContextType<typeof AuthContext>
 
@@ -287,4 +287,4 @@ class Splash extends Component<ILoginProps,IUserInfoState> {
 
 }
 
-export default withRouter(Splash);
+export default withRouter(SignInFields);
