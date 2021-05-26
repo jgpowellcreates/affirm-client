@@ -12,7 +12,7 @@ export interface ICategories {
 export interface ICollections {
     affirmations: IAffirmations[];
     bannerImg: string | undefined | null;
-    description: string | null;
+    description?: string;
     categoryId: number;
     createdAt: string;
     id: number;

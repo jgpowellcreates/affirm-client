@@ -40,7 +40,7 @@ export default class DisplayedStatements extends React.Component <IStatementProp
     }
 
     interval: any;
-    timeVar = 2000;
+    timeVar = 3000;
 
     runTimer = () => {
         this.interval = setInterval(() => this.incrementArray(), this.timeVar)
@@ -48,19 +48,15 @@ export default class DisplayedStatements extends React.Component <IStatementProp
 
     componentDidUpdate() {
         if (this.state.arrayNum < 3) {
-            console.log("Looping my intro text")
         } else if (/* this.state.arrayNum >= 3 &&  */this.state.arrayNum < (this.state.testArray.length -4)) {
-            console.log("statement text")
             clearInterval(this.interval)
             this.timeVar = this.state.defaultInterval;
             this.runTimer();
         } else if (this.state.arrayNum < this.state.testArray.length) {
-            console.log("outro text")
             clearInterval(this.interval)
-            this.timeVar = 2000;
+            this.timeVar = 3000;
             this.runTimer();
         } else {
-            console.log("Run timer is being reset right now w/ an interval of", this.timeVar)
             clearInterval(this.interval)
             this.props.closeModal();
         }
@@ -72,15 +68,14 @@ export default class DisplayedStatements extends React.Component <IStatementProp
 
     incrementArray = () => {
         this.setState({arrayNum: this.state.arrayNum + 1})
-        console.log("Increment Array is running. ArrayNum is currently at:", this.state.arrayNum, "and Time Variable is at:", this.timeVar)
     }
 
 
     render() {
         return(
             <>
-                <div className="bg-gradient-to-b from-overlay-50 to-transparent w-2/3 h-60 rounded-3xl">
-                    <p className="text-cyan-900 text-7xl font-extrabold py-20">
+                <div className="bg-gradient-to-b from-custom-lightblue-light to-transparent w-2/3 h-60 rounded-3xl">
+                    <p className="text-custom-deeppurple text-6xl font-extrabold py-14 px-2">
                         {this.state.testArray[this.state.arrayNum]}
                     </p>
                 </div>

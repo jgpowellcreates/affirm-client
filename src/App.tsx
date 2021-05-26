@@ -1,5 +1,5 @@
-import React, {Component, useContext} from 'react';
-import {BrowserRouter as Router, Switch, Route, RouteComponentProps} from 'react-router-dom';
+import React, {useContext} from 'react';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import LogInPage from './components/site/LogInPage';
 import Navigation from './components/site/Navigation';
 import Browse from './components/display/Browse/Browse';
@@ -7,7 +7,6 @@ import MyPractice from './components/display/MyPractice/MyPractice';
 import AdminDashboard from './components/display/AdminDash/AdminDashboard';
 import Resources from './components/display/Resources/Resources';
 import AuthContext from './components/site/AuthContext';
-import {userRoles} from './types/Models'
 
 function App() {
   const userInfo = useContext(AuthContext);
@@ -29,7 +28,6 @@ function App() {
               </div>
             </>
           : 
-
           <Route path="/" component={LogInPage} />}
         </Router>
       </div>

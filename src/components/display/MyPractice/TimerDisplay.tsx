@@ -22,11 +22,6 @@ export default class TimerDisplay extends React.Component <IDisplayProps, IDispl
         }
     }
 
-    /* componentDidMount() {
-        console.log("Timer Display mounted")
-        console.log(this.props.intervalArray)
-    } */
-
     render() {
         return(
             <>
@@ -65,7 +60,7 @@ export default class TimerDisplay extends React.Component <IDisplayProps, IDispl
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
                 >
-                <div className="inline-block static overflow-y-scroll w-full p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-gradient-to-b from-cyan-500 via-cyan-200 to-amber-500 shadow-xl rounded-2xl" style={{height:"90vh", marginTop: "4em"}}>
+                <div className="inline-block static overflow-y-scroll w-full p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-gradient-to-b from-custom-darkblue via-custom-lightblue to-custom-orange-light shadow-xl rounded-2xl" style={{height:"90vh", marginTop: "4em"}}>
                     <Dialog.Title
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
@@ -86,7 +81,7 @@ export default class TimerDisplay extends React.Component <IDisplayProps, IDispl
                             <div>
                                 <button
                                     type="button"
-                                    className="inline-flex w-min h-min px-4 py-2 text-sm font-medium text-cyan-900 bg-cyan-100 border border-transparent rounded-md hover:bg-cyan-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                                    className="inline-flex w-min h-min px-4 py-2 text-sm font-medium text-custom-deeppurple bg-custom-lightblue-light border border-transparent rounded-md hover:bg-custom-lightblue focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                                     onClick={() => this.props.closeModal()}
                                 >
                                 X

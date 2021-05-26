@@ -7,7 +7,7 @@ import {FaPencilAlt} from 'react-icons/fa';
 interface IEditCollState {
     modalIsOpen: boolean;
     title: string;
-    description: string;
+    description?: string;
     isPublic: boolean;
     categoryId: number;
     titleError: boolean;
@@ -28,8 +28,8 @@ export default class EditCollection extends React.Component <IEditCollProps, IEd
         super(props)
         this.state ={
             modalIsOpen: false,
-            title: '',
-            description: '',
+            title: this.props.collInfo.title,
+            description: this.props.collInfo.description,
             isPublic: true,
             categoryId: this.props.thisCatId,
             titleError: false,
@@ -71,8 +71,7 @@ export default class EditCollection extends React.Component <IEditCollProps, IEd
             })
         })
         .then(data => data.json())
-        .then(() => {this.setState({modalIsOpen: false,
-            title: '',description: '',categoryId: this.props.thisCatId,titleError: false},this.props.refreshDash())})
+        .then(() => {this.setState({modalIsOpen: false,categoryId: this.props.thisCatId,titleError: false},this.props.refreshDash())})
     }
 
     render() {
@@ -82,7 +81,7 @@ export default class EditCollection extends React.Component <IEditCollProps, IEd
                 <button
                 type="button"
                 onClick={() => this.openModal()}
-                className="px-3 py-2 text-sm font-medium text-amber-500 rounded-lg bg-opacity-20 hover:bg-amber-500 hover:bg-opacity-80 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                className="px-3 py-2 text-sm font-medium text-custom-orange rounded-lg hover:bg-custom-yellow hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                 >
                 <FaPencilAlt />
                 </button>
@@ -104,7 +103,7 @@ export default class EditCollection extends React.Component <IEditCollProps, IEd
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
                 >
-                <Dialog.Overlay className="fixed inset-0 bg-white bg-opacity-60" />
+                <Dialog.Overlay className="fixed inset-0 bg-custom-darkblue bg-opacity-60" />
                 </Transition.Child>
 
                 {/* This element is to trick the browser into centering the modal contents. */}
@@ -123,51 +122,51 @@ export default class EditCollection extends React.Component <IEditCollProps, IEd
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
                 >
-                <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-custom-darkblue-dark shadow-xl rounded-2xl">
                     <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-lg font-bold leading-6 text-white"
                     >
                     Edit Collection 
                     </Dialog.Title>
                     <br />
-                    <hr />
-                    <div className="mt-2">
+                    <hr className="text-transparent h-0.5 rounded bg-gradient-to-r from-custom-yellow to-custom-orange-dark" />
+                    <div className="mt-4">
                         {/*THIS IS THE BODY OF THE MODAL*/}
                         <div>
                             <label htmlFor="title" className="block">
-                                <span className="text-gray-700">Title:</span>
+                                <span className="text-white">Title:</span>
 
                                 <input
                                     required
                                     type="text"
-                                    className="mt-1 block w-full rounded-md bg-black bg-opacity-10 p-2 border-transparent focus:border-cyan-900 focus:bg-white focus:ring-0"
+                                    className="block mt-1 py-1 px-2 w-full rounded-md text-custom-deeppurple bg-white bg-opacity-80 border-transparent focus:border-custom-yellow-light focus:bg-white outline-none ring-custom-yellow-light focus:ring-2"
                                     placeholder={this.props.collInfo.title}
                                     value={this.state.title}
                                     onChange={this.handleChange('title')}
                                 />
                             </label>
-                            {this.state.titleError ? <p className="text-alert text-sm">Need to provide a valid collection title.</p> : <></>}
+                            {this.state.titleError ? <p className="text-custom-orange text-sm font-semibold">Need to provide a valid collection title.</p> : <></>}
 
 <                           label htmlFor="title" className="block">
-                                <span className="text-gray-700">Description:</span>
+                                <span className="text-white">Description:</span>
 
                                 <input
                                     required
                                     type="text"
-                                    className="mt-1 block w-full rounded-md bg-black bg-opacity-10 p-2 border-transparent focus:border-cyan-900 focus:bg-white focus:ring-0"
-                                    placeholder={this.props.collInfo.description!}
+                                    className="block mt-1 py-1 px-2 w-full rounded-md text-custom-deeppurple bg-white bg-opacity-80 border-transparent focus:border-custom-yellow-light focus:bg-white outline-none ring-custom-yellow-light focus:ring-2"
+                                    placeholder={this.state.description ? this.state.description : 'Provide a description of this collection'}
                                     value={this.state.description}
                                     onChange={this.handleChange('description')}
                                 />  
                             </label>
 
                             <label htmlFor="categoryId" className="block">
-                                <span className="text-gray-700">Category:</span>
+                                <span className="text-white">Category:</span>
 
                                 <select
                                     required
-                                    className="mt-1 block w-full rounded-md bg-black bg-opacity-10 p-2 border-transparent focus:border-cyan-900 focus:bg-white focus:ring-0"
+                                    className="block mt-1 py-1 px-2 w-full rounded-md text-custom-deeppurple bg-white bg-opacity-80 border-transparent focus:border-custom-yellow-light focus:bg-white outline-none ring-custom-yellow-light focus:ring-2"
                                     //={this.state.categoryId}
                                     defaultValue={this.props.thisCatId}
                                     onChange={this.handleChange('categoryId')}
@@ -185,14 +184,14 @@ export default class EditCollection extends React.Component <IEditCollProps, IEd
                     <div className="mt-4 flex flex-row justify-end">
                     <button
                         type="button"
-                        className="inline-flex justify-center ml-3 px-4 py-2 text-sm font-medium text-amber-900 bg-amber-100 border border-transparent rounded-md hover:bg-amber-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-500"
+                        className="inline-flex justify-center ml-3 px-4 py-2 text-md font-semibold text-custom-deeppurple-light bg-custom-lightblue-light border border-transparent rounded-md hover:bg-custom-lightblue focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-500"
                         onClick={() => this.closeModal()}
                     >
                         Cancel
                     </button>
                     <button
                         type="button"
-                        className="inline-flex justify-center ml-3 px-4 py-2 text-sm font-medium text-cyan-900 bg-cyan-100 border border-transparent rounded-md hover:bg-cyan-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500"
+                        className="inline-flex justify-center ml-3 px-4 py-2 text-md font-semibold text-custom-deeppurple-light bg-custom-orange border border-transparent rounded-md hover:bg-custom-orange-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500"
                         onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.validateForm(e)}>
                         Commit Changes
                     </button>
