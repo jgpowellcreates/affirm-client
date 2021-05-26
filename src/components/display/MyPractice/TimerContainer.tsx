@@ -36,7 +36,13 @@ export default class TimerContainer extends React.Component <ITimerProps, ITimer
     }
 
     openModal() {
-        this.props.setIntervalFilter()
+        console.log("Opened the modal")
+        this.props.setIntervalFilter();
+        setTimeout(()=>this.checkForTimerContents(), 1000);
+    }
+
+    checkForTimerContents() {
+        console.log("I can open now")
         if (this.props.intervalArray.length > 0) {
             this.setState({modalIsOpen: true, errorEmptyArray: false})
         } else {

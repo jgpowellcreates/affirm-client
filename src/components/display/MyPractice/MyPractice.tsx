@@ -64,6 +64,7 @@ class MyPractice extends Component <{},IMyPractice> {
     intervalArrayFilter : IAffirmations[] | null = [];
 
     setIntervalFilter = () => {
+        console.log("Interval timer is running")
         this.intervalArrayFilter?.splice(0,this.intervalArrayFilter.length);
         if (this.state.affirmationResults && this.state.collectionFilter) {
             this.state.affirmationResults.map((aff, index) => {

@@ -48,7 +48,7 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
     }
 
     openModal() {
-        this.setState({modalIsOpen: true})
+        this.setState({modalIsOpen: true, statement:this.props.affInfo.statement, userCollectionId: this.userCollectionId})
     }
 
     handleChange = (prop: keyof IEditAffState) => (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

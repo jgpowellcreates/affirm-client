@@ -41,7 +41,7 @@ export default class EditCollection extends React.Component <IEditCollProps, IEd
     }
 
     openModal() {
-        this.setState({modalIsOpen: true})
+        this.setState({modalIsOpen: true,  title:this.props.collInfo.title, description: this.props.collInfo.description, categoryId: this.props.thisCatId})
     }
 
     handleChange = (prop: keyof IEditCollState) => (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
