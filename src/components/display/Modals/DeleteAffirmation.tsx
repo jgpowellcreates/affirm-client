@@ -54,7 +54,7 @@ export default class DeleteUserAffirmation extends React.Component <IDeleteAffPr
                 <button
                 type="button"
                 onClick={() => this.openModal()}
-                className="px-3 py-2 text-sm font-medium text-alert rounded-lg hover:bg-alert hover:bg-opacity-80 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                className="px-3 py-2 text-custom-orange text-sm font-semibold rounded-lg hover:bg-alert hover:bg-opacity-80 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                 >
                 <FaTrashAlt />
                 </button>
@@ -76,7 +76,7 @@ export default class DeleteUserAffirmation extends React.Component <IDeleteAffPr
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
                 >
-                <Dialog.Overlay className="fixed inset-0 bg-white bg-opacity-60" />
+                <Dialog.Overlay className="fixed inset-0 bg-custom-darkblue bg-opacity-60" />
                 </Transition.Child>
 
                 {/* This element is to trick the browser into centering the modal contents. */}
@@ -95,23 +95,22 @@ export default class DeleteUserAffirmation extends React.Component <IDeleteAffPr
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
                 >
-                <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-custom-darkblue-dark shadow-xl rounded-2xl">
                     <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-lg font-bold leading-6 text-white"
                     >
                     Are you sure?
                     </Dialog.Title>
-                    <hr />
                     <div className="mt-2">
                     
                         {/* THIS IS THE BODY OF THE MODAL */}
                         {this.props.affirmationInfo.userCollectionId
                             ? <>
-                                <p>{this.props.affirmationInfo.userCollectionId.length} users have this affirmation saved.</p>
+                                <p className="text-white">{this.props.affirmationInfo.userCollectionId.length} users have this affirmation saved.</p>
                               </>
                             : <>
-                                <p>This action will not effect any users.</p>
+                                <p className="text-white">This action will not effect any users.</p>
                             </>
                             
                         }
@@ -121,14 +120,14 @@ export default class DeleteUserAffirmation extends React.Component <IDeleteAffPr
                     <div className="mt-4 flex flex-row justify-end">
                     <button
                         type="button"
-                        className="inline-flex ml-3 px-4 py-2 text-sm font-medium text-amber-900 bg-amber-100 border border-transparent rounded-md hover:bg-amber-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                        className="inline-flex justify-center ml-3 px-4 py-2 text-md font-semibold text-custom-deeppurple-light bg-custom-lightblue-light border border-transparent rounded-md hover:bg-custom-lightblue focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-500"
                         onClick={() => this.closeModal()}
                     >
                         Cancel
                     </button>
                     <button
                         type="button"
-                        className="inline-flex ml-3 px-4 py-2 text-sm font-medium bg-alert bg-opacity-40 border border-transparent rounded-md hover:bg-opacity-70 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                        className="inline-flex justify-center ml-3 px-4 py-2 text-md font-semibold text-custom-deeppurple-light bg-custom-orange border border-transparent rounded-md hover:bg-custom-orange-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500"
                         onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.deleteAffirmation(e)}
                     >
                         Yes, Delete

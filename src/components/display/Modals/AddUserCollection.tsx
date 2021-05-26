@@ -1,7 +1,6 @@
 import React, {Fragment} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import AuthContext from '../../site/AuthContext';
-import { IUserCollections } from '../../../types/Models';
 import {FaPlus} from 'react-icons/fa'
 
 interface IAddUseCollState {
@@ -71,7 +70,7 @@ export default class AddCollection extends React.Component <IAddUseCollProps, IA
                 <button
                 type="button"
                 onClick={() => this.openModal()}
-                className="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-full bg-opacity-50 hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                className="px-4 py-2 text-sm font-medium text-white bg-custom-amber rounded-full hover:bg-custom-amber-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                 >
                 <FaPlus />
                 </button>
@@ -93,7 +92,7 @@ export default class AddCollection extends React.Component <IAddUseCollProps, IA
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
                 >
-                <Dialog.Overlay className="fixed inset-0 bg-white bg-opacity-60" />
+                <Dialog.Overlay className="fixed inset-0 bg-custom-darkblue bg-opacity-60" />
                 </Transition.Child>
 
                 {/* This element is to trick the browser into centering the modal contents. */}
@@ -112,40 +111,40 @@ export default class AddCollection extends React.Component <IAddUseCollProps, IA
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
                 >
-                <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-custom-darkblue-dark shadow-xl rounded-2xl">
                     <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-lg font-bold leading-6 text-white"
                     >
                     Create Your Own Collection
                     </Dialog.Title>
                     <br />
-                    <hr />
-                    <div className="mt-2">
+                    <hr className="text-transparent h-0.5 rounded bg-gradient-to-r from-custom-yellow to-custom-orange-dark" />
+                    <div className="mt-4">
                     
                         {/* THIS IS THE BODY OF THE MODAL */}
                         <div>
                             <label htmlFor="title" className="block">
-                                <span className="text-gray-700">Title:</span>
+                                <span className="text-white font-bold">Title:</span>
 
                                 <input
                                     required
                                     type="text"
-                                    className="mt-1 block w-full rounded-md bg-black bg-opacity-10 p-2 border-transparent focus:border-cyan-900 focus:bg-white focus:ring-0"
+                                    className="block mt-1 py-1 px-2 w-full rounded-md text-custom-deeppurple bg-white bg-opacity-80 border-transparent focus:border-custom-yellow-light focus:bg-white outline-none ring-custom-yellow-light focus:ring-2"
                                     placeholder="New Collection Title"
                                     value={this.state.title}
                                     onChange={this.handleChange('title')}
                                 />
                             </label>
-                            {this.state.titleError ? <p className="text-alert text-sm">'Title' field cannot be empty.</p> : <></>}
+                            {this.state.titleError ? <p className="text-custom-orange text-sm font-semibold">'Title' field cannot be empty.</p> : <></>}
 
 <                           label htmlFor="title" className="block">
-                                <span className="text-gray-700">Description:</span>
+                                <span className="text-white font-bold">Description:</span>
 
                                 <input
                                     required
                                     type="text"
-                                    className="mt-1 block w-full rounded-md bg-black bg-opacity-10 p-2 border-transparent focus:border-cyan-900 focus:bg-white focus:ring-0"
+                                    className="block mt-1 py-1 px-2 w-full rounded-md text-custom-deeppurple bg-white bg-opacity-80 border-transparent focus:border-custom-yellow-light focus:bg-white outline-none ring-custom-yellow-light focus:ring-2"
                                     placeholder='Provide a description of this collection'
                                     value={this.state.description}
                                     onChange={this.handleChange('description')}
@@ -159,14 +158,14 @@ export default class AddCollection extends React.Component <IAddUseCollProps, IA
                     <div className="mt-4 flex flex-row justify-end">
                     <button
                         type="button"
-                        className="inline-flex justify-center ml-3 px-4 py-2 text-sm font-medium text-amber-900 bg-amber-100 border border-transparent rounded-md hover:bg-amber-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-500"
+                        className="inline-flex justify-center ml-3 px-4 py-2 text-md font-semibold text-custom-deeppurple-light bg-custom-lightblue-light border border-transparent rounded-md hover:bg-custom-lightblue focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-500"
                         onClick={() => this.closeModal()}
                     >
                         Cancel
                     </button>
                     <button
                         type="button"
-                        className="inline-flex justify-center ml-3 px-4 py-2 text-sm font-medium text-cyan-900 bg-cyan-100 border border-transparent rounded-md hover:bg-cyan-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500"
+                        className="inline-flex justify-center ml-3 px-4 py-2 text-md font-semibold text-custom-deeppurple-light bg-custom-orange border border-transparent rounded-md hover:bg-custom-orange-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500"
                         onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.validateForm(e)}
                     >
                         Create Collection

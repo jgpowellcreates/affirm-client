@@ -1,5 +1,5 @@
 import React from 'react';
-import Splash from './Splash';
+import SignInFields from './SignInFields';
 import {RouteComponentProps} from 'react-router-dom';
 import {logo} from '../../assets/index';
 
@@ -17,7 +17,7 @@ export default class LogInPage extends React.Component <RouteComponentProps<{}>,
                 <div id="body" className="flex justify-center items-center h-full pb-8">
                     <div id="formArea" className="flex justify-center h-full pb-8 pt-2 w-2/5 ml-8 rounded-2xl">
                         <div id="formHolder"  className=" bg-custom-deeppurple rounded-xl bg-opacity-70 w-10/12">
-                            <Splash />
+                            <SignInFields />
                         </div>
                     </div>
                     <div id="splashContent" className="w-3/5 h-full flex flex-col justify-center items-center ml-6">

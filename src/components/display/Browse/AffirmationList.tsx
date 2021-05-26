@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import AuthContext from '../../site/AuthContext';
-import {IAffirmations, ICollections} from '../../../types/Models';
+import {IAffirmations} from '../../../types/Models';
 import {FaBookmark, FaRegBookmark} from 'react-icons/fa';
 
 interface IAffList {
@@ -10,7 +10,7 @@ interface IAffList {
 
 interface IAffBrowseProps {
     title: string | null;
-    description: string | null;
+    description?: string;
     affirmations: IAffirmations[] | null;
     update: CallableFunction;
 }
@@ -38,7 +38,7 @@ export default class AffirmationList extends React.Component <IAffBrowseProps, I
                 <button
                 type="button"
                 onClick={() => this.openModal()}
-                className="px-4 py-2 text-sm font-medium text-white bg-cyan-800 rounded-md bg-opacity-50 hover:bg-opacity-70 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                className="px-4 py-2 text-md font-bold text-white bg-c rounded-md border-custom-orange-dark border-2 bg-custom-orange bg-opacity-100 hover:bg-custom-amber hover:border-custom-amber-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                 >
                 View Collection
                 </button>
@@ -60,7 +60,7 @@ export default class AffirmationList extends React.Component <IAffBrowseProps, I
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
                 >
-                <Dialog.Overlay className="fixed inset-0 bg-white bg-opacity-60" />
+                <Dialog.Overlay className="fixed inset-0 bg-custom-darkblue bg-opacity-60" />
                 </Transition.Child>
 
                 {/* This element is to trick the browser into centering the modal contents. */}
@@ -82,12 +82,12 @@ export default class AffirmationList extends React.Component <IAffBrowseProps, I
                 <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
                     <Dialog.Title
                     as="h3"
-                    className="text-lg leading-6 text-cyan-900 font-semibold"
+                    className="text-lg leading-6 text-custom-deeppurple font-semibold"
                     >
                     {this.props.title}
                     </Dialog.Title>
                     <div className="mt-2">
-                        <p className="text-md text-cyan-900 font-medium">{this.props.description}</p>
+                        <p className="text-md text-custom-deeppurple font-medium">{this.props.description}</p>
                         {this.props.affirmations && this.props.affirmations.length > 0
                             ? <FavoriteAffs affirmations={this.props.affirmations} update={this.props.update}/>
                             : <p>Oops! This is an empty collection!</p>
@@ -145,7 +145,6 @@ class FavoriteAffs extends React.Component <IFavoriteAffProps, IFavoriteAffState
     addToMyPractice(e:React.MouseEvent<HTMLButtonElement>, aff:IAffirmations) {
         if (e) {e.preventDefault(); }
 
-        console.log("Adding practice fired")
         //This looks at all of the User's Collections and grabs the oldest one (likely the one auto-generated for them).
         let allCollections : number[]= [];
         this.context.allUserColls.map((userColl) => allCollections.push(userColl.id));
@@ -166,13 +165,13 @@ class FavoriteAffs extends React.Component <IFavoriteAffProps, IFavoriteAffState
                 "Authorization": `${this.context.token}`
             })
         })
-        .then(data => {data.json(); console.log(data)})
+        .then(data => data.json())
         .then(() => this.props.update())
     }
 
     removePractice(e:React.MouseEvent<HTMLButtonElement>, aff:IAffirmations) {
         if (e) {e.preventDefault(); }
-        let deletedId = this.context.allAffs.find(x => x.statement == aff.statement)?.id
+        let deletedId = this.context.allAffs.find(x => x.statement === aff.statement)?.id
 
         fetch(`${process.env.REACT_APP_DATABASE_URL}affs/delete-${deletedId}`, {
             method: "DELETE",
@@ -181,7 +180,7 @@ class FavoriteAffs extends React.Component <IFavoriteAffProps, IFavoriteAffState
                 "Authorization": `${this.context.token}`
             })
         })
-        .then(data => {data.json(); console.log(data)})
+        .then(data => data.json())
         .then(() => this.props.update())
     }
 
@@ -190,28 +189,28 @@ class FavoriteAffs extends React.Component <IFavoriteAffProps, IFavoriteAffState
             <>
                 {this.props.affirmations?.map((aff, index) => {
                     return(
-                        <div key={index} className="rounded-lg shadow-md my-2 bg-cyan-50 border-cyan-800 border-opacity-50 border-2">
+                        <div key={index} className="rounded-lg shadow-md my-2 bg-custom-lightblue-light bg-opacity-40 hover:bg-opacity-20 border-custom-darkblue border-opacity-50 border-2 hover:border-custom-yellow">
                             <div className="flex justify-between items-center space-x-4 py-2 px-4 m-2">
-                                <h4 className="text-cyan-900 font-semibold">{aff.statement}</h4>
-                                <div id="buttonOption" className="flex justify-end">
+                                <h4 className="text-custom-deeppurple font-semibold">{aff.statement}</h4>
+                                <div id="buttonOption" className="flex justify-end outline-none ring-0">
                                     {this.context.allAffs.map((owned) => owned.statement).includes(aff.statement)
                                         ? 
                                         <>
                                             <button
-                                            className="flex flex-row px-1 text-cyan-800"
+                                            className="flex flex-row px-1 text-custom-orange outline-none ring-0"
                                             onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.removePractice(e,aff)}
                                             >
-                                                <p className="pr-2">Remove</p>
+                                                <p className="pr-2 font-semibold">Remove</p>
                                                 <FaBookmark className="self-center"/>
                                             </button>
                                         </>
                                         :
                                         <>
                                             <button
-                                            className="flex flex-row px-1 text-cyan-800"
+                                            className="flex flex-row px-1 text-custom-orange outline-none ring-0"
                                             onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.addToMyPractice(e,aff)}
                                             >
-                                                <p className="pr-2">Add</p>
+                                                <p className="pr-2 font-semibold">Add</p>
                                                 <FaRegBookmark className="self-center" />
                                             </button>
                                         </>
