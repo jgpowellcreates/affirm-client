@@ -59,8 +59,6 @@ export default class AddAffirmation extends React.Component <IAddAffProps, IAddA
     validateForm(e:React.MouseEvent<HTMLButtonElement>) {
         if (e) {e.preventDefault(); }
 
-        console.log("Start of validation.", this.state)
-
         let statementError: boolean;
         let collectionError: boolean;
         let userCollectionError: boolean;
@@ -70,19 +68,16 @@ export default class AddAffirmation extends React.Component <IAddAffProps, IAddA
         this.state.userCollectionId !== null ? userCollectionError = false : userCollectionError = true;
 
         if (this.state.isUserMade) {
-            console.log("Start of if", this.state)
             if (!statementError && !userCollectionError) {
                 this.createAffirmation();
             } else {
                 this.setState({statementError: statementError, collectionError:userCollectionError})
-                console.log("End of userMade", this.state)
             }
         } else {
             if (!statementError && !collectionError) {
                 this.createAffirmation();
             } else {
                 this.setState({statementError: statementError, collectionError: collectionError})
-                console.log("End of siteMade", this.state)
             }
         }
     }
@@ -102,7 +97,7 @@ export default class AddAffirmation extends React.Component <IAddAffProps, IAddA
                 "Authorization": `${this.context.token}`
             })
         })
-        .then(data => {data.json(); console.log(data)})
+        .then(data => data.json())
         .then(() => {this.setState({modalIsOpen:false,statement:'',collectionId:null,userCollectionId:null,statementError:null,collectionError:null}); this.props.refreshDash()})
     }
 
@@ -113,7 +108,7 @@ export default class AddAffirmation extends React.Component <IAddAffProps, IAddA
                 <button
                 type="button"
                 onClick={() => this.openModal()}
-                className="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-full bg-opacity-50 hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                className="px-4 py-2 text-sm font-medium text-white bg-custom-amber rounded-full hover:bg-custom-amber-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                 >
                 <FaPlus />
                 </button>
@@ -135,7 +130,7 @@ export default class AddAffirmation extends React.Component <IAddAffProps, IAddA
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
                 >
-                <Dialog.Overlay className="fixed inset-0 bg-white bg-opacity-60" />
+                <Dialog.Overlay className="fixed inset-0 bg-custom-darkblue bg-opacity-60" />
                 </Transition.Child>
 
                 {/* This element is to trick the browser into centering the modal contents. */}
@@ -154,39 +149,41 @@ export default class AddAffirmation extends React.Component <IAddAffProps, IAddA
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
                 >
-                <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-custom-darkblue-dark shadow-xl rounded-2xl">
                     <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-lg font-bold leading-6 text-white"
                     >
                     Create a New Affirmation
                     </Dialog.Title>
-                    <div className="mt-2">
+                    <br />
+                    <hr className="text-transparent h-0.5 rounded bg-gradient-to-r from-custom-yellow to-custom-orange-dark" />
+                    <div className="mt-4">
                     
                         {/* THIS IS THE BODY OF THE MODAL */}
                         <div>
                             <label htmlFor="statement" className="block">
-                                <span className="text-gray-700">Name:</span>
+                                <span className="text-white">Name:</span>
 
                                 <input
                                     required
                                     type="text"
-                                    className="mt-1 block w-full rounded-md bg-black bg-opacity-10 p-2 border-transparent focus:border-cyan-900 focus:bg-white focus:ring-0"
+                                    className="block mt-1 py-1 px-2 w-full rounded-md text-custom-deeppurple bg-white bg-opacity-80 border-transparent focus:border-custom-yellow-light focus:bg-white outline-none ring-custom-yellow-light focus:ring-2"
                                     placeholder="New Affirmation Statement"
                                     value={this.state.statement}
                                     onChange={this.handleChange('statement')}
                                 />
                             </label>
-                            {this.state.statementError ? <p className="text-alert text-sm">Need to submit a valid affirmation.</p> : <></>}
+                            {this.state.statementError ? <p className="text-custom-orange text-sm font-semibold">Need to submit a valid affirmation.</p> : <></>}
 
 
                             {!this.state.isUserMade         //if isUserMade is false, sets Collection Info to check/set collections. Not userCollections
                             ?   <label htmlFor="collectionId" className="block">
-                                    <span className="text-gray-700">Collection:</span>
+                                    <span className="text-white">Collection:</span>
 
                                     <select
                                         required
-                                        className="mt-1 block w-full rounded-md bg-black bg-opacity-10 p-2 border-transparent focus:border-cyan-900 focus:bg-white focus:ring-0"
+                                        className="block mt-1 py-1 px-2 w-full rounded-md text-custom-deeppurple bg-white bg-opacity-80 border-transparent focus:border-custom-yellow-light focus:bg-white outline-none ring-custom-yellow-light focus:ring-2"
                                         onChange={this.handleChange('collectionId')}
                                     >
                                         <option value="" disabled selected>Pick a Collection</option>
@@ -197,11 +194,11 @@ export default class AddAffirmation extends React.Component <IAddAffProps, IAddA
                                 </label>
                                 
                             :   <label htmlFor="userCollectionId" className="block">  {/* but if isUserMade is truthy, it will check and set userCollections */}
-                                    <span className="text-gray-700">Collection:</span>
+                                    <span className="text-white">Collection:</span>
 
                                     <select
                                         required
-                                        className="mt-1 block w-full rounded-md bg-black bg-opacity-10 p-2 border-transparent focus:border-cyan-900 focus:bg-white focus:ring-0"
+                                        className="block mt-1 py-1 px-2 w-full rounded-md text-custom-deeppurple bg-white bg-opacity-80 border-transparent focus:border-custom-yellow-light focus:bg-white outline-none ring-custom-yellow-light focus:ring-2"
                                         onChange={this.handleChange('userCollectionId')}
                                     >
                             
@@ -212,7 +209,7 @@ export default class AddAffirmation extends React.Component <IAddAffProps, IAddA
                                     </select>
                                 </label>
                             }
-                            {this.state.collectionError ? <p className="text-alert text-sm">Affirmation must be added to a collection.</p> : <></>}
+                            {this.state.collectionError ? <p className="text-custom-orange text-sm font-semibold">Affirmation must be added to a collection.</p> : <></>}
 
                             
 
@@ -223,14 +220,14 @@ export default class AddAffirmation extends React.Component <IAddAffProps, IAddA
                     <div className="mt-4 flex flex-row justify-end">
                         <button
                             type="button"
-                            className="inline-flex justify-center ml-3 px-4 py-2 text-sm font-medium text-amber-900 bg-amber-100 border border-transparent rounded-md hover:bg-amber-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-500"
+                            className="inline-flex justify-center ml-3 px-4 py-2 text-md font-semibold text-custom-deeppurple-light bg-custom-lightblue-light border border-transparent rounded-md hover:bg-custom-lightblue focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-500"
                             onClick={() => this.closeModal()}
                         >
                             Cancel
                         </button>
                         <button
                             type="button"
-                            className="inline-flex justify-center ml-3 px-4 py-2 text-sm font-medium text-cyan-900 bg-cyan-100 border border-transparent rounded-md hover:bg-cyan-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500"
+                        className="inline-flex justify-center ml-3 px-4 py-2 text-md font-semibold text-custom-deeppurple-light bg-custom-orange border border-transparent rounded-md hover:bg-custom-orange-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500"
                             onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.validateForm(e)}
                         >
                             Create Affirmation

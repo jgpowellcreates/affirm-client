@@ -6,7 +6,7 @@ import DeleteUserCollection from '../Modals/DeleteUserCollection';
 import AddAffirmation from '../Modals/AddAffirmation';
 import EditUserAffirmation from '../Modals/EditUserAffirmation';
 import DeleteUserAffirmation from '../Modals/DeleteUserAffirmation';
-import IntervalTimer from './IntervalTimer';
+import TimerContainer from './TimerContainer';
 import {IAffirmations, IUserCollections} from '../../../types/Models';
 
 interface IMyPractice {
@@ -20,7 +20,7 @@ class MyPractice extends Component <{},IMyPractice> {
     static contextType = AuthContext;
     context!: React.ContextType<typeof AuthContext>
 
-    constructor(props : any){
+    constructor(props : {}){
         super(props);
         this.state = {
             userCollectionResults: null,
@@ -36,7 +36,7 @@ class MyPractice extends Component <{},IMyPractice> {
 
     //I'll refer to this as "refreshDash" when passing it as a prop so that it matches the AdminDash props setup.
     grabUserCollections = () => {
-        let affirmationArray:any = [];
+        let affirmationArray:IAffirmations[] = [];
 
         fetch(`${process.env.REACT_APP_DATABASE_URL}mycollections/`, {
             headers: new Headers({
@@ -46,10 +46,9 @@ class MyPractice extends Component <{},IMyPractice> {
         })
         .then(data => data.json())
         .then(data => {
-            console.log(data)
             if (data.userCollection) {
                 data.userCollection.map((coll:IUserCollections, index:number) => {
-                    affirmationArray.push(...coll.affirmations)
+                    return affirmationArray.push(...coll.affirmations)
                 })
                 this.setState({
                     userCollectionResults: data.userCollection,
@@ -65,22 +64,16 @@ class MyPractice extends Component <{},IMyPractice> {
     intervalArrayFilter : IAffirmations[] | null = [];
 
     setIntervalFilter = () => {
-        console.log("Starting the logic!")
         this.intervalArrayFilter?.splice(0,this.intervalArrayFilter.length);
-        console.log("IntervalArrayFilter is reset:", this.intervalArrayFilter)
         if (this.state.affirmationResults && this.state.collectionFilter) {
             this.state.affirmationResults.map((aff, index) => {
-                //console.log("Mapping affs w/ a filter set")
                 if (aff.userCollectionId === this.state.collectionFilter) {
                     this.intervalArrayFilter?.push(aff)
-                    console.log("Aff",aff.id,"was added to interval array")
-                    //console.log("Run the function w/", this.intervalArrayFilter)
                 }
             })
         } else {
-            console.log("There is no filter. All affs added to interval array")
             this.state.affirmationResults?.map((aff, index) => {
-                this.intervalArrayFilter?.push(aff)
+                return this.intervalArrayFilter?.push(aff)
             })
             // this.setState({intervalArray: this.state.affirmationResults})
         }
@@ -88,32 +81,24 @@ class MyPractice extends Component <{},IMyPractice> {
     }
 
     updateIntervalArray() {
-        console.log(this.intervalArrayFilter && this.intervalArrayFilter.length)
-        this.setState({intervalArray: this.intervalArrayFilter}, this.fireIntervalModal)
-    }
-
-    fireIntervalModal() {
-        if (this.state.intervalArray!.length > 0) {
-            console.log("Firing Interval Timer w/ :", this.state.intervalArray)
-        } else {
-            console.log("Can't use this feature w/o affirmations selected")
-        }
+        this.setState({intervalArray: this.intervalArrayFilter})
     }
 
     render(){
         return(
             <div id="activePracticeWindow" className="w-full h-screen">
-                <div id="backgroundColor" className=" h-screen bg-gradient-to-r from-cyan-500 via-cyan-500 to-amber-500">
-                    <div className="h-20 bg-gradient-to-r from-cyan-500 via-cyan-500 to-amber-500">
-                        <h3 className="text-center pt-6 text-cyan-50 text-3xl font-bold">My Practice</h3>
+                <div id="backgroundColor" className=" h-screen bg-gradient-to-r from-custom-darkblue via-custom-darkblue to-custom-darkblue-dark">
+                    <div className="h-20 bg-gradient-to-r from-custom-darkblue via-custom-darkblue to-custom-darkblue-dark">
+                        <h3 className="text-center pt-6 text-white text-3xl font-bold">My Practice</h3>
                     </div>
 
-                    <div id="navCurve" className="h-full bg-white rounded-tl-3xl pl-3 pt-3">
+                    <div id="navCurveBGColor" className="h-full rounded-tl-3xl bg-gradient-to-b from-custom-lightblue-light via-custom-orange to-custom-deeppurple-shade">
+                    <div id="navCurve" className="h-full bg-custom-lightblue bg-opacity-80 rounded-tl-3xl pl-3 pt-3">
                         
                         <div className="grid grid-cols-12">
                             <div className="col-span-4 flex flex-row justify-center content-end">
                                 <div className="flex content-end text-center min-w-max pl-4 mx-3">
-                                    <h4 className="bg-cyan-500 px-5 pt-1 rounded-t-lg text-lg text-white font-bold">My Collections</h4>
+                                    <h4 className="bg-white px-5 pt-1 rounded-t-lg text-lg text-custom-deeppurple font-bold">My Collections</h4>
                                 </div>
                                 <div>
                                     <AddUserCollection refreshDash={this.grabUserCollections}/>
@@ -121,7 +106,7 @@ class MyPractice extends Component <{},IMyPractice> {
                             </div>
                             <div className="col-span-5 flex flex-row justify-center content-end">
                                 <div className="flex content-end text-center min-w-max pl-4 mx-3">
-                                    <h4 className="bg-cyan-500 px-5 pt-1 rounded-t-lg text-lg text-white font-bold">My Affirmations</h4>
+                                    <h4 className="bg-white px-5 pt-1 rounded-t-lg text-lg text-custom-deeppurple font-bold">My Affirmations</h4>
                                 </div>
                                 <div>
                                     <AddAffirmation 
@@ -132,29 +117,29 @@ class MyPractice extends Component <{},IMyPractice> {
                             </div>
                             <div className="col-span-3 flex justify-center pr-6">
                                 <div className="flex content-end text-center min-w-max pl-4 mx-3">
-                                    <h4 className="bg-cyan-500 px-5 pt-1 rounded-t-lg text-lg text-white font-bold">Start My Practice</h4>
+                                    <h4 className="bg-white px-5 pt-1 rounded-t-lg text-lg text-custom-deeppurple font-bold">Start My Practice</h4>
                                 </div>
                             </div>
                         </div>
 
                         {/* COLUMN DETAILS */}
-                        <div className="grid grid-cols-12">
+                        <div className="grid grid-cols-12 h-full overflow-y-auto">
                             
                         {/* COLUMN 1 = Collections */}
-                            <div id="COL 1" className="col-span-4 px-3">
+                            <div id="COL 1" className="col-span-4 px-1">
                                 {/* HEADER REPLACES THIS SPACE */}
-                                <div id="contentWrapper" className="px-2 py-1 rounded-lg bg-cyan-500">
-                                    <div className="bg-cyan-50 rounded-lg hover:bg-white">
-                                        <div className="p-2 my-1"
+                                <div id="contentWrapper" className="px-2 py-1 rounded-lg bg-white">
+                                    <div className="bg-custom-lightblue-light rounded-lg hover:bg-opacity-30">
+                                        <div className="p-3 my-1"
                                         onClick={() =>  this.setState({collectionFilter: null})}>
-                                            <h4 className="text-cyan-900 font-semibold">All Collections</h4>
+                                            <h4 className="text-cycustom-deeppurple-light font-semibold">All Collections</h4>
                                         </div>
                                     </div>
                                     {this.state.userCollectionResults && this.state.userCollectionResults.map((coll, index) => {
-                                        return <div key={index} className="bg-cyan-50 rounded-lg my-2 hover:bg-white">
-                                                <div className="hideParent flex justify-between items-center space-x-4 p-2"
+                                        return <div key={index} className="bg-custom-lightblue-light rounded-lg my-1 hover:bg-opacity-30">
+                                                <div className="hideParent flex justify-between items-center space-x-4 p-3"
                                                 onClick={() => this.setState({collectionFilter: coll.id})}>
-                                                    <h4 className="text-cyan-900 font-semibold">{coll.title}</h4>
+                                                    <h4 className="text-cycustom-deeppurple-light font-semibold">{coll.title}</h4>
                                                     <div id="buttonOptions" className="flex flex-row justify-end">
                                                         <div className="hideChild">
                                                             <EditUserCollection collInfo={coll} refreshDash={this.grabUserCollections}/>
@@ -170,19 +155,19 @@ class MyPractice extends Component <{},IMyPractice> {
                             </div>
 
                         {/* COLUMN 2 = Affirmations */}
-                            <div className="col-span-5 px-3">
+                            <div className="col-span-5 px-1">
                                 {/* HEADER REPLACES THIS SPACE */}
-                                <div id="contentWrapper" className="px-2 py-1 rounded-lg bg-cyan-500">
+                                <div id="contentWrapper" className="px-2 py-1 rounded-lg bg-white">
                                     {this.state.affirmationResults && this.state.collectionFilter
                                         ? this.state.affirmationResults.filter(aff => aff.userCollectionId === this.state.collectionFilter).map((aff, index) => {
-                                            return <div key={index} className="bg-cyan-50 rounded-lg my-2 hover:bg-white">
-                                                    <div className="hideParent flex justify-between items-center space-x-4 p-2">
-                                                        <h4 className="text-cyan-900 font-semibold">{aff.statement}</h4>
+                                            return <div key={index} className="bg-custom-lightblue-light rounded-lg hover:bg-opacity-30">
+                                                    <div className="hideParent flex justify-between items-center space-x-4 p-2 my-1">
+                                                        <h4 className="text-cycustom-deeppurple-light font-semibold">{aff.statement}</h4>
                                                         <div id="buttonOptions" className="flex flex-row justify-end">
                                                             <div className="hideChild">
                                                                 <EditUserAffirmation
                                                                     collectionResults={this.state.userCollectionResults}
-                                                                    //thisCollId={0}   //It sees the [] of userCollections. How can I grab just the collId? 
+                                                                    //thisCollId={aff.userCollectionId![0]}   //It sees the [] of userCollections. How can I grab just the collId? 
                                                                     affInfo={aff}
                                                                     refreshDash={this.grabUserCollections}
                                                                 />
@@ -199,14 +184,14 @@ class MyPractice extends Component <{},IMyPractice> {
                                                 </div>
                                         })
                                         : this.state.affirmationResults && this.state.affirmationResults.map((aff, index) => {
-                                            return <div key={index} className="bg-cyan-50 rounded-lg my-2 hover:bg-white">
-                                                    <div className="hideParent flex justify-between items-center space-x-4 p-2">
-                                                        <h4 className="text-cyan-900 font-semibold">{aff.statement}</h4>
+                                            return <div key={index} className="bg-custom-lightblue-light rounded-lg hover:bg-opacity-30">
+                                                    <div className="hideParent flex justify-between items-center space-x-4 p-2 my-1">
+                                                        <h4 className="text-cycustom-deeppurple-light font-semibold">{aff.statement}</h4>
                                                         <div id="buttonOptions" className="flex flex-row justify-end">
                                                             <div className="hideChild">
                                                                 <EditUserAffirmation
                                                                     collectionResults={this.state.userCollectionResults}
-                                                                    //thisCollId={0}
+                                                                    // thisCollId={aff.userCollectionId}  
                                                                     affInfo={aff}
                                                                     refreshDash={this.grabUserCollections}
                                                                 />
@@ -227,9 +212,9 @@ class MyPractice extends Component <{},IMyPractice> {
 
 
                         {/* COLUMN 3 = Interval Player */}
-                            <div id="Interval Player" className="col-span-3 px-3 pr-6 h-full">
-                                <div id="contentWrapper" className="px-2 py-2 rounded-3xl bg-cyan-500">
-                                <IntervalTimer
+                            <div id="Interval Player" className="col-span-3 px-1 pr-3 h-full">
+                                <div id="contentWrapper" className="px-2 py-2 rounded-3xl bg-white">
+                                <TimerContainer
                                     setIntervalFilter={this.setIntervalFilter}
                                     intervalArray={this.state.intervalArray!}
                                 />
@@ -238,6 +223,7 @@ class MyPractice extends Component <{},IMyPractice> {
                         </div>
                         {/* END OF COLUMNS */}
                     </div>
+                    </div> {/* This is a gradient behind the nav curve. */}
                 </div> 
             </div>
         )

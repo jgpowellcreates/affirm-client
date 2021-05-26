@@ -107,14 +107,14 @@ export class AuthContextProvider extends React.Component<{},IAuthState> {
                 return res.json();
             })
             .then((data) => {
-                console.log("Context fetch:", data)
+                //console.log("Context fetch:", data)
                 let allAffirmations : IAffirmations[] = [];
 
                 if (data.id) {
                     
                     if (data.userCollectionInfo.length > 0) {
                         data.userCollectionInfo.map((coll:IUserCollections) => {
-                            allAffirmations.push(...coll.affirmations)
+                            return allAffirmations.push(...coll.affirmations)
                         })
 
                     } else {

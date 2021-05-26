@@ -8,21 +8,48 @@ module.exports = {
       transparent: 'transparent',
       current: 'currentColor',
       cyan: colors.cyan,
-      green: colors.green,
-      violet: colors.violet,
-      amber: colors.amber,
+      //amber: colors.amber,
       black: colors.black,
       white: colors.white,
       alert: colors.red[600],
-      overlay: colors.trueGray,
+      //overlay: colors.trueGray,
       custom: {
-        "pink":"#E3958A",
-        "lightblue": "#8AAFDB",
-        "darkblue": "#487bb6",
-        "yellow-orange": "#FEDC23",
-        "orange": "#FAA918",
-        "dark-orange": "#F47D1F",
-        "deeppurple": "#251323",
+        pink: {
+          light: '#EFC3BD',
+          DEFAULT: "#E3958A",
+          dark: '#D7695B'  
+        },
+        lightblue: {
+          light: '#C1D4EC',
+          DEFAULT: "#8AAFDB",
+          dark: '#6394CF'
+        },
+        darkblue: {
+          light:'#6F96C3',
+          DEFAULT: "#4877AD",
+          dark: '#365981'
+        },
+        yellow: {
+          light: '#FEE971',
+          DEFAULT: "#FEDC23",
+          dark: '#F4CF01',
+        },
+        orange: {
+          light: '#FCC25F',
+          DEFAULT: "#FAA918",
+          dark: '#DC8D04'
+        },
+        amber: {
+          light: '#F8A363',
+          DEFAULT: "#F47D1F",
+          dark: '#D6630A'
+        },
+        deeppurple: {
+          shade: '#793E72',
+          light: '#512A4C',
+          DEFAULT: "#361C33",
+          dark: '#0D070D'
+        }
       }
     },
     fontFamily: {

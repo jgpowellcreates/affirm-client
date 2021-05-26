@@ -7,13 +7,13 @@ import {FaPencilAlt} from 'react-icons/fa';
 interface IEditAffState {
     modalIsOpen: boolean;
     statement: string;
-    userCollectionId?: number | null;
+    userCollectionId?: number;
     statementError: boolean;
 }
 
 interface IEditAffProps {
     collectionResults?: IUserCollections[] | null;
-    thisCollId?: number | null;
+    // thisCollId: number;
     affInfo: IAffirmations;
     refreshDash: CallableFunction;
 }
@@ -26,10 +26,21 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
         super(props)
         this.state ={
             modalIsOpen: false,
-            statement: '',
-            userCollectionId: this.props.thisCollId,
+            statement: this.props.affInfo.statement,
+            userCollectionId: this.userCollectionId,
             statementError: false,
         }
+    }
+
+    //The line below is accounting for a model in the database that's use was changed.
+    //The database models have not been updated to match.
+    userCollectionId:any;
+
+    //As a result, I'm using this lifecycle method to keep the userCollection updated.
+    //I would not consider this to be the best way of updating it, but it's the only way I've made it functional w/o altering server side.
+    //I DO NOT want ot udpate server side this close to final deployment.
+    componentDidUpdate() {
+        this.userCollectionId = this.props.affInfo.userCollectionId;
     }
 
     closeModal() {
@@ -47,7 +58,6 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
     validateForm(e:React.MouseEvent<HTMLButtonElement>) {
         if (e) {e.preventDefault(); }
         this.state.statement.match(/[A-Za-z0-9]{3,140}/) ? this.updateAffirmation() : this.setState({statementError: true});
-
     }
 
     updateAffirmation = () => {
@@ -55,9 +65,6 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
             statement: this.state.statement,
             userCollectionId: this.state.userCollectionId
         }
-        console.log(this.props.affInfo.id)
-        console.log("Body Obj:", bodyObj)
-
 
         fetch(`${process.env.REACT_APP_DATABASE_URL}affs/edit-${this.props.affInfo.id}`, {
             method: "PUT",
@@ -67,8 +74,8 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
                 "Authorization": `${this.context.token}`
             })
         })
-        .then(data => {data.json(); console.log("Here's what's returned:",data)})
-        .then(() => {this.setState({modalIsOpen: false,statement: '',userCollectionId: this.props.thisCollId,statementError: false}, this.props.refreshDash())})
+        .then(data => data.json())
+        .then(() => {this.setState({modalIsOpen: false,statementError: false}, this.props.refreshDash())})
     }
 
     render() {
@@ -78,7 +85,7 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
                 <button
                 type="button"
                 onClick={() => this.openModal()}
-                className="px-3 py-2 text-sm font-medium text-amber-500 rounded-lg bg-opacity-20 hover:bg-amber-500 hover:bg-opacity-80 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                className="px-3 py-2 text-sm font-medium text-custom-orange rounded-lg hover:bg-custom-yellow hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                 >
                 <FaPencilAlt />
                 </button>
@@ -100,7 +107,7 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
                 >
-                <Dialog.Overlay className="fixed inset-0 bg-white bg-opacity-60" />
+                <Dialog.Overlay className="fixed inset-0 bg-custom-darkblue bg-opacity-60" />
                 </Transition.Child>
 
                 {/* This element is to trick the browser into centering the modal contents. */}
@@ -119,40 +126,40 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
                 >
-                <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-custom-darkblue-dark shadow-xl rounded-2xl">
                     <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-lg font-bold leading-6 text-white"
                     >
                     Edit Affirmation:
                     </Dialog.Title>
                     <br />
-                    <hr />
-                    <div className="mt-2">
+                    <hr className="text-transparent h-0.5 rounded bg-gradient-to-r from-custom-yellow to-custom-orange-dark" />
+                    <div className="mt-4">
                     
                         {/* THIS IS THE BODY OF THE MODAL */}
                         <div>
                             <label htmlFor="statement" className="block">
-                                <span className="text-gray-700">Name:</span>
+                                <span className="text-white">Statement:</span>
 
                                 <input
                                     required
                                     type="text"
-                                    className="mt-1 block w-full rounded-md bg-black bg-opacity-10 p-2 border-transparent focus:border-cyan-900 focus:bg-white focus:ring-0"
+                                    className="block mt-1 py-1 px-2 w-full rounded-md text-custom-deeppurple bg-white bg-opacity-80 border-transparent focus:border-custom-yellow-light focus:bg-white outline-none ring-custom-yellow-light focus:ring-2"
                                     placeholder={this.props.affInfo.statement}
                                     value={this.state.statement}
                                     onChange={this.handleChange('statement')}
                                 />
                             </label>
-                            {this.state.statementError ? <p className="text-alert text-sm">Need to submit a valid affirmation.</p> : <></>}
+                            {this.state.statementError ? <p className="text-custom-orange text-sm font-semibold">Need to submit a valid affirmation.</p> : <></>}
 
                             <label htmlFor="userCollectionId" className="block">
-                                <span className="text-gray-700">Collection:</span>
+                                <span className="text-white">Collection:</span>
 
                                 <select
                                     required
-                                    className="mt-1 block w-full rounded-md bg-black bg-opacity-10 p-2 border-transparent focus:border-cyan-900 focus:bg-white focus:ring-0"
-                                    defaultValue={this.props.thisCollId!}
+                                    className="block mt-1 py-1 px-2 w-full rounded-md text-custom-deeppurple bg-white bg-opacity-80 border-transparent focus:border-custom-yellow-light focus:bg-white outline-none ring-custom-yellow-light focus:ring-2"
+                                    defaultValue={this.userCollectionId}
                                     onChange={this.handleChange('userCollectionId')}
                                 >
                                     {this.props.collectionResults?.map((coll) => {
@@ -166,14 +173,14 @@ export default class EditAffirmation extends React.Component <IEditAffProps, IEd
                     <div className="mt-4 flex flex-row justify-end">
                     <button
                         type="button"
-                        className="inline-flex justify-center ml-3 px-4 py-2 text-sm font-medium text-amber-900 bg-amber-100 border border-transparent rounded-md hover:bg-amber-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-500"
+                        className="inline-flex justify-center ml-3 px-4 py-2 text-md font-semibold text-custom-deeppurple-light bg-custom-lightblue-light border border-transparent rounded-md hover:bg-custom-lightblue focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-500"
                         onClick={() => this.closeModal()}
                     >
                         Cancel
                     </button>
                     <button
                         type="button"
-                        className="inline-flex justify-center ml-3 px-4 py-2 text-sm font-medium text-cyan-900 bg-cyan-100 border border-transparent rounded-md hover:bg-cyan-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500"
+                        className="inline-flex justify-center ml-3 px-4 py-2 text-md font-semibold text-custom-deeppurple-light bg-custom-orange border border-transparent rounded-md hover:bg-custom-orange-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500"
                         onClick={(e:React.MouseEvent<HTMLButtonElement>) => this.validateForm(e)}>
                         Commit Changes
                     </button>
