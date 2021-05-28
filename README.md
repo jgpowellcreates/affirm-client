@@ -1,3 +1,6 @@
+### Thanks for checking out my project!
+You can read about the features of the site's construction below or see it in action [on Heroku](https://jp-wellsaid-client.herokuapp.com/).
+
 # My Application - Well Said | Affirmations for Motivation & Relaxation
 
 My application/site was inspired by my meditation practice in which I've learned more about the naturally unruly nature of our wandering brains and our subconscious acceptance of unfiltered personal narrative. Practicing affirmations, then, is to our brain as physical exercise is to our body. It is a practice in which we are creating and strengthening mental pathways and thought patterns to which we've given our intention.
@@ -24,6 +27,7 @@ This app would serve as a library of these affirmations that individual users ca
  * Basic form validation written in with RegEx requirements, without use of external library.
  * Front end styled with TailWindCss, HeadlessUI and styled-components for TailWind(consequently running with Craco scripts)
  * Project deployed on Heroku
+ * Generated FavIcon package to make icon dynamic across select devices
 
 ## Features to Add
 Immediate Goals:
